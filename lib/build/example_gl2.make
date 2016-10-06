@@ -4,7 +4,7 @@ ifndef config
 endif
 
 ifndef verbose
-  SILENT = 
+  SILENT =
 endif
 
 ifndef CC
@@ -27,10 +27,10 @@ ifeq ($(config),debug)
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g -Wall
-  CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += `pkg-config --libs glfw3` -L.
+  CXXFLAGS  += $(CFLAGS)
+  LDFLAGS   += -L/usr/local/lib -lglfw -L.
   LIBS      += -lnanovg -lGL -lGLU -lm -lGLEW
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  RESFLAGS  += $(DEFINES) $(INCLUDES)
   LDDEPS    += libnanovg.a
   LINKCMD    = $(CC) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
   define PREBUILDCMDS
@@ -49,10 +49,10 @@ ifeq ($(config),release)
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -Wall
-  CXXFLAGS  += $(CFLAGS) 
+  CXXFLAGS  += $(CFLAGS)
   LDFLAGS   += -s `pkg-config --libs glfw3` -L.
   LIBS      += -lnanovg -lGL -lGLU -lm -lGLEW
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  RESFLAGS  += $(DEFINES) $(INCLUDES)
   LDDEPS    += libnanovg.a
   LINKCMD    = $(CC) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
   define PREBUILDCMDS
@@ -71,10 +71,10 @@ ifeq ($(config),debug64)
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g -Wall -m64
-  CXXFLAGS  += $(CFLAGS) 
+  CXXFLAGS  += $(CFLAGS)
   LDFLAGS   += -m64 -L/usr/lib64 `pkg-config --libs glfw3` -L.
   LIBS      += -lnanovg -lGL -lGLU -lm -lGLEW
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  RESFLAGS  += $(DEFINES) $(INCLUDES)
   LDDEPS    += libnanovg.a
   LINKCMD    = $(CC) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
   define PREBUILDCMDS
@@ -93,10 +93,10 @@ ifeq ($(config),release64)
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -Wall -m64
-  CXXFLAGS  += $(CFLAGS) 
+  CXXFLAGS  += $(CFLAGS)
   LDFLAGS   += -s -m64 -L/usr/lib64 `pkg-config --libs glfw3` -L.
   LIBS      += -lnanovg -lGL -lGLU -lm -lGLEW
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  RESFLAGS  += $(DEFINES) $(INCLUDES)
   LDDEPS    += libnanovg.a
   LINKCMD    = $(CC) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
   define PREBUILDCMDS
@@ -115,10 +115,10 @@ ifeq ($(config),debug32)
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g -Wall -m32
-  CXXFLAGS  += $(CFLAGS) 
+  CXXFLAGS  += $(CFLAGS)
   LDFLAGS   += -m32 -L/usr/lib32 `pkg-config --libs glfw3` -L.
   LIBS      += -lnanovg -lGL -lGLU -lm -lGLEW
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  RESFLAGS  += $(DEFINES) $(INCLUDES)
   LDDEPS    += libnanovg.a
   LINKCMD    = $(CC) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
   define PREBUILDCMDS
@@ -137,10 +137,10 @@ ifeq ($(config),release32)
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -Wall -m32
-  CXXFLAGS  += $(CFLAGS) 
+  CXXFLAGS  += $(CFLAGS)
   LDFLAGS   += -s -m32 -L/usr/lib32 `pkg-config --libs glfw3` -L.
   LIBS      += -lnanovg -lGL -lGLU -lm -lGLEW
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
+  RESFLAGS  += $(DEFINES) $(INCLUDES)
   LDDEPS    += libnanovg.a
   LINKCMD    = $(CC) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
   define PREBUILDCMDS
