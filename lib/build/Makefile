@@ -22,24 +22,8 @@ example_gl2: nanovg
 
 
 clean:
-	@${MAKE} --no-print-directory -C . -f nanovg.make clean
-	@${MAKE} --no-print-directory -C . -f example_gl2.make clean
+	rm -rf obj
 
-help:
-	@echo "Usage: make [config=name] [target]"
-	@echo ""
-	@echo "CONFIGURATIONS:"
-	@echo "   debug"
-	@echo "   release"
-	@echo "   debug64"
-	@echo "   release64"
-	@echo "   debug32"
-	@echo "   release32"
-	@echo ""
-	@echo "TARGETS:"
-	@echo "   all (default)"
-	@echo "   clean"
-	@echo "   nanovg"
-	@echo "   example_gl2"
-	@echo ""
-	@echo "For more information, see http://industriousone.com/premake/quick-start"
+fclean: clean
+	rm libnanovg.a
+	rm example_gl2

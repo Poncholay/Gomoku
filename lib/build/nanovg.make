@@ -19,137 +19,25 @@ ifndef AR
   AR = ar
 endif
 
-ifeq ($(config),debug)
-  OBJDIR     = obj/Debug/nanovg
-  TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/libnanovg.a
-  DEFINES   += -D_CRT_SECURE_NO_WARNINGS -DDEBUG
-  INCLUDES  += -I../src
-  CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -g -Wall
-  CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += 
-  LIBS      += 
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LDDEPS    += 
-  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
-  define PREBUILDCMDS
-  endef
-  define PRELINKCMDS
-  endef
-  define POSTBUILDCMDS
-  endef
-endif
-
-ifeq ($(config),release)
-  OBJDIR     = obj/Release/nanovg
-  TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/libnanovg.a
-  DEFINES   += -D_CRT_SECURE_NO_WARNINGS -DNDEBUG
-  INCLUDES  += -I../src
-  CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -Wall
-  CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -s
-  LIBS      += 
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LDDEPS    += 
-  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
-  define PREBUILDCMDS
-  endef
-  define PRELINKCMDS
-  endef
-  define POSTBUILDCMDS
-  endef
-endif
-
-ifeq ($(config),debug64)
-  OBJDIR     = obj/x64/Debug/nanovg
-  TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/libnanovg.a
-  DEFINES   += -D_CRT_SECURE_NO_WARNINGS -DDEBUG
-  INCLUDES  += -I../src
-  CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -g -Wall -m64
-  CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -m64 -L/usr/lib64
-  LIBS      += 
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LDDEPS    += 
-  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
-  define PREBUILDCMDS
-  endef
-  define PRELINKCMDS
-  endef
-  define POSTBUILDCMDS
-  endef
-endif
-
-ifeq ($(config),release64)
-  OBJDIR     = obj/x64/Release/nanovg
-  TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/libnanovg.a
-  DEFINES   += -D_CRT_SECURE_NO_WARNINGS -DNDEBUG
-  INCLUDES  += -I../src
-  CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -Wall -m64
-  CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -s -m64 -L/usr/lib64
-  LIBS      += 
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LDDEPS    += 
-  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
-  define PREBUILDCMDS
-  endef
-  define PRELINKCMDS
-  endef
-  define POSTBUILDCMDS
-  endef
-endif
-
-ifeq ($(config),debug32)
-  OBJDIR     = obj/x32/Debug/nanovg
-  TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/libnanovg.a
-  DEFINES   += -D_CRT_SECURE_NO_WARNINGS -DDEBUG
-  INCLUDES  += -I../src
-  CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -g -Wall -m32
-  CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -m32 -L/usr/lib32
-  LIBS      += 
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LDDEPS    += 
-  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
-  define PREBUILDCMDS
-  endef
-  define PRELINKCMDS
-  endef
-  define POSTBUILDCMDS
-  endef
-endif
-
-ifeq ($(config),release32)
-  OBJDIR     = obj/x32/Release/nanovg
-  TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/libnanovg.a
-  DEFINES   += -D_CRT_SECURE_NO_WARNINGS -DNDEBUG
-  INCLUDES  += -I../src
-  CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -Wall -m32
-  CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -s -m32 -L/usr/lib32
-  LIBS      += 
-  RESFLAGS  += $(DEFINES) $(INCLUDES) 
-  LDDEPS    += 
-  LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
-  define PREBUILDCMDS
-  endef
-  define PRELINKCMDS
-  endef
-  define POSTBUILDCMDS
-  endef
-endif
+OBJDIR     = obj/x64/Release/nanovg
+TARGETDIR  = .
+TARGET     = $(TARGETDIR)/libnanovg.a
+DEFINES   += -D_CRT_SECURE_NO_WARNINGS -DNDEBUG
+INCLUDES  += -I../src
+CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
+CFLAGS    += $(CPPFLAGS) $(ARCH) -O2 -Wall -m64
+CXXFLAGS  += $(CFLAGS) 
+LDFLAGS   += -s -m64 -L/usr/lib64
+LIBS      += 
+RESFLAGS  += $(DEFINES) $(INCLUDES) 
+LDDEPS    += 
+LINKCMD    = $(AR) -rcs $(TARGET) $(OBJECTS)
+define PREBUILDCMDS
+endef
+define PRELINKCMDS
+endef
+define	 POSTBUILDCMDS
+endef
 
 OBJECTS := \
 	$(OBJDIR)/nanovg.o \
