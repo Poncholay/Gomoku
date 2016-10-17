@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:15:51 2016 Combaud Alban
-// Last update Wed Oct 12 14:32:45 2016 Combaud Alban
+// Last update Wed Oct 12 16:28:20 2016 Combaud Alban
 //
 
 #ifndef REFEREE_HH_
@@ -22,6 +22,7 @@ public:
   ~Referee();
 
   bool  checkPlay();
+  bool checkEmptyCase();
 };
 
 #endif

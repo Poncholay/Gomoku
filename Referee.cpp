@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Wed Oct 12 14:47:30 2016 Combaud Alban
+// Last update Wed Oct 12 16:28:19 2016 Combaud Alban
 //
 
 #include "Referee.hh"
@@ -19,19 +19,16 @@ Referee::~Referee()
 {
 }
 
+bool  Referee::checkEmptyCase()
+{
+  return true;
+}
+
 bool  Referee::checkPlay()
 {
-  std::vector<std::vector<int> > map;
-  std::vector<int>    content;
-
-  for (size_t i = 0; i < 19; i++) {
-    for (size_t i = 0; i < 19; i++) {
-      content.push_back(0);
-    }
-    map.push_back(content);
-  }
-
-  return BITE;
+  if (checkEmptyCase())
+    return false;
+  return true;
 }
 
 int main() {
