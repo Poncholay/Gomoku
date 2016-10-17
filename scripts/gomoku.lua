@@ -16,6 +16,7 @@ function gomoku_project(_kind)
 		includedirs {
 			GOMOKU_DIR .. "inc",
 			GOMOKU_DIR .. "lib/bgfx/include",
+      GOMOKU_DIR .. "lib/bgfx/examples/common",
 			GOMOKU_DIR .. "lib/bx/include",
 		}
 
@@ -24,7 +25,7 @@ function gomoku_project(_kind)
 		}
 
 		links {
-			"bgfx",
+			"bgfx"
 		}
 
 		configuration { "debug or development" }
