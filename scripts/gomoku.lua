@@ -15,8 +15,8 @@ function gomoku_project(_kind)
 
 		includedirs {
 			GOMOKU_DIR .. "inc",
-			GOMOKU_DIR .. "third/bgfx/include",
-			GOMOKU_DIR .. "third/bx/include",
+			GOMOKU_DIR .. "lib/bgfx/include",
+			GOMOKU_DIR .. "lib/bx/include",
 		}
 
 		defines {
