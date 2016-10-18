@@ -5,11 +5,12 @@
 ## Login   <adrien.milcent@epitech.eu>
 ##
 ## Started on  Wed Oct 12 17:48:57 2016 Adrien Milcent
-## Last update Tue Oct 18 12:46:21 2016 Adrien Milcent
+## Last update Tue Oct 18 14:07:25 2016 Adrien Milcent
 ##
 
 SRC =	Main.cpp	\
 			Goban.cpp \
+			Referee.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 
