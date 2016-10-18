@@ -5,12 +5,12 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Tue Oct 18 15:59:28 2016 Combaud Alban
+// Last update Tue Oct 18 16:23:38 2016 Combaud Alban
 //
 
 #include "Referee.hh"
 
-Referee::Referee()
+Referee::Referee() : nbPairplayer1(0), nbPairplayer2(0)
 {
 }
 
@@ -50,17 +50,19 @@ bool Referee::checkWinBy5(int x, int y, int player){
     goban[ytmp][xtmp++] == player ? count++ : count = 0;
     if (count == 5)
       return true;}
-
-  goban.removeDraught(x, y);
   return false;
 }
 
-bool  Referee::checkPlay(int x, int y){
-  return (goban.getBoard()[y][x] ? false : true);
+Result  Referee::checkPlay(int x, int y, int player){
+  return (goban.getBoard()[y][x] ? REPLAY : checkWin(x, y, player));
 }
 
-bool  Referee::checkWin(int x, int y, int player){
+Result  Referee::checkWin(int x, int y, int player){
   if (checkWinBy5(x, y, player))
-    return true;
-  return false;
+    {
+      goban.removeDraught(x, y);
+      return WIN;
+    }
+  goban.removeDraught(x, y);
+  return CONTINUE;
 }

@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 17:25:59 2016 Adrien Milcent
-// Last update Tue Oct 18 15:58:28 2016 Combaud Alban
+// Last update Tue Oct 18 16:24:01 2016 Combaud Alban
 //
 
 #include "Referee.hh"
@@ -24,12 +24,8 @@ int main()
   referee.getGoban().addDraught(18, 14, 1);
   referee.getGoban().addDraught(19, 13, 1);
 
+  std::cout << referee.checkPlay(16, 16, 1) << std::endl;
 
-  std::cout << referee.getGoban()[2][1] << std::endl;
-
-
-  if (referee.checkWin(3, 17, 1) == false){std::cout << "false" << std::endl;}
-  else{std::cout << "true" << std::endl;}
   referee.getGoban().printBoard();
 /*  if (referee.checkWin(2, 4, 1) == false){std::cout << "false" << std::endl;}
   else{std::cout << "true" << std::endl;}
