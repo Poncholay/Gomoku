@@ -15,9 +15,7 @@ function gomoku_project(_kind)
 
 		includedirs {
 			GOMOKU_DIR .. "inc",
-			GOMOKU_DIR .. "lib/bgfx/include",
-      GOMOKU_DIR .. "lib/bgfx/examples/common",
-			GOMOKU_DIR .. "lib/bx/include",
+			GOMOKU_DIR .. "inc/irrlicht"
 		}
 
 		defines {
@@ -25,27 +23,11 @@ function gomoku_project(_kind)
 		}
 
 		links {
-			"bgfx"
+			GOMOKU_LIB_DIR .. "Linux/Irrlicht",
+			"GL",
+			"X11",
+			"Xxf86vm"
 		}
-
-		configuration { "debug or development" }
-			defines {
-				"GOMOKU_DEBUG=1"
-			}
-
-		configuration { "development" }
-			defines {
-				"GOMOKU_DEVELOPMENT=1"
-			}
-
-		configuration { "linux-*" }
-			links {
-				"X11",
-				"Xrandr",
-				"pthread",
-				"dl",
-				"GL",
-			}
 
 		configuration {}
 

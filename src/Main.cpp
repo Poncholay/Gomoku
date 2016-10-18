@@ -5,14 +5,15 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Sun Oct 16 15:32:40 2016 wilmot_g
-** Last update Mon Oct 17 16:39:44 2016 wilmot_g
+** Last update Tue Oct 18 19:35:36 2016 wilmot_g
 */
 
-#include <iostream>
-#include "bgfx/bgfx.h"
+#include "Displayer.hpp"
 
 using namespace std;
 
-int   main(int ac, char **av) {
-  cout << bgfx::init() << endl;
+int           main(int ac, char **av) {
+  Displayer   d;
+
+  return d.display();
 }
