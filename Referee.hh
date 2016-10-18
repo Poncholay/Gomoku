@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:15:51 2016 Combaud Alban
-// Last update Tue Oct 18 16:20:08 2016 Combaud Alban
+// Last update Tue Oct 18 17:45:33 2016 Combaud Alban
 //
 
 #ifndef REFEREE_HH_
@@ -33,6 +33,9 @@ public:
   Result checkPlay(int, int, int);
   Result  checkWin(int, int, int);
   bool  checkWinBy5(int, int, int);
+  bool  checkWinByPair(int, int, int);
+  void updatePair(int, int, int);
+  void removePair(int, int, int, int, int);
   Goban &getGoban();
 };
 
