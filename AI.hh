@@ -5,23 +5,29 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 14:19:59 2016 Adrien Milcent
-// Last update Wed Oct 19 12:48:43 2016 Adrien Milcent
+// Last update Wed Oct 19 17:32:27 2016 Adrien Milcent
 //
 
 #ifndef AI_HH_
 # define AI_HH_
 
+# include <iostream>
+# include <string>
+# include <vector>
+
+# include "Goban.hh"
+# include "Minmax.hh"
+
 class AI {
 private:
   Goban _goban;
-  auto _algo;
+  Minmax _algo;
   int _nbPlayer;
-  int _nbOpponent;
 public:
   AI(Goban &, int, int);
   ~AI();
 
-  play();
+  void play();
 };
 
 #endif /* !AI_HH_ */

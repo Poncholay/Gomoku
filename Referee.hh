@@ -5,13 +5,13 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:15:51 2016 Combaud Alban
-// Last update Tue Oct 18 17:45:33 2016 Combaud Alban
+// Last update Wed Oct 19 16:58:57 2016 Adrien Milcent
 //
 
 #ifndef REFEREE_HH_
 # define REFEREE_HH_
 
-#include "Goban.hh"
+# include "Goban.hh"
 # include <vector>
 # include <iostream>
 
@@ -30,7 +30,7 @@ public:
   Referee();
   ~Referee();
 
-  Result checkPlay(int, int, int);
+  static Result checkPlay(int, int, int);
   Result  checkWin(int, int, int);
   bool  checkWinBy5(int, int, int);
   bool  checkWinByPair(int, int, int);

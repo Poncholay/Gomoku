@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Tue Oct 18 17:59:12 2016 Combaud Alban
+// Last update Wed Oct 19 16:57:08 2016 Adrien Milcent
 //
 
 #include "Referee.hh"
