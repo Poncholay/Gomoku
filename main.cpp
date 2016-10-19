@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 17:25:59 2016 Adrien Milcent
-// Last update Tue Oct 18 17:55:54 2016 Combaud Alban
+// Last update Thu Oct 20 01:00:07 2016 Combaud Alban
 //
 
 #include "Referee.hh"
@@ -19,18 +19,41 @@ int main()
   referee.getGoban().addDraught(2, 5, 1);
   referee.getGoban().addDraught(3, 4, 1);*/
 
-  referee.getGoban().addDraught(16, 16, 1);
-  referee.getGoban().addDraught(17, 16, 1);
-  referee.getGoban().addDraught(18, 16, 2);
+  //referee.getGoban().addDraught(13, 16, 1);
+  referee.getGoban().addDraught(4, 4, 1);
+  referee.getGoban().addDraught(5, 3, 1);
+  referee.getGoban().addDraught(6, 2, 1);
+  referee.getGoban().addDraught(7, 1, 1);
 
-  std::cout << referee.checkPlay(15, 16, 2) << std::endl;
+  referee.getGoban().addDraught(5, 1, 2);
+  referee.getGoban().addDraught(5, 2, 1);
+//  referee.getGoban().addDraught(5, 2, 2);
 
-  if (referee.checkPlay(15, 16, 2) == WIN)
-  {
-    referee.getGoban().addDraught(15, 16, 2);   
-    referee.updatePair(15, 16, 2);
-  }
+
+
+/*  referee.getGoban().addDraught(5, 5, 1);
+  referee.getGoban().addDraught(6, 5, 1);
+  referee.getGoban().addDraught(7, 5, 1);
+  referee.getGoban().addDraught(8, 5, 1);
+
+  referee.getGoban().addDraught(6, 0, 2);
+  referee.getGoban().addDraught(6, 1, 1);
+  referee.getGoban().addDraught(6, 2, 1);*/
+  //referee.getGoban().addDraught(4, 6, 2);
+  //referee.getGoban().addDraught(5, 6, 2);
+  //referee.getGoban().addDraught(6, 6, 2);
+  //referee.getGoban().addDraught(7, 6, 2);
+//  referee.getGoban().addDraught(8, 6, 2);
+  //referee.getGoban().addDraught(9, 6, 2);
+
+  referee.setPair(4, 2);
+  std::cout << referee.checkPlay(3, 5, 1) << std::endl;
+
   referee.getGoban().printBoard();
+  std::cout << std::endl;
+
+//  referee.updatePair(14, 16, 2);
+//  referee.getGoban().printBoard();
 /*  if (referee.checkWin(2, 4, 1) == false){std::cout << "false" << std::endl;}
   else{std::cout << "true" << std::endl;}
     referee.getGoban().printBoard();*/
