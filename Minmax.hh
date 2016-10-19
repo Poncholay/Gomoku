@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 13:59:45 2016 Adrien Milcent
-// Last update Tue Oct 18 14:55:31 2016 Adrien Milcent
+// Last update Wed Oct 19 14:32:39 2016 Adrien Milcent
 //
 
 #ifndef MINMAX_HH_
@@ -17,6 +17,10 @@ private:
 public:
   Minmax(int);
   ~Minmax();
+
+  Min();
+  Max();
+  Eval();
 };
 
 #endif /* !MINMAX_HH_ */

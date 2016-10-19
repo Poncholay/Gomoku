@@ -5,10 +5,11 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 17:25:59 2016 Adrien Milcent
-// Last update Tue Oct 18 15:58:28 2016 Combaud Alban
+// Last update Wed Oct 19 14:32:41 2016 Adrien Milcent
 //
 
 #include "Referee.hh"
+#include "AI.hh"
 
 int main()
 {
