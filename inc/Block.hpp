@@ -36,6 +36,7 @@ public:
 	    extent = _block->getTransformedBoundingBox().getExtent();
 	    _block->setMaterialFlag(irr::video::EMF_BILINEAR_FILTER, false);
 	    _block->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
+      _block->setScale(irr::core::vector3df(scale, scale, scale));
 	    _block->setPosition(irr::core::vector3df(_x * extent.X, extent.Y * _y, _z * extent.Z));
 	    return 0;
     }

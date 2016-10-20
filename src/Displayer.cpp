@@ -15,7 +15,7 @@
 
 Displayer::Displayer() {
   EventHandler::get(&_receiver);
-  _device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(1280, 720), 32, false, false, true, &_receiver);
+  _device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(1920, 1080), 32, false, false, true, &_receiver);
   getDriver(_driver = _device->getVideoDriver());
   getSmgr(_smgr = _device->getSceneManager());
   _guienv = _device->getGUIEnvironment();
@@ -62,41 +62,56 @@ int                 Displayer::manageEvents() {
   return (0);
 }
 
+bool                 Displayer::instanciate() {
+  return instanciateScene() && instanciateCamera() && instanciateLights();
+}
+
+bool                 Displayer::instanciateScene() {
+  Block table(0, 0, 0, _smgr->getMesh("./assets/table/armchair_and_table3.obj"), _smgr);
+  Block room(0, 0, 0, _smgr->getMesh("./assets/room/house_interior.obj"), _smgr);
+  bool ret = table.create(3) == -1 || room.create(0.04) == -1 ? false : true;
+  if (ret) {
+    irr::core::vector3df pos = table.getBlock()->getPosition();
+    pos.X -= 5;
+    pos.Z += 2;
+    table.getBlock()->setPosition(pos);
+  }
+  return ret;
+}
+
 bool                 Displayer::instanciateCamera() {
   irr::SKeyMap       keyMap[4];
   keyMap[0].Action = irr::EKA_MOVE_FORWARD;
   keyMap[0].KeyCode = irr::KEY_KEY_Z;
-
   keyMap[1].Action = irr::EKA_MOVE_BACKWARD;
   keyMap[1].KeyCode = irr::KEY_KEY_S;
-
   keyMap[2].Action = irr::EKA_STRAFE_LEFT;
   keyMap[2].KeyCode = irr::KEY_KEY_Q;
-
   keyMap[3].Action = irr::EKA_STRAFE_RIGHT;
   keyMap[3].KeyCode = irr::KEY_KEY_D;
 
-  return (_camera = Displayer::getSmgr()->addCameraSceneNodeFPS(0, 100, 0.005f, -1, keyMap, 4)) != NULL;
+  return (_camera = Displayer::getSmgr()->addCameraSceneNodeFPS(0, 50, 0.005f, -1, keyMap, 4)) != NULL;
 }
 
 bool                 Displayer::instanciateLights() {
   _smgr->setAmbientLight(irr::video::SColorf(0.5, 0.5, 0.5, 0));
-  return _smgr->addLightSceneNode(0, irr::core::vector3df(0, 50, 0), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f) != NULL;
+  return (!_smgr->addLightSceneNode(0, irr::core::vector3df(0, 20, 0), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f) ||
+      !_smgr->addLightSceneNode(0, irr::core::vector3df(50, 10, 0), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f) ||
+      !_smgr->addLightSceneNode(0, irr::core::vector3df(0, 10, 50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f) ||
+      !_smgr->addLightSceneNode(0, irr::core::vector3df(50, 10, -50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f) ||
+      !_smgr->addLightSceneNode(0, irr::core::vector3df(-50, 10, 50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f)) ? false : true;
 }
 
 int				Displayer::display() {
-  if (instanciateLights() == false || instanciateCamera() == false)
-    return -1;
+  if (!instanciate()) return -1;
 
-    /**/
-    Block b(0, 0, 0, _smgr->getMesh("./assets/Stone.obj"), _smgr);
-    b.create(2);
-    _camera->setPosition(irr::core::vector3df(0, 10, 0));
-    /**/
+  /**/
+  _camera->setPosition(irr::core::vector3df(0, 10, 0));
+  /**/
 
   while (_device->run()) {
       _driver->beginScene(true, true, irr::video::SColor(255, 100, 150, 255));
-      _axes->render();
+      // _axes->render();
       _smgr->drawAll();
       _guienv->drawAll();
       _driver->endScene();

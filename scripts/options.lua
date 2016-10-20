@@ -24,10 +24,8 @@ function options()
         			"-Wall",
         			"-Wextra",
         			"-Werror",
-              "-pthread"
-        		}
-        		buildoptions_cpp {
-        			"-std=c++11",
+				"-pthread",
+				"-std=c++11"
         		}
         		-- linkoptions {
         		-- 	"-Wl,-rpath=\\$$ORIGIN",

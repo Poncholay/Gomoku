@@ -34,6 +34,8 @@ public:
 
 private:
 
+  bool                          instanciate();
+  bool                          instanciateScene();
   bool                          instanciateLights();
   bool                          instanciateCamera();
   void                          updateFPS();
