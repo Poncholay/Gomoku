@@ -58,12 +58,12 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 	@:
 
 $(TARGET): $(GCH) $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	@echo Linking nanovg
+	echo Linking nanovg
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
 $(TARGETDIR):
-	@echo Creating $(TARGETDIR)
+	echo Creating $(TARGETDIR)
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) mkdir -p $(TARGETDIR)
 else
@@ -71,7 +71,7 @@ else
 endif
 
 $(OBJDIR):
-	@echo Creating $(OBJDIR)
+	echo Creating $(OBJDIR)
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) mkdir -p $(OBJDIR)
 else
@@ -79,7 +79,7 @@ else
 endif
 
 clean:
-	@echo Cleaning nanovg
+	echo Cleaning nanovg
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -96,7 +96,7 @@ prelink:
 
 ifneq (,$(PCH))
 $(GCH): $(PCH)
-	@echo $(notdir $<)
+	echo $(notdir $<)
 	-$(SILENT) cp $< $(OBJDIR)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
 endif

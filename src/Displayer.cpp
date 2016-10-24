@@ -67,16 +67,11 @@ bool                 Displayer::instanciate() {
 }
 
 bool                 Displayer::instanciateScene() {
-  Block table(0, 0, 0, _smgr->getMesh("./assets/table/armchair_and_table3.obj"), _smgr);
-  Block room(0, 0, 0, _smgr->getMesh("./assets/room/house_interior.obj"), _smgr);
-  bool ret = table.create(3) == -1 || room.create(0.04) == -1 ? false : true;
-  if (ret) {
-    irr::core::vector3df pos = table.getBlock()->getPosition();
-    pos.X -= 5;
-    pos.Z += 2;
-    table.getBlock()->setPosition(pos);
-  }
-  return ret;
+  Block room(0, 0, 0, _smgr->getMesh("./assets/room.obj"), _smgr);
+  if (room.create(0.04) == -1) return false;
+  room.getBlock()->setMaterialFlag(irr::video::EMF_BACK_FACE_CULLING, false);
+  room.getBlock()->setMaterialFlag(irr::video::EMF_TEXTURE_WRAP, true);
+  return true;
 }
 
 bool                 Displayer::instanciateCamera() {
@@ -90,16 +85,18 @@ bool                 Displayer::instanciateCamera() {
   keyMap[3].Action = irr::EKA_STRAFE_RIGHT;
   keyMap[3].KeyCode = irr::KEY_KEY_D;
 
-  return (_camera = Displayer::getSmgr()->addCameraSceneNodeFPS(0, 50, 0.005f, -1, keyMap, 4)) != NULL;
+  if (!(_camera = Displayer::getSmgr()->addCameraSceneNodeFPS(0, 50, 0.005f, -1, keyMap, 4))) return false;
+  _camera->setNearValue(0.001f);
+  return true;
 }
 
 bool                 Displayer::instanciateLights() {
   _smgr->setAmbientLight(irr::video::SColorf(0.5, 0.5, 0.5, 0));
-  return (!_smgr->addLightSceneNode(0, irr::core::vector3df(0, 20, 0), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f) ||
-      !_smgr->addLightSceneNode(0, irr::core::vector3df(50, 10, 0), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f) ||
-      !_smgr->addLightSceneNode(0, irr::core::vector3df(0, 10, 50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f) ||
-      !_smgr->addLightSceneNode(0, irr::core::vector3df(50, 10, -50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f) ||
-      !_smgr->addLightSceneNode(0, irr::core::vector3df(-50, 10, 50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f)) ? false : true;
+  return _smgr->addLightSceneNode(0, irr::core::vector3df(0, 20, 0), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f)    &&
+         _smgr->addLightSceneNode(0, irr::core::vector3df(50, 10, 0), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f)   &&
+         _smgr->addLightSceneNode(0, irr::core::vector3df(0, 10, 50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f)   &&
+         _smgr->addLightSceneNode(0, irr::core::vector3df(50, 10, -50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f) &&
+         _smgr->addLightSceneNode(0, irr::core::vector3df(-50, 10, 50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f);
 }
 
 int				Displayer::display() {

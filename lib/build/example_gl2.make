@@ -4,7 +4,7 @@ ifndef config
 endif
 
 ifndef verbose
-  SILENT = @
+  SILENT = 
 endif
 
 ifndef CC
@@ -172,12 +172,12 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 	@:
 
 $(TARGET): $(GCH) $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	@echo Linking example_gl2
+	echo Linking example_gl2
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
 $(TARGETDIR):
-	@echo Creating $(TARGETDIR)
+	echo Creating $(TARGETDIR)
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) mkdir -p $(TARGETDIR)
 else
@@ -185,7 +185,7 @@ else
 endif
 
 $(OBJDIR):
-	@echo Creating $(OBJDIR)
+	echo Creating $(OBJDIR)
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) mkdir -p $(OBJDIR)
 else
@@ -193,7 +193,7 @@ else
 endif
 
 clean:
-	@echo Cleaning example_gl2
+	echo Cleaning example_gl2
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -210,19 +210,19 @@ prelink:
 
 ifneq (,$(PCH))
 $(GCH): $(PCH)
-	@echo $(notdir $<)
+	echo $(notdir $<)
 	-$(SILENT) cp $< $(OBJDIR)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
 endif
 
 $(OBJDIR)/example_gl2.o: ../example/example_gl2.c
-	@echo $(notdir $<)
+	echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/demo.o: ../example/demo.c
-	@echo $(notdir $<)
+	echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/perf.o: ../example/perf.c
-	@echo $(notdir $<)
+	echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
 
 -include $(OBJECTS:%.o=%.d)
