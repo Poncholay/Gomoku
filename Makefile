@@ -5,7 +5,7 @@
 ## Login   <adrien.milcent@epitech.eu>
 ##
 ## Started on  Wed Oct 12 17:48:57 2016 Adrien Milcent
-## Last update Wed Oct 19 14:59:12 2016 Adrien Milcent
+## Last update Mon Oct 24 11:40:49 2016 Adrien Milcent
 ##
 
 SRC =	main.cpp	\
@@ -20,7 +20,7 @@ NAME	=	gomoku
 
 CXXFLAGS	= -Wextra -W -Wall
 
-CXX	= g++ -std=c++11
+CXX	= g++ -std=c++11 -g
 
 $(NAME): $(OBJ)
 				$(CXX) $(CXXGLAGS) -o $(NAME) $(OBJ)

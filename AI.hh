@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 14:19:59 2016 Adrien Milcent
-// Last update Wed Oct 19 17:32:27 2016 Adrien Milcent
+// Last update Mon Oct 24 11:19:18 2016 Adrien Milcent
 //
 
 #ifndef AI_HH_
@@ -27,7 +27,7 @@ public:
   AI(Goban &, int, int);
   ~AI();
 
-  void play();
+  void play(Referee);
 };
 
 #endif /* !AI_HH_ */
