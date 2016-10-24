@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 17:25:59 2016 Adrien Milcent
-// Last update Thu Oct 20 01:00:07 2016 Combaud Alban
+// Last update Mon Oct 24 14:37:21 2016 Combaud Alban
 //
 
 #include "Referee.hh"
@@ -20,16 +20,11 @@ int main()
   referee.getGoban().addDraught(3, 4, 1);*/
 
   //referee.getGoban().addDraught(13, 16, 1);
-  referee.getGoban().addDraught(4, 4, 1);
-  referee.getGoban().addDraught(5, 3, 1);
-  referee.getGoban().addDraught(6, 2, 1);
-  referee.getGoban().addDraught(7, 1, 1);
-
-  referee.getGoban().addDraught(5, 1, 2);
-  referee.getGoban().addDraught(5, 2, 1);
-//  referee.getGoban().addDraught(5, 2, 2);
-
-
+//  referee.getGoban().addDraught(0, 11, 1);
+//  referee.getGoban().addDraught(1, 10, 1);
+  referee.getGoban().addDraught(2, 9, 1);
+  referee.getGoban().addDraught(3, 8, 1);
+//  referee.getGoban().addDraught(5, 4, 1);
 
 /*  referee.getGoban().addDraught(5, 5, 1);
   referee.getGoban().addDraught(6, 5, 1);
@@ -47,7 +42,7 @@ int main()
   //referee.getGoban().addDraught(9, 6, 2);
 
   referee.setPair(4, 2);
-  std::cout << referee.checkPlay(3, 5, 1) << std::endl;
+  std::cout << referee.checkPlay(0, 11, 1) << std::endl;
 
   referee.getGoban().printBoard();
   std::cout << std::endl;
