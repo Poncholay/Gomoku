@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:15:51 2016 Combaud Alban
-// Last update Mon Oct 24 12:56:57 2016 Adrien Milcent
+// Last update Tue Oct 25 13:29:38 2016 Adrien Milcent
 //
 
 #ifndef REFEREE_HH_
@@ -23,11 +23,11 @@ REPLAY  };
 class Referee
 {
 private:
-  Goban goban;
   int   nbPairplayer1;
   int   nbPairplayer2;
+  Goban &goban;
 public:
-  Referee();
+  Referee(Goban &);
   ~Referee();
 
   Result checkPlay(int, int, int);

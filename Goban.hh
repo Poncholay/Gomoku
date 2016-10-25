@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 15:26:56 2016 Adrien Milcent
-// Last update Mon Oct 17 14:18:10 2016 Combaud Alban
+// Last update Mon Oct 24 15:41:37 2016 Adrien Milcent
 //
 
 #ifndef GOBAN_HH_

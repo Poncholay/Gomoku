@@ -5,12 +5,12 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Mon Oct 24 12:57:11 2016 Adrien Milcent
+// Last update Tue Oct 25 13:30:43 2016 Adrien Milcent
 //
 
 #include "Referee.hh"
 
-Referee::Referee() : nbPairplayer1(0), nbPairplayer2(0)
+Referee::Referee(Goban &poncholay) : nbPairplayer1(0), nbPairplayer2(0), goban(poncholay)
 {
 }
 
@@ -221,9 +221,10 @@ bool Referee::checkWinBy5(int x, int y, int player){
 
   count = 0;
 
-  tmp = x < y  && goban.getXBoard() - y  >= 5 ? (x - 5 <= 0 ? x : 5) :
-   (y + 5 >= goban.getXBoard() ? goban.getXBoard() - 1 - y : 5);
+  tmp = x < y  && goban.getXBoard() - 1 - y  >= 5 ? (x - 5 <= 0 ? x : 5) :
+   (y + 5 >= goban.getYBoard() ? goban.getXBoard() - 1 - y : 5);
   xtmp = x - tmp;
+
   for (int ytmp = y + tmp; ytmp >= 0 && xtmp < goban.getXBoard(); ytmp--) {
     count == 0 ? xsave = xtmp, ysave = ytmp : 0;
     goban[ytmp][xtmp++] == player ? count++ : count = 0;
@@ -242,7 +243,6 @@ bool  Referee::checkRules(int x, int y, int player){
   std::vector<std::vector<int> > board = goban.getBoard();
 
   goban.addDraught(x, y, player);
-  std::cout << "beginx = " << beginx << std::endl;
   for (int i = beginx; i <= x; i++) {
     if (i + 4 < goban.getXBoard() && !board[y][i] && board[y][i + 1] == player && board[y][i + 2] == player &&
       board[y][i + 3] == player && !board[y][i + 4])

@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 17:25:59 2016 Adrien Milcent
-// Last update Mon Oct 24 11:35:40 2016 Adrien Milcent
+// Last update Tue Oct 25 13:14:09 2016 Adrien Milcent
 //
 
 #include "Referee.hh"
@@ -13,16 +13,30 @@
 
 int main()
 {
-  Referee referee;
-  AI      ai1(referee.getGoban(), 1, 5);
-  AI      ai2(referee.getGoban(), 2, 5);
+  Goban goban(6, 6);
+  Referee referee(goban);
+  AI      ai1(goban, 1, 1);
+  AI      ai2(goban, 2, 1);
 
 
   ai1.play(referee);
+  //ai2.play(referee);
+  //goban.addDraught(1, 0, 2);
 
-  ai2.play(referee);
+  ai1.play(referee);
+  //ai2.play(referee);
+  //
+  //goban.addDraught(0, 2, 2);
+  ai1.play(referee);
+  //ai2.play(referee);
+  //goban.addDraught(2, 1, 2);
+  ai1.play(referee);
+  //ai2.play(referee);
+  //
+  ai1.play(referee);
+  //ai2.play(referee);
 
-  referee.getGoban().printBoard();
+  goban.printBoard();
 /*  referee.getGoban().addDraught(0, 7, 1);
   referee.getGoban().addDraught(1, 6, 1);
   referee.getGoban().addDraught(2, 5, 1);

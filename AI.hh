@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 14:19:59 2016 Adrien Milcent
-// Last update Mon Oct 24 11:19:18 2016 Adrien Milcent
+// Last update Mon Oct 24 15:50:51 2016 Adrien Milcent
 //
 
 #ifndef AI_HH_
@@ -20,8 +20,8 @@
 
 class AI {
 private:
-  Goban _goban;
   Minmax _algo;
+  Goban &_goban;
   int _nbPlayer;
 public:
   AI(Goban &, int, int);
