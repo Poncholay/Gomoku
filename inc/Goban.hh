@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 15:26:56 2016 Adrien Milcent
-// Last update Mon Oct 17 14:18:10 2016 Combaud Alban
+// Last update Mon Oct 24 15:41:37 2016 Adrien Milcent
 //
 
 #ifndef GOBAN_HH_
@@ -16,16 +16,18 @@
 # include <vector>
 # include "Displayer.hpp"
 
+class Displayer;
+
 class Goban {
 private:
   std::vector<std::vector<int> >      _board;
-  // Displayer                           &_displayer;
+  Displayer                           &_displayer;
   int _xBoard;
   int _yBoard;
 
 public:
-  Goban(int xBoard = 20, int yBoard = 20);
-  Goban();
+  Goban(Displayer &, int xBoard = GOBAN_X, int yBoard = GOBAN_Y);
+  Goban(Goban &);
   ~Goban();
 
   Goban &operator=(Goban &);
@@ -34,10 +36,10 @@ public:
   int getYBoard() const;
   std::vector<std::vector<int> >  getBoard() const;
 
-  void addDraught(int, int, int);
-  void removeDraught(int, int);
+  void addDraught(int, int, int, bool = false);
+  void removeDraught(int, int, bool = false);
 
-  // void setDisplayer(Displayer &);
+  Displayer &getDisplayer();
   void printBoard() const;
 };
 

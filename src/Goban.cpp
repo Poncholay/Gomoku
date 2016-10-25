@@ -10,7 +10,7 @@
 
 #include "Goban.hh"
 
-Goban::Goban(int xBoard, int yBoard) {
+Goban::Goban(Displayer &d, int xBoard, int yBoard) : _displayer(d) {
   _xBoard = xBoard;
   _yBoard = yBoard;
   std::vector<int> a = std::vector<int>   (xBoard, 0);
@@ -19,7 +19,7 @@ Goban::Goban(int xBoard, int yBoard) {
 
 Goban::~Goban() {}
 
-Goban::Goban(Goban &other) {
+Goban::Goban(Goban &other) : _displayer(other.getDisplayer()) {
   if (this != &other) {
     _xBoard = other.getXBoard();
     _yBoard = other.getYBoard();
@@ -40,11 +40,13 @@ std::vector<int>  &Goban::operator[](int box) {
   return _board[box];
 }
 
-void Goban::addDraught(int x, int y, int player) {
+void Goban::addDraught(int x, int y, int player, bool move) {
+  if (move) _displayer.animate(x, y, player);
   _board[y].at(x) = player;
 }
 
-void Goban::removeDraught(int x, int y) {
+void Goban::removeDraught(int x, int y, bool move) {
+  if (move) _displayer.animate(x, y, 0);
   _board[y].at(x) = 0;
 }
 
@@ -59,4 +61,4 @@ void Goban::printBoard() const {
 int Goban::getXBoard() const {return _xBoard;}
 int Goban::getYBoard() const {return _yBoard;}
 std::vector<std::vector<int> >  Goban::getBoard() const {return _board;}
-// void                            setDisplayer(Displayer &d) {_displayer = d;}
+Displayer                       &Goban::getDisplayer() {return _displayer;}

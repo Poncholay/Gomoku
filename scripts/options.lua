@@ -16,20 +16,18 @@ function options()
 
     location(GOMOKU_BUILD_DIR .. "projects/" .. "linux")
 
-    configuration { "x64", "linux-*" }
-    		targetdir (GOMOKU_BUILD_DIR .. "linux64" .. "/bin")
+    configuration { "x64" }
+        flags { "Symbols" }
+    		targetdir (GOMOKU_DIR)
     		objdir (GOMOKU_BUILD_DIR .. "linux64" .. "/obj")
     		libdirs (GOMOKU_BUILD_DIR .. "../.build/linux64/bin")
         buildoptions {
-        			"-Wall",
+        			-- "-Wall",
         			"-Wextra",
         			"-Werror",
-				"-pthread",
-				"-std=c++11"
+				      "-pthread",
+				      "-std=c++11",
+              "-g"
         		}
-        		-- linkoptions {
-        		-- 	"-Wl,-rpath=\\$$ORIGIN",
-        		-- 	"-Wl,--no-as-needed",
-        		-- }
   end
 end

@@ -15,7 +15,7 @@ all:
 
 linux:
 	$(GENIE) --file=scripts/genie.lua gmake
-	make -R -C build/projects/linux config=release64
+	make -R -C build/projects/linux config=release64 verbose=y
 
 .PHONY: clean fclean re
 

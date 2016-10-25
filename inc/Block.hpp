@@ -26,24 +26,25 @@ public:
   }
   ~Block() {}
 
-  irr::scene::IMeshSceneNode		*getBlock() {return _block;} const
+  irr::scene::IMeshSceneNode		*getBlock() const {return _block;}
   void        destroy() {_block->remove();}
 
   int         create(float scale) {
-    irr::core::vector3df		extent;
-
     if ((_block = _smgr->addMeshSceneNode(_mesh))) {
-	    extent = _block->getTransformedBoundingBox().getExtent();
+	    _extent = _block->getTransformedBoundingBox().getExtent();
 	    _block->setMaterialFlag(irr::video::EMF_BILINEAR_FILTER, false);
 	    _block->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
       _block->setScale(irr::core::vector3df(scale, scale, scale));
-	    _block->setPosition(irr::core::vector3df(_x * extent.X, extent.Y * _y, _z * extent.Z));
+	    _block->setPosition(irr::core::vector3df(_x * _extent.X, _extent.Y * _y, _z * _extent.Z));
 	    return 0;
     }
     return -1;
   }
 
+  irr::core::vector3df    getExtent() const {return _extent;}
+
 private:
+  irr::core::vector3df            _extent;
   irr::scene::IMeshSceneNode		  *_block;
   irr::scene::IMesh			          *_mesh;
   irr::scene::ISceneManager		    *_smgr;

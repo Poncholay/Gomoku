@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:15:51 2016 Combaud Alban
-// Last update Mon Oct 24 12:56:57 2016 Adrien Milcent
+// Last update Tue Oct 25 13:38:28 2016 Adrien Milcent
 //
 
 #ifndef REFEREE_HH_
@@ -23,16 +23,16 @@ REPLAY  };
 
 class Referee {
 private:
-  Goban     goban;
-  int       nbPairplayer1;
-  int       nbPairplayer2;
+  int   nbPairplayer1;
+  int   nbPairplayer2;
+  Goban &goban;
 public:
-  Referee(Displayer &);
+  Referee(Goban &);
   ~Referee();
 
   Result checkPlay(int, int, int);
   Result  checkWin(int, int, int);
-  bool  checkRules(int, int, int);
+  bool  checkRules(int, int, int, int);
   bool  checkWinBy5(int, int, int);
   int  checkWinByPair(int, int, int);
   void  setPair(int, int);

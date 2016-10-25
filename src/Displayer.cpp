@@ -9,33 +9,38 @@
 //
 
 #include <stdexcept>
+#include <unistd.h>
 #include "Displayer.hpp"
-#include "Block.hpp"
 
-#include <iostream>
-using namespace std;
+float size = 0.202;
 
-Displayer::Displayer() {
+Displayer::Displayer(int x, int y) {
+  _x = x;
+  _y = y;
   EventHandler::get(&_receiver);
-  _device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(1920, 1080), 32, false, true, true, &_receiver);
-  getDriver(_driver = _device->getVideoDriver());
-  getSmgr(_smgr = _device->getSceneManager());
-  _guienv = _device->getGUIEnvironment();
-  _then = _device->getTimer()->getTime();
-  _lastFPS = -1;
-  _axes = new AxesSceneNode(0, _smgr, 1);
-  _caption = L"Gomoku";
-  if (!(_skydome = _smgr->addSkyBoxSceneNode(
-    _driver->getTexture("assets/skybox/criminal-element_up.png"),
-    _driver->getTexture("assets/skybox/criminal-element_dn.png"),
-    _driver->getTexture("assets/skybox/criminal-element_rt.png"),
-    _driver->getTexture("assets/skybox/criminal-element_lf.png"),
-    _driver->getTexture("assets/skybox/criminal-element_ft.png"),
-    _driver->getTexture("assets/skybox/criminal-element_bk.png"))))
-      throw std::exception();
+  _error = false;
+  if ((_device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(1920, 1080), 32, false, true, true, &_receiver))) {
+    getDriver(_driver = _device->getVideoDriver());
+    getSmgr(_smgr = _device->getSceneManager());
+    _guienv = _device->getGUIEnvironment();
+    _then = _device->getTimer()->getTime();
+    _lastFPS = -1;
+    vector<Block *> row = vector<Block *>       (x, NULL);
+    _map = vector<vector<Block *> >             (y, row);
+    _axes = new AxesSceneNode(0, _smgr, 1);
+    _caption = L"Gomoku";
+    _skydome = _smgr->addSkyBoxSceneNode(
+      _driver->getTexture("assets/skybox/criminal-element_up.png"),
+      _driver->getTexture("assets/skybox/criminal-element_dn.png"),
+      _driver->getTexture("assets/skybox/criminal-element_rt.png"),
+      _driver->getTexture("assets/skybox/criminal-element_lf.png"),
+      _driver->getTexture("assets/skybox/criminal-element_ft.png"),
+      _driver->getTexture("assets/skybox/criminal-element_bk.png"));
+  } else
+      _error = true;
 }
 
-Displayer::~Displayer() {}
+Displayer::~Displayer() {_device->drop();}
 
 void				          Displayer::setCaption(const irr::core::stringw &caption) {_caption = caption;}
 
@@ -54,24 +59,65 @@ void				          Displayer::updateFPS() {
     }
 }
 
-int                   Displayer::manageEvents() {
+int                   Displayer::manageEvents(bool anim) {
   static bool			    start = false;
-  const irr::f32		  MOVEMENT_SPEED = 5.f;
-  const irr::u32		  now = _device->getTimer()->getTime();
-  const irr::f32		  frameDeltaTime = (irr::f32)(now - _then) / 1000.f;
 
   if (_receiver.checkEnd())
     return 1;
-  if (start) {
+  if (!anim && start) {
 
   }
-  _then = now;
   start = true;
   return 0;
 }
 
-bool                  Displayer::update() const {
+bool                  Displayer::placeDraught(int x, int y, int p) {
+  if (_map[y][x])
+    removeDraught(x, y);
+  float posX = 0.0130 - y * size / _x;
+  float posY = 1;
+  float posZ = 0.1595 - x * size / _y;
+  _map[y][x] = new Block(posX, posY, posZ, _smgr->getMesh(string(string("./assets/") + (p == 1 ? "white" : "black") + "go.obj").c_str()), _smgr);
+  if (_map[y][x]->create(0.008) == -1) return false;
+  _isAnimating = true;
+  _animateTime = chrono::high_resolution_clock::now();
   return true;
+}
+
+bool                  Displayer::removeDraught(int x, int y) {
+  _map[y][x]->destroy();
+  delete _map[y][x];
+  return true;
+}
+
+void                  Displayer::updateAnim() {
+  const irr::f32		  MOVEMENT_SPEED = 0.31f;
+  const irr::u32		  now = _device->getTimer()->getTime();
+  const irr::f32		  frameDeltaTime = (irr::f32)(now - _then) / 1000.f;
+
+  irr::core::vector3df pos = _map[_animY][_animX]->getBlock()->getPosition();
+  irr::core::vector3df extent = _map[_animY][_animX]->getExtent();
+  pos.Y -= frameDeltaTime * MOVEMENT_SPEED;
+  cout << "extent " << extent.Y << " - " << extent.Y * 0.690 << endl;
+
+  pos.Y = pos.Y < 0.690 * extent.Y ? 0.690 * extent.Y : pos.Y;
+  _map[_animY][_animX]->getBlock()->setPosition(pos);
+  _then = now;
+}
+
+bool                  Displayer::isAnimating() {
+  float time = 1;
+  if (!_isAnimating) return false;
+  if (chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now().time_since_epoch()).count() < chrono::duration_cast<chrono::microseconds>(_animateTime.time_since_epoch()).count() + static_cast<long>(time * 1000000))
+    return true;
+  _isAnimating = false;
+  return false;
+}
+
+bool                  Displayer::animate(int x, int y, int p) {
+  _animX = x;
+  _animY = y;
+  return p != 0 ? placeDraught(x, y, p) : removeDraught(x, y);
 }
 
 bool                  Displayer::instanciate() {
@@ -83,15 +129,6 @@ bool                  Displayer::instanciateScene() {
   if (room.create(0.04) == -1) return false;
   room.getBlock()->setMaterialFlag(irr::video::EMF_BACK_FACE_CULLING, false);
   room.getBlock()->setMaterialFlag(irr::video::EMF_TEXTURE_WRAP, true);
-
-  // srand(time(NULL));
-  // float size = 0.202;
-  // for (int i = 0; i < 19; i++)
-  //   for (int j = 0; j < 19; j++) {
-  //     if (rand() % 3) continue;
-  //     Block pion(0.0130 - i * size / 18, 0.690, 0.1595 - j * size / 18, _smgr->getMesh(string(string("./assets/") + (rand() % 2 ? "white" : "black") + "go.obj").c_str()), _smgr);
-  //     if (pion.create(0.008) == -1) return false;
-  //   }
   return true;
 }
 
@@ -123,13 +160,15 @@ bool                  Displayer::instanciateLights() {
   return _smgr->addLightSceneNode(billboard, irr::core::vector3df(0, 0, 0), irr::video::SColorf(1, 1, 1), 1) != NULL;
 }
 
-int				            Displayer::display() {
+int				            Displayer::display(bool anim) {
   _driver->beginScene(true, true, irr::video::SColor(255, 100, 150, 255));
+  if (isAnimating()) updateAnim();
   _smgr->drawAll();
   _guienv->drawAll();
   _driver->endScene();
   updateFPS();
-  return manageEvents();
+  return manageEvents(anim);
 }
 
 bool                  Displayer::isRunning() const {return _device->run();}
+bool                  Displayer::error() const {return _error;}

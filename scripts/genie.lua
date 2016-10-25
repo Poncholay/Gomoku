@@ -35,7 +35,3 @@ options(GOMOKU_BUILD_DIR);
 
 group "game"
 gomoku_project("ConsoleApp")
-
-postbuildcommands {
-  "mv " .. path.getabsolute(".") .. "/gomoku " .. GOMOKU_DIR,
-}

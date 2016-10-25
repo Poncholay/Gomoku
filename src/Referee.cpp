@@ -5,13 +5,18 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Mon Oct 24 12:57:11 2016 Adrien Milcent
+// Last update Tue Oct 25 13:41:48 2016 Adrien Milcent
 //
 
 #include "Referee.hh"
 
-Referee::Referee() : nbPairplayer1(0), nbPairplayer2(0) {}
-Referee::~Referee() {}
+Referee::Referee(Goban &poncholay) : nbPairplayer1(0), nbPairplayer2(0), goban(poncholay)
+{
+}
+
+Referee::~Referee()
+{
+}
 
 Goban &Referee::getGoban() {
   return goban;
@@ -87,7 +92,6 @@ bool Referee::checkHorizon(int x, int y, int player, int max) {
           (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban[y - 1][i - 1] == p2 && goban[y + 1][i + 1] == player && checkWinByPair(i + 2, y + 2, p2) >= 5)))
             return false;
           }
-  std::cout << "OK" << std::endl;
   return true;
 }
 
@@ -114,7 +118,6 @@ bool Referee::checkVertical(int x, int y, int player, int max) {
           (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban[i - 1][x - 1] == p2 && goban[i + 1][x + 1] == player && checkWinByPair(x + 2, i + 2, p2) >= 5)))
             return false;
           }
-  std::cout << "OK2" << std::endl;
   return true;
 }
 
@@ -143,7 +146,6 @@ bool Referee::checkDiagoDown(int x, int y, int player, int max) {
             return false;
       ++x;
     }
-  std::cout << "OK3" << std::endl;
   return true;
 }
 
@@ -172,7 +174,6 @@ bool Referee::checkDiagoUp(int x, int y, int player, int max) {
             return false;
       ++x;
     }
-  std::cout << "OK4" << std::endl;
   return true;
 }
 
@@ -216,9 +217,10 @@ bool Referee::checkWinBy5(int x, int y, int player) {
 
   count = 0;
 
-  tmp = x < y  && goban.getXBoard() - y  >= 5 ? (x - 5 <= 0 ? x : 5) :
-   (y + 5 >= goban.getXBoard() ? goban.getXBoard() - 1 - y : 5);
+  tmp = x < y  && goban.getXBoard() - 1 - y  >= 5 ? (x - 5 <= 0 ? x : 5) :
+  (y + 5 >= goban.getYBoard() ? goban.getXBoard() - 1 - y : 5);
   xtmp = x - tmp;
+
   for (int ytmp = y + tmp; ytmp >= 0 && xtmp < goban.getXBoard(); ytmp--) {
     count == 0 ? xsave = xtmp, ysave = ytmp : 0;
     goban[ytmp][xtmp++] == player ? count++ : count = 0;
@@ -230,63 +232,105 @@ bool Referee::checkWinBy5(int x, int y, int player) {
   return false;
 }
 
-bool  Referee::checkRules(int x, int y, int player) {
+bool  Referee::checkRules(int x, int y, int player, int check) {
   int beginx = x - 3 < 0 ? 0 : x - 3;
   int beginy = y - 3 < 0 ? 0 : y - 3;
 
   std::vector<std::vector<int> > board = goban.getBoard();
 
   goban.addDraught(x, y, player);
-  std::cout << "beginx = " << beginx << std::endl;
+
   for (int i = beginx; i <= x; i++) {
     if (i + 4 < goban.getXBoard() && !board[y][i] && board[y][i + 1] == player && board[y][i + 2] == player &&
-      board[y][i + 3] == player && !board[y][i + 4])
-      std::cout << "OK" << std::endl;
+      board[y][i + 3] == player && !board[y][i + 4]) {
+          if (!check && (checkRules(i + 1, y, player, 1) || checkRules(i + 2, y, player, 1) || checkRules(i + 3, y, player, 1))) {
+            return true;}
+          if (check && check != 1){return true;}
+      }
     if (i - 1 >= 0 && i + 4 < goban.getXBoard() && !board[y][i - 1] && board[y][i] == player && board[y][i + 1] == player &&
-      board[y][i + 2] == 0 && board[y][i + 3] == player && !board[y][i + 4])
-      std::cout << "OK2" << std::endl;
+      !board[y][i + 2] && board[y][i + 3] == player && !board[y][i + 4]) {
+        if (!check && (checkRules(i, y, player, 1) || checkRules(i + 1, y, player, 1) || checkRules(i + 3, y, player, 1))) {
+          return true;}
+        if (check && check != 1){return true;}
+      }
     if (i - 1 >= 0 && i + 4 < goban.getXBoard() && !board[y][i - 1] && board[y][i] == player && board[y][i + 1] == 0 &&
       board[y][i + 2] == player && board[y][i + 3] == player && !board[y][i + 4])
-      std::cout << "OK3" << std::endl;
+      {
+        if (!check && (checkRules(i, y, player, 1) || checkRules(i + 2, y, player, 1) || checkRules(i + 3, y, player, 1))) {
+          return true;}
+        if (check && check != 1){return true;}
+      }
   }
 
   for (int i = beginy; i <= y; i++) {
     if (i + 4 < goban.getYBoard() && !board[i][x] && board[i + 1][x] == player && board[i + 2][x] == player &&
-      board[i + 3][x] == player && !board[i + 4][x])
-      std::cout << "OK_1" << std::endl;
+      board[i + 3][x] == player && !board[i + 4][x]){
+        if (!check && (checkRules(x, i + 1, player, 2) || checkRules(x, i + 2, player, 2) || checkRules(x, i + 3, player, 2))) {
+          return true;}
+        if (check && check != 2){return true;}
+      }
     if (i - 1 >= 0 && i + 4 < goban.getYBoard() && !board[i - 1][x] && board[i][x] == player && board[i + 1][x] == player &&
-      board[i + 2][x] == 0 && board[i + 3][x] == player && !board[i + 4][x])
-      std::cout << "OK_2" << std::endl;
+      board[i + 2][x] == 0 && board[i + 3][x] == player && !board[i + 4][x]) {
+        if (!check && (checkRules(x, i, player, 2) || checkRules(x, i + 1, player, 2) || checkRules(x, i + 3, player, 2))) {
+          return true;}
+        if (check && check != 2){return true;}
+      }
     if (i - 1 >= 0 && i + 4 < goban.getYBoard() && !board[i - 1][x] && board[i][x] == player && board[i + 1][x] == 0 &&
-      board[i + 2][x] == player && board[i + 3][x] == player && !board[i + 4][x])
-      std::cout << "OK_3" << std::endl;
+      board[i + 2][x] == player && board[i + 3][x] == player && !board[i + 4][x]) {
+        if (!check && (checkRules(x, i, player, 2) || checkRules(x, i + 2, player, 2) || checkRules(x, i + 3, player, 2))) {
+          return true;}
+        if (check && check != 2){return true;}
+      }
   }
 
-  for (int i = beginy, a = beginx; i <= y && a <= x; i++, a++) {
+  int tmp = x < y ? (x - 3 <= 0 ? x : 3) : (y - 3 <= 0 ? y : 3);
+
+  for (int i = y - tmp, a = x - tmp; i <= y && a <= x; i++, a++) {
     if (i + 4 < goban.getYBoard() && a + 4 < goban.getXBoard() && !board[i][a] && board[i + 1][a + 1] == player && board[i + 2][a + 2] == player &&
-      board[i + 3][a + 3] == player && !board[i + 4][a + 4])
-      std::cout << "OK_11" << std::endl;
+      board[i + 3][a + 3] == player && !board[i + 4][a + 4]) {
+        if (!check && (checkRules(a + 1, i + 1, player, 3) || checkRules(a + 2, i + 2, player, 3) || checkRules(a + 3, i + 3, player, 3))) {
+          return true;}
+        if (check && check != 3){return true;}
+      }
     if (i - 1 >= 0 && a - 1 >= 0 && i + 4 < goban.getYBoard() && a + 4 < goban.getXBoard() &&
      !board[i - 1][a - 1] && board[i][a] == player && board[i + 1][a + 1] == player &&
-      board[i + 2][a + 2] == 0 && board[i + 3][a + 3] == player && !board[i + 4][a + 4])
-      std::cout << "OK_22" << std::endl;
+      board[i + 2][a + 2] == 0 && board[i + 3][a + 3] == player && !board[i + 4][a + 4]) {
+        if (!check && (checkRules(a, i, player, 3) || checkRules(a + 1, i + 1, player, 3) || checkRules(a + 3, i + 3, player, 3))) {
+          return true;}
+        if (check && check != 3){return true;}
+      }
     if (i - 1 >= 0 && i + 4 < goban.getYBoard() && a - 1 >= 0 && a + 4 && !board[i - 1][a - 1] && board[i][a] == player && board[i + 1][a + 1] == 0 &&
-      board[i + 2][a + 2] == player && board[i + 3][a + 3] == player && !board[i + 4][a + 4])
-      std::cout << "OK_33" << std::endl;}
+      board[i + 2][a + 2] == player && board[i + 3][a + 3] == player && !board[i + 4][a + 4]) {
+        if (!check && (checkRules(a, i, player, 3) || checkRules(a + 2, i + 2, player, 3) || checkRules(a + 3, i + 3, player, 3))) {
+          return true;}
+        if (check && check != 3){return true;}
+      }
+    }
 
-/*    for (int i = y + 3 >= goban.getYBoard() ? goban.getYBoard() - 1 : y + x, a = beginx; i >= 0 && a < goban.getXBoard(); i--, a++) {
-      std::cout << "a = " << a << "i = " << i << std::endl;
+    tmp = x < y  && goban.getXBoard() - 1 - y  >= 5 ? (x - 5 <= 0 ? x : 5) :
+          (y + 5 >= goban.getXBoard() ? goban.getXBoard() - 1 - y : 5);
+
+    for (int i = y + tmp, a = x - tmp; i >= 0 && a < goban.getXBoard(); i--, a++) {
       if (i - 4 >= 0 && a + 4 < goban.getXBoard() && !board[i][a] && board[i - 1][a + 1] == player && board[i - 2][a + 2] == player &&
-        board[i - 3][a + 3] == player && !board[i - 4][a + 4])
-        std::cout << "OK2_11" << std::endl;
+        board[i - 3][a + 3] == player && !board[i - 4][a + 4]) {
+          if (!check && (checkRules(a + 1, i - 1, player, 4) || checkRules(a + 2, i - 2, player, 4) || checkRules(a + 3, i - 3, player, 4))) {
+            return true;}
+          if (check && check != 4){return true;}
+        }
       if (i + 1 < goban.getYBoard() && a - 1 >= 0 && i - 4 >= 0 && a + 4 < goban.getXBoard() &&
         !board[i + 1][a - 1] && board[i][a] == player && board[i - 1][a + 1] == player &&
-        board[i - 2][a + 2] == 0 && board[i - 3][a + 3] == player && !board[i - 4][a + 4])
-        std::cout << "OK2_22" << std::endl;
+        board[i - 2][a + 2] == 0 && board[i - 3][a + 3] == player && !board[i - 4][a + 4]) {
+          if (!check && (checkRules(a, i, player, 4) || checkRules(a + 1, i - 1, player, 4) || checkRules(a + 3, i - 3, player, 4))) {
+            return true;}
+          if (check && check != 4){return true;}
+        }
       if (i + 1 < goban.getYBoard() && i - 4 >= 0 && a - 1 >= 0 && a + 4 && !board[i + 1][a - 1] && board[i][a] == player && board[i - 1][a + 1] == 0 &&
-        board[i - 2][a + 2] == player && board[i - 3][a + 3] == player && !board[i - 4][a + 4])
-        std::cout << "OK2_33" << std::endl;
-      }*/
+        board[i - 2][a + 2] == player && board[i - 3][a + 3] == player && !board[i - 4][a + 4]) {
+          if (!check && (checkRules(a, i, player, 4) || checkRules(a + 2, i - 2, player, 4) || checkRules(a + 3, i - 3, player, 4))) {
+            return true;}
+          if (check && check != 4){return true;}
+        }
+      }
 
   return false;
 }
@@ -304,7 +348,7 @@ Result  Referee::checkWin(int x, int y, int player) {
       goban.removeDraught(x, y);
       return WIN;
     }
-  if (checkRules(x, y, player)) {
+  if (checkRules(x, y, player, 0)) {
     goban.removeDraught(x, y);
     return REPLAY;
   }
