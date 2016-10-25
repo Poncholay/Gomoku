@@ -5,15 +5,24 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Sun Oct 16 15:32:40 2016 wilmot_g
-** Last update Tue Oct 18 19:35:36 2016 wilmot_g
+** Last update Tue Oct 25 13:21:05 2016 wilmot_g
 */
 
 #include "Displayer.hpp"
+#include "Referee.hh"
 
 using namespace std;
 
 int           main(int ac, char **av) {
   Displayer   d;
+  Referee     r;
+  int         ret = 0;
 
-  return d.display();
+  r.getGoban().setDisplayer(Displayer);
+  if (!d.instanciate()) return -1;
+  while (d.isRunning()) {
+    if (d.animate() == -1) return -1;
+    if ((ret = d.display()) != 0) break;
+  }
+  return ret;
 }

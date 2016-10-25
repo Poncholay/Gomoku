@@ -37,10 +37,10 @@ Displayer::Displayer() {
 
 Displayer::~Displayer() {}
 
-void				Displayer::setCaption(const irr::core::stringw &caption) {_caption = caption;}
+void				          Displayer::setCaption(const irr::core::stringw &caption) {_caption = caption;}
 
-void				Displayer::updateFPS() {
-  int				fps = _driver->getFPS();
+void				          Displayer::updateFPS() {
+  int				          fps = _driver->getFPS();
 
   if (_lastFPS != fps) {
       irr::core::stringw	tmp(_caption);
@@ -54,57 +54,49 @@ void				Displayer::updateFPS() {
     }
 }
 
-int                 Displayer::manageEvents() {
-  static bool			  start = false;
-  const irr::f32		MOVEMENT_SPEED = 5.f;
-  const irr::u32		now = _device->getTimer()->getTime();
-  const irr::f32		frameDeltaTime = (irr::f32)(now - _then) / 1000.f;
+int                   Displayer::manageEvents() {
+  static bool			    start = false;
+  const irr::f32		  MOVEMENT_SPEED = 5.f;
+  const irr::u32		  now = _device->getTimer()->getTime();
+  const irr::f32		  frameDeltaTime = (irr::f32)(now - _then) / 1000.f;
 
   if (_receiver.checkEnd())
-    return (1);
+    return 1;
   if (start) {
 
   }
   _then = now;
   start = true;
-  return (0);
+  return 0;
 }
 
-bool                 Displayer::instanciate() {
+bool                  Displayer::update() const {
+  return true;
+}
+
+bool                  Displayer::instanciate() {
   return instanciateScene() && instanciateCamera() && instanciateLights();
 }
 
-bool                 Displayer::instanciateScene() {
+bool                  Displayer::instanciateScene() {
   Block room(0, 0, 0, _smgr->getMesh("./assets/room.obj"), _smgr);
   if (room.create(0.04) == -1) return false;
   room.getBlock()->setMaterialFlag(irr::video::EMF_BACK_FACE_CULLING, false);
   room.getBlock()->setMaterialFlag(irr::video::EMF_TEXTURE_WRAP, true);
 
-  srand(time(NULL));
-  float size = 0.202;
-  for (int i = 0; i < 19; i++)
-    for (int j = 0; j < 19; j++) {
-      if (rand() % 3) continue;
-      Block pion(0.0130 - i * size / 18, 0.690, 0.1595 - j * size / 18, _smgr->getMesh(string(string("./assets/") + (rand() % 2 ? "white" : "black") + "go.obj").c_str()), _smgr);
-      if (pion.create(0.008) == -1) return false;
-    }
-
-
-  // Block pion1(0.0115, 0.505, 0.1325, _smgr->getMesh("./assets/whitego.obj"), _smgr);
-  // if (pion1.create(0.008) == -1) return false;
-  // Block pion2(0.0115, 0.505, -0.035, _smgr->getMesh("./assets/whitego.obj"), _smgr);
-  // if (pion2.create(0.008) == -1) return false;
-  // Block pion3(-0.157, 0.505, 0.1325, _smgr->getMesh("./assets/whitego.obj"), _smgr);
-  // if (pion3.create(0.008) == -1) return false;
-  // Block pion4(-0.157, 0.505, -0.035, _smgr->getMesh("./assets/whitego.obj"), _smgr);
-  // if (pion4.create(0.008) == -1) return false;
-
-
+  // srand(time(NULL));
+  // float size = 0.202;
+  // for (int i = 0; i < 19; i++)
+  //   for (int j = 0; j < 19; j++) {
+  //     if (rand() % 3) continue;
+  //     Block pion(0.0130 - i * size / 18, 0.690, 0.1595 - j * size / 18, _smgr->getMesh(string(string("./assets/") + (rand() % 2 ? "white" : "black") + "go.obj").c_str()), _smgr);
+  //     if (pion.create(0.008) == -1) return false;
+  //   }
   return true;
 }
 
-bool                 Displayer::instanciateCamera() {
-  irr::SKeyMap       keyMap[4];
+bool                  Displayer::instanciateCamera() {
+  irr::SKeyMap        keyMap[4];
   keyMap[0].Action = irr::EKA_MOVE_FORWARD;
   keyMap[0].KeyCode = irr::KEY_KEY_Z;
   keyMap[1].Action = irr::EKA_MOVE_BACKWARD;
@@ -120,29 +112,24 @@ bool                 Displayer::instanciateCamera() {
   return true;
 }
 
-bool                 Displayer::instanciateLights() {
+bool                  Displayer::instanciateLights() {
   _smgr->setAmbientLight(irr::video::SColorf(0.5, 0.5, 0.5, 0));
   irr::scene::IBillboardSceneNode *billboard = _smgr->addBillboardSceneNode(0, irr::core::dimension2d<irr::f32>(0.2, 0.2));
   billboard->setPosition(irr::core::vector3df(-0.5, 0.8, 0.02));
   billboard->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
   billboard->setMaterialTexture(0, _driver->getTexture("assets/particle.bmp"));
-    // billboard->setMaterialTexture(0, _driver->getTexture("assets/jin.bmp"));
   billboard->setMaterialFlag(irr::video::EMF_LIGHTING, false);
   billboard->setScale(irr::core::vector3df(0.01f, 0.01f, 0.01f));
   return _smgr->addLightSceneNode(billboard, irr::core::vector3df(0, 0, 0), irr::video::SColorf(1, 1, 1), 1) != NULL;
 }
 
-int				Displayer::display() {
-  if (!instanciate()) return -1;
-  while (_device->run()) {
-      _driver->beginScene(true, true, irr::video::SColor(255, 100, 150, 255));
-      _smgr->drawAll();
-      _guienv->drawAll();
-      _driver->endScene();
-      updateFPS();
-      if (int ret = manageEvents() != 0) return ret;
-    }
-  if (_device->run())
-    return (0);
-  return (-1);
+int				            Displayer::display() {
+  _driver->beginScene(true, true, irr::video::SColor(255, 100, 150, 255));
+  _smgr->drawAll();
+  _guienv->drawAll();
+  _driver->endScene();
+  updateFPS();
+  return manageEvents();
 }
+
+bool                  Displayer::isRunning() const {return _device->run();}

@@ -14,12 +14,17 @@
 # include "irrlicht.h"
 # include "Axes.hpp"
 # include "EventHandler.hpp"
+# include "Goban.hh"
 
 class		Displayer {
 public:
   Displayer();
   ~Displayer();
 
+  void        setUpdate(int, int, int);
+  bool        animate() const;
+  bool        instanciate();
+  bool        isRunning() const;
   void				setCaption(const irr::core::stringw &caption);
   int					display();
 
@@ -34,7 +39,6 @@ public:
 
 private:
 
-  bool                          instanciate();
   bool                          instanciateScene();
   bool                          instanciateLights();
   bool                          instanciateCamera();
