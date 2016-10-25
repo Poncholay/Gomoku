@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Mon Oct 24 18:06:09 2016 Combaud Alban
+// Last update Tue Oct 25 22:12:26 2016 Combaud Alban
 //
 
 #include "Referee.hh"
@@ -92,7 +92,6 @@ bool Referee::checkHorizon(int x, int y, int player, int max){
           (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban[y - 1][i - 1] == p2 && goban[y + 1][i + 1] == player && checkWinByPair(i + 2, y + 2, p2) >= 5)))
             return false;
           }
-  std::cout << "OK" << std::endl;
   return true;
 }
 
@@ -119,7 +118,6 @@ bool Referee::checkVertical(int x, int y, int player, int max){
           (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban[i - 1][x - 1] == p2 && goban[i + 1][x + 1] == player && checkWinByPair(x + 2, i + 2, p2) >= 5)))
             return false;
           }
-  std::cout << "OK2" << std::endl;
   return true;
 }
 
@@ -148,7 +146,6 @@ bool Referee::checkDiagoDown(int x, int y, int player, int max){
             return false;
       ++x;
     }
-  std::cout << "OK3" << std::endl;
   return true;
 }
 
@@ -177,13 +174,13 @@ bool Referee::checkDiagoUp(int x, int y, int player, int max){
             return false;
       ++x;
     }
-  std::cout << "OK4" << std::endl;
   return true;
 }
 
 bool Referee::checkWinBy5(int x, int y, int player){
   goban.addDraught(x, y, player);
 
+  std::cout << "x = " << x << " y = " << y << std::endl;
   int xsave = x - 5 <= 0 ? 0 : x - 5;
   int count = 0;
   for (int i = xsave; i < goban.getXBoard(); i++) {
@@ -221,9 +218,12 @@ bool Referee::checkWinBy5(int x, int y, int player){
 
   count = 0;
 
-  tmp = x < y  && goban.getXBoard() - 1 - y  >= 5 ? (x - 5 <= 0 ? x : 5) :
-   (y + 5 >= goban.getXBoard() ? goban.getXBoard() - 1 - y : 5);
+  tmp = x - 4 >= 0 ? (y + 4 < goban.getYBoard() ? 4 : goban.getYBoard() - y - 1) :
+  (y + x < goban.getYBoard() ? x : goban.getYBoard() - y - 1);
+
   xtmp = x - tmp;
+
+  std::cout << "tmp = " << tmp << " xtmp = " << xtmp << " ytmp = " << y + tmp << std::endl;
   for (int ytmp = y + tmp; ytmp >= 0 && xtmp < goban.getXBoard(); ytmp--) {
     count == 0 ? xsave = xtmp, ysave = ytmp : 0;
     goban[ytmp][xtmp++] == player ? count++ : count = 0;
@@ -302,7 +302,7 @@ bool  Referee::checkRules(int x, int y, int player, int check) {
           return true;}
         if (check && check != 3){return true;}
       }
-    if (i - 1 >= 0 && i + 4 < goban.getYBoard() && a - 1 >= 0 && a + 4 && !board[i - 1][a - 1] && board[i][a] == player && board[i + 1][a + 1] == 0 &&
+    if (i - 1 >= 0 && i + 4 < goban.getYBoard() && a - 1 >= 0 && a + 4 < goban.getXBoard() && !board[i - 1][a - 1] && board[i][a] == player && board[i + 1][a + 1] == 0 &&
       board[i + 2][a + 2] == player && board[i + 3][a + 3] == player && !board[i + 4][a + 4]) {
         if (!check && (checkRules(a, i, player, 3) || checkRules(a + 2, i + 2, player, 3) || checkRules(a + 3, i + 3, player, 3))) {
           return true;}
@@ -310,8 +310,8 @@ bool  Referee::checkRules(int x, int y, int player, int check) {
       }
     }
 
-    tmp = x < y  && goban.getXBoard() - 1 - y  >= 5 ? (x - 5 <= 0 ? x : 5) :
-          (y + 5 >= goban.getXBoard() ? goban.getXBoard() - 1 - y : 5);
+    tmp = x - 4 >= 0 ? (y + 4 < goban.getYBoard() ? 4 : goban.getYBoard() - y - 1) :
+    (y + x < goban.getYBoard() ? x : goban.getYBoard() - y - 1);
 
     for (int i = y + tmp, a = x - tmp; i >= 0 && a < goban.getXBoard(); i--, a++) {
       if (i - 4 >= 0 && a + 4 < goban.getXBoard() && !board[i][a] && board[i - 1][a + 1] == player && board[i - 2][a + 2] == player &&
@@ -327,7 +327,7 @@ bool  Referee::checkRules(int x, int y, int player, int check) {
             return true;}
           if (check && check != 4){return true;}
         }
-      if (i + 1 < goban.getYBoard() && i - 4 >= 0 && a - 1 >= 0 && a + 4 && !board[i + 1][a - 1] && board[i][a] == player && board[i - 1][a + 1] == 0 &&
+      if (i + 1 < goban.getYBoard() && i - 4 >= 0 && a - 1 >= 0 && a + 4 < goban.getXBoard() && !board[i + 1][a - 1] && board[i][a] == player && board[i - 1][a + 1] == 0 &&
         board[i - 2][a + 2] == player && board[i - 3][a + 3] == player && !board[i - 4][a + 4]) {
           if (!check && (checkRules(a, i, player, 4) || checkRules(a + 2, i - 2, player, 4) || checkRules(a + 3, i - 3, player, 4))) {
             return true;}

@@ -5,14 +5,14 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 17:25:59 2016 Adrien Milcent
-// Last update Mon Oct 24 17:58:02 2016 Combaud Alban
+// Last update Tue Oct 25 22:11:07 2016 Combaud Alban
 //
 
 #include "Referee.hh"
 
 int main()
 {
-  Goban goban(20, 20);
+  Goban goban(19, 19);
   Referee referee(goban);
 
 /*  referee.getGoban().addDraught(0, 7, 1);
