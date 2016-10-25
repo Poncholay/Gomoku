@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 14:20:06 2016 Adrien Milcent
-// Last update Mon Oct 24 15:52:01 2016 Adrien Milcent
+// Last update Tue Oct 25 13:42:37 2016 Adrien Milcent
 //
 
 #include "AI.hh"
@@ -23,7 +23,4 @@ void AI::play(Referee referee) {
   std::pair<int, int> result = _algo.loop(goban, _nbPlayer, referee);
 
   _goban.addDraught(result.first, result.second, _nbPlayer);
-
-  _goban.printBoard();
-  std::cout << std::endl;
 }
