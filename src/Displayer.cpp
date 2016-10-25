@@ -10,12 +10,14 @@
 
 #include <stdexcept>
 #include "Displayer.hpp"
-
 #include "Block.hpp"
+
+#include <iostream>
+using namespace std;
 
 Displayer::Displayer() {
   EventHandler::get(&_receiver);
-  _device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(1920, 1080), 32, false, false, true, &_receiver);
+  _device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(1920, 1080), 32, false, true, true, &_receiver);
   getDriver(_driver = _device->getVideoDriver());
   getSmgr(_smgr = _device->getSceneManager());
   _guienv = _device->getGUIEnvironment();
@@ -23,8 +25,14 @@ Displayer::Displayer() {
   _lastFPS = -1;
   _axes = new AxesSceneNode(0, _smgr, 1);
   _caption = L"Gomoku";
-  if (!(_skydome = _smgr->addSkyDomeSceneNode(_driver->getTexture("assets/skydome.jpg"), 16, 8, 0.95f, 2.0f)))
-    throw std::exception();
+  if (!(_skydome = _smgr->addSkyBoxSceneNode(
+    _driver->getTexture("assets/skybox/criminal-element_up.png"),
+    _driver->getTexture("assets/skybox/criminal-element_dn.png"),
+    _driver->getTexture("assets/skybox/criminal-element_rt.png"),
+    _driver->getTexture("assets/skybox/criminal-element_lf.png"),
+    _driver->getTexture("assets/skybox/criminal-element_ft.png"),
+    _driver->getTexture("assets/skybox/criminal-element_bk.png"))))
+      throw std::exception();
 }
 
 Displayer::~Displayer() {}
@@ -71,6 +79,27 @@ bool                 Displayer::instanciateScene() {
   if (room.create(0.04) == -1) return false;
   room.getBlock()->setMaterialFlag(irr::video::EMF_BACK_FACE_CULLING, false);
   room.getBlock()->setMaterialFlag(irr::video::EMF_TEXTURE_WRAP, true);
+
+  srand(time(NULL));
+  float size = 0.202;
+  for (int i = 0; i < 19; i++)
+    for (int j = 0; j < 19; j++) {
+      if (rand() % 3) continue;
+      Block pion(0.0130 - i * size / 18, 0.690, 0.1595 - j * size / 18, _smgr->getMesh(string(string("./assets/") + (rand() % 2 ? "white" : "black") + "go.obj").c_str()), _smgr);
+      if (pion.create(0.008) == -1) return false;
+    }
+
+
+  // Block pion1(0.0115, 0.505, 0.1325, _smgr->getMesh("./assets/whitego.obj"), _smgr);
+  // if (pion1.create(0.008) == -1) return false;
+  // Block pion2(0.0115, 0.505, -0.035, _smgr->getMesh("./assets/whitego.obj"), _smgr);
+  // if (pion2.create(0.008) == -1) return false;
+  // Block pion3(-0.157, 0.505, 0.1325, _smgr->getMesh("./assets/whitego.obj"), _smgr);
+  // if (pion3.create(0.008) == -1) return false;
+  // Block pion4(-0.157, 0.505, -0.035, _smgr->getMesh("./assets/whitego.obj"), _smgr);
+  // if (pion4.create(0.008) == -1) return false;
+
+
   return true;
 }
 
@@ -85,30 +114,28 @@ bool                 Displayer::instanciateCamera() {
   keyMap[3].Action = irr::EKA_STRAFE_RIGHT;
   keyMap[3].KeyCode = irr::KEY_KEY_D;
 
-  if (!(_camera = Displayer::getSmgr()->addCameraSceneNodeFPS(0, 50, 0.005f, -1, keyMap, 4))) return false;
+  if (!(_camera = Displayer::getSmgr()->addCameraSceneNodeFPS(0, 50, 0.001f, -1, keyMap, 4))) return false;
   _camera->setNearValue(0.001f);
+  _camera->setPosition(irr::core::vector3df(0, 0.5, 0));
   return true;
 }
 
 bool                 Displayer::instanciateLights() {
   _smgr->setAmbientLight(irr::video::SColorf(0.5, 0.5, 0.5, 0));
-  return _smgr->addLightSceneNode(0, irr::core::vector3df(0, 20, 0), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f)    &&
-         _smgr->addLightSceneNode(0, irr::core::vector3df(50, 10, 0), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f)   &&
-         _smgr->addLightSceneNode(0, irr::core::vector3df(0, 10, 50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f)   &&
-         _smgr->addLightSceneNode(0, irr::core::vector3df(50, 10, -50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f) &&
-         _smgr->addLightSceneNode(0, irr::core::vector3df(-50, 10, 50), irr::video::SColorf(1.0f, 1.0, 1.0f, 1.0f), 30.0f);
+  irr::scene::IBillboardSceneNode *billboard = _smgr->addBillboardSceneNode(0, irr::core::dimension2d<irr::f32>(0.2, 0.2));
+  billboard->setPosition(irr::core::vector3df(-0.5, 0.8, 0.02));
+  billboard->setMaterialType(irr::video::EMT_TRANSPARENT_ADD_COLOR);
+  billboard->setMaterialTexture(0, _driver->getTexture("assets/particle.bmp"));
+    // billboard->setMaterialTexture(0, _driver->getTexture("assets/jin.bmp"));
+  billboard->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+  billboard->setScale(irr::core::vector3df(0.01f, 0.01f, 0.01f));
+  return _smgr->addLightSceneNode(billboard, irr::core::vector3df(0, 0, 0), irr::video::SColorf(1, 1, 1), 1) != NULL;
 }
 
 int				Displayer::display() {
   if (!instanciate()) return -1;
-
-  /**/
-  _camera->setPosition(irr::core::vector3df(0, 10, 0));
-  /**/
-
   while (_device->run()) {
       _driver->beginScene(true, true, irr::video::SColor(255, 100, 150, 255));
-      // _axes->render();
       _smgr->drawAll();
       _guienv->drawAll();
       _driver->endScene();
