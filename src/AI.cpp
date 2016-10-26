@@ -14,11 +14,9 @@ AI::AI(Goban &goban, int nbPlayer, int nbTurn): _algo(Minmax(nbTurn)), _goban(go
   _nbPlayer = nbPlayer;
 }
 
-AI::~AI() {
+AI::~AI() {}
 
-}
-
-void AI::play(Referee referee) {
+void     AI::play(Referee referee) {
   std::vector<std::vector<int> > goban = _goban.getBoard();
   std::pair<int, int> result = _algo.loop(goban, _nbPlayer, referee);
   _goban.addDraught(result.first, result.second, _nbPlayer, true);

@@ -11,10 +11,12 @@
 #ifndef REFEREE_HH_
 # define REFEREE_HH_
 
-# include "Goban.hh"
-# include "Displayer.hpp"
 # include <vector>
 # include <iostream>
+# include "Goban.hh"
+# include "Displayer.hpp"
+
+class Goban;
 
 enum Result {
 WIN,

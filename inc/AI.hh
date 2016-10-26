@@ -15,14 +15,16 @@
 # include <string>
 # include <vector>
 
+# include "IPlayer.hh"
 # include "Goban.hh"
 # include "Minmax.hh"
 
-class AI {
+class AI : public IPlayer {
 private:
   Minmax _algo;
   Goban &_goban;
   int _nbPlayer;
+
 public:
   AI(Goban &, int, int);
   ~AI();

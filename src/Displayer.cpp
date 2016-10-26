@@ -12,14 +12,21 @@
 #include <unistd.h>
 #include "Displayer.hpp"
 
-float size = 0.202;
-
 Displayer::Displayer(int x, int y) {
   _x = x;
   _y = y;
-  EventHandler::get(&_receiver);
+  _time = 1.0;
+  _isAnimating = false;
   _error = false;
-  if ((_device = irr::createDevice(irr::video::EDT_OPENGL, irr::core::dimension2d<irr::u32>(1920, 1080), 32, false, true, true, &_receiver))) {
+  EventHandler::get(&_receiver);
+  irr::SIrrlichtCreationParameters params = irr::SIrrlichtCreationParameters();
+  params.AntiAlias = 32;
+  params.DriverType = irr::video::EDT_OPENGL;
+  params.WindowSize = irr::core::dimension2d<irr::u32>(1920, 1080);
+  params.EventReceiver = &_receiver;
+  params.Fullscreen = false;
+  params.Vsync = true;
+  if ((_device = irr::createDeviceEx(params))) {
     getDriver(_driver = _device->getVideoDriver());
     getSmgr(_smgr = _device->getSceneManager());
     _guienv = _device->getGUIEnvironment();
@@ -72,6 +79,10 @@ int                   Displayer::manageEvents(bool anim) {
 }
 
 bool                  Displayer::placeDraught(int x, int y, int p) {
+  float               size = 0.202;
+
+  if (x >= _x || y >= _y || x < 0 || y < 0)
+    return false;
   if (_map[y][x])
     removeDraught(x, y);
   float posX = 0.0130 - y * size / _x;
@@ -81,16 +92,19 @@ bool                  Displayer::placeDraught(int x, int y, int p) {
   if (_map[y][x]->create(0.008) == -1) return false;
   _isAnimating = true;
   _animateTime = chrono::high_resolution_clock::now();
+  _then = _device->getTimer()->getTime();
   return true;
 }
 
 bool                  Displayer::removeDraught(int x, int y) {
+  if (x >= _x || y >= _y || x < 0 || y < 0)
+    return false;
   _map[y][x]->destroy();
   delete _map[y][x];
   return true;
 }
 
-void                  Displayer::updateAnim() {
+void                  Displayer::updateAnim(bool force) {
   const irr::f32		  MOVEMENT_SPEED = 0.31f;
   const irr::u32		  now = _device->getTimer()->getTime();
   const irr::f32		  frameDeltaTime = (irr::f32)(now - _then) / 1000.f;
@@ -98,26 +112,30 @@ void                  Displayer::updateAnim() {
   irr::core::vector3df pos = _map[_animY][_animX]->getBlock()->getPosition();
   irr::core::vector3df extent = _map[_animY][_animX]->getExtent();
   pos.Y -= frameDeltaTime * MOVEMENT_SPEED;
-  cout << "extent " << extent.Y << " - " << extent.Y * 0.690 << endl;
-
   pos.Y = pos.Y < 0.690 * extent.Y ? 0.690 * extent.Y : pos.Y;
+  if (force) pos.Y = 0.690 * extent.Y;
   _map[_animY][_animX]->getBlock()->setPosition(pos);
   _then = now;
 }
 
 bool                  Displayer::isAnimating() {
-  float time = 1;
   if (!_isAnimating) return false;
-  if (chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now().time_since_epoch()).count() < chrono::duration_cast<chrono::microseconds>(_animateTime.time_since_epoch()).count() + static_cast<long>(time * 1000000))
+  if (chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now().time_since_epoch()).count() <
+      chrono::duration_cast<chrono::microseconds>(_animateTime.time_since_epoch()).count() + static_cast<long>(_time * 1000000))
     return true;
+  updateAnim(true);
   _isAnimating = false;
   return false;
 }
 
-bool                  Displayer::animate(int x, int y, int p) {
+void                  Displayer::setAnimate(int x, int y, int p) {
   _animX = x;
   _animY = y;
-  return p != 0 ? placeDraught(x, y, p) : removeDraught(x, y);
+  _p = p;
+}
+
+bool                  Displayer::animate() {
+  return _p != 0 ? placeDraught(_animX, _animY, _p) : removeDraught(_animX, _animY);
 }
 
 bool                  Displayer::instanciate() {
@@ -162,7 +180,8 @@ bool                  Displayer::instanciateLights() {
 
 int				            Displayer::display(bool anim) {
   _driver->beginScene(true, true, irr::video::SColor(255, 100, 150, 255));
-  if (isAnimating()) updateAnim();
+  if (isAnimating())
+    updateAnim();
   _smgr->drawAll();
   _guienv->drawAll();
   _driver->endScene();

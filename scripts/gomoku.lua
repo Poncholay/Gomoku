@@ -26,7 +26,8 @@ function gomoku_project(_kind)
 			GOMOKU_LIB_DIR .. "Linux/Irrlicht",
 			"GL",
 			"X11",
-			"Xxf86vm"
+			"Xxf86vm",
+			"pthread"
 		}
 
 		configuration {}

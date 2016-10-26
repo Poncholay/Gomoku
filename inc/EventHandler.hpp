@@ -36,7 +36,6 @@ public:
   bool IsKeyDown(irr::EKEY_CODE keyCode) const {return (_keyIsDown[keyCode]);}
   bool WasKeyPressed(irr::EKEY_CODE keyCode) {bool tmp = _keyWasPressed[keyCode]; _keyWasPressed[keyCode] = false; return (tmp);}
   bool OnEvent(const irr::SEvent &event) {
-    cout << "ReceiveEvent" << endl;
     if (event.EventType == irr::EET_MOUSE_INPUT_EVENT) {
 	    _cursor = irr::core::position2di(event.MouseInput.X, event.MouseInput.Y);
 	    _mouse = true;

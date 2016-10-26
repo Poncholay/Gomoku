@@ -15,13 +15,12 @@ using namespace std;
 
 # include <vector>
 # include <chrono>
+# include "IPlayer.hh"
 # include "Block.hpp"
 # include "irrlicht.h"
 # include "Axes.hpp"
 # include "EventHandler.hpp"
-
-# define GOBAN_X 6
-# define GOBAN_Y 6
+# include "Dimensions.hh"
 
 class		Displayer {
 public:
@@ -30,7 +29,8 @@ public:
 
   void        setUpdate(int, int, int);
   bool        isAnimating();
-  bool        animate(int, int, int);
+  void        setAnimate(int, int, int);
+  bool        animate();
   bool        instanciate();
   bool        isRunning() const;
   bool        error() const;
@@ -54,7 +54,7 @@ private:
   bool                          instanciateLights();
   bool                          instanciateCamera();
   void                          updateFPS();
-  void                          updateAnim();
+  void                          updateAnim(bool = false);
   int                           manageEvents(bool);
 
   //Irrlicht
@@ -75,14 +75,17 @@ private:
   irr::scene::ISceneNode        *_skydome;
   AxesSceneNode                 *_axes;
   bool                          _error;
+
+  //Anim
+  chrono::high_resolution_clock::time_point _animateTime;
+
   bool                          _isAnimating;
-
-  chrono::high_resolution_clock::time_point   _animateTime;
-
   int                           _animX;
   int                           _animY;
   int                           _x;
   int                           _y;
+  int                           _p;
+  float                         _time;
 };
 
 #endif /* DISPLAYER_HPP_ */

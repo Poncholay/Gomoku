@@ -41,12 +41,12 @@ std::vector<int>  &Goban::operator[](int box) {
 }
 
 void Goban::addDraught(int x, int y, int player, bool move) {
-  if (move) _displayer.animate(x, y, player);
+  if (move) _displayer.setAnimate(x, y, player);
   _board[y].at(x) = player;
 }
 
 void Goban::removeDraught(int x, int y, bool move) {
-  if (move) _displayer.animate(x, y, 0);
+  if (move) _displayer.setAnimate(x, y, 0);
   _board[y].at(x) = 0;
 }
 

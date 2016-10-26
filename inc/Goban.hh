@@ -15,6 +15,7 @@
 # include <string>
 # include <vector>
 # include "Displayer.hpp"
+# include "Dimensions.hh"
 
 class Displayer;
 
