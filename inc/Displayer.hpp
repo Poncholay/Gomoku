@@ -22,6 +22,11 @@ using namespace std;
 # include "EventHandler.hpp"
 # include "Dimensions.hh"
 
+enum {
+	ID_IsNotPickable = 0,
+	IDFlag_IsPickable = 1 << 0
+};
+
 class		Displayer {
 public:
   Displayer(int = GOBAN_X, int = GOBAN_Y);
@@ -75,6 +80,7 @@ private:
   irr::scene::ISceneNode        *_skydome;
   AxesSceneNode                 *_axes;
   bool                          _error;
+  Block                         *_placeholder;
 
   //Anim
   chrono::high_resolution_clock::time_point _animateTime;

@@ -5,13 +5,19 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 16:30:25 2016 wilmot_g
-** Last update Wed Oct 26 21:46:16 2016 wilmot_g
+** Last update Mon Oct 31 13:39:40 2016 wilmot_g
 */
 
 #include "Game.hh"
+#include "Menu.hh"
 
 int         main(int ac, char **av) {
-  Game      game;
+  Menu      menu;
 
+  if (!menu.isInit())
+    return (-1);
+  menu.play();
+
+  Game      game;
   game.play(0);
 }

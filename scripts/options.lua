@@ -20,14 +20,14 @@ function options()
         flags { "Symbols" }
     		targetdir (GOMOKU_DIR)
     		objdir (GOMOKU_BUILD_DIR .. "linux64" .. "/obj")
-    		libdirs (GOMOKU_BUILD_DIR .. "../.build/linux64/bin")
+    		libdirs (GOMOKU_BUILD_DIR .. "../",
+        GOMOKU_BUILD_DIR .. "../lib/Linux")
         buildoptions {
-        			-- "-Wall",
         			"-Wextra",
         			"-Werror",
 				      "-pthread",
 				      "-std=c++11",
-              "-g"
+              "-DNANOVG_GLEW",
         		}
   end
 end

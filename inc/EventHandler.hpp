@@ -13,11 +13,14 @@
 
 # include <vector>
 # include "irrlicht.h"
+# include "Block.hpp"
 
 class EventHandler : public irr::IEventReceiver {
 public:
   ~EventHandler() {}
-  EventHandler() {
+  EventHandler(int x, int y) {
+    _x = x;
+    _y = y;
     for (irr::u32 i = 0; i < irr::KEY_KEY_CODES_COUNT; ++i) {
 	     _keyIsDown[i] = false;
 	     _keyWasPressed[i] = false;
@@ -30,6 +33,7 @@ public:
   }
 
   bool checkEnd() {return _keyWasPressed[irr::KEY_ESCAPE];}
+  int  eventPlayer(irr::scene::ICameraSceneNode *, Block *);
 
   irr::core::position2di getMouse() {_mouse = false; return (_cursor);}
   bool wasMouse() const {return (_mouse);}
@@ -52,6 +56,8 @@ private:
   bool				                              _keyIsDown[irr::KEY_KEY_CODES_COUNT];
   bool				                              _mouse;
   irr::core::position2di				            _cursor;
+  int                                       _x;
+  int                                       _y;
 };
 
 #endif /* EVENTHANDLER_HPP_ */

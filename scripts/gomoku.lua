@@ -15,28 +15,26 @@ function gomoku_project(_kind)
 
 		includedirs {
 			GOMOKU_DIR .. "inc",
-			GOMOKU_DIR .. "inc/irrlicht"
-		}
-
-		defines {
-			_defines,
+			GOMOKU_DIR .. "inc/Irrlicht",
+			GOMOKU_DIR .. "inc/Menu"
 		}
 
 		links {
 			GOMOKU_LIB_DIR .. "Linux/Irrlicht",
+			"nanovg",
 			"GL",
+			"GLU",
+			"m",
+			"GLEW",
+			"glfw",
 			"X11",
 			"Xxf86vm",
 			"pthread"
 		}
-
-		configuration {}
 
 		files {
 			GOMOKU_DIR .. "inc/**.hh",
 			GOMOKU_DIR .. "inc/**.hpp",
 			GOMOKU_DIR .. "src/**.cpp"
 		}
-
-		configuration {} -- reset configuration
 end

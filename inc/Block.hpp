@@ -16,26 +16,27 @@
 
 class		Block {
 public:
-  Block(float x, float y, float z, irr::scene::IMesh *mesh, irr::scene::ISceneManager *smgr) {
+  Block(float x, float y, float z, irr::scene::IAnimatedMesh *mesh, irr::scene::ISceneManager *smgr, int flag = 0) {
     _x = x;
     _y = y;
     _z = z;
     _mesh = mesh;
     _smgr = smgr;
     _block = NULL;
+    _flag = flag;
   }
   ~Block() {}
 
-  irr::scene::IMeshSceneNode		*getBlock() const {return _block;}
-  void        destroy() {_block->remove();}
+  irr::scene::IAnimatedMeshSceneNode		*getBlock() const {return _block;}
+  void                                  destroy()         {_block->remove();}
 
   int         create(float scale) {
-    if ((_block = _smgr->addMeshSceneNode(_mesh))) {
+    if ((_block = _smgr->addAnimatedMeshSceneNode(_mesh, 0, _flag))) {
 	    _extent = _block->getTransformedBoundingBox().getExtent();
 	    _block->setMaterialFlag(irr::video::EMF_BILINEAR_FILTER, false);
 	    _block->setMaterialFlag(irr::video::EMF_NORMALIZE_NORMALS, true);
       _block->setScale(irr::core::vector3df(scale, scale, scale));
-	    _block->setPosition(irr::core::vector3df(_x * _extent.X, _extent.Y * _y, _z * _extent.Z));
+	    _block->setPosition(irr::core::vector3df(_x * _extent.X, _y * _extent.Y, _z * _extent.Z));
 	    return 0;
     }
     return -1;
@@ -45,13 +46,16 @@ public:
 
 private:
   irr::core::vector3df            _extent;
-  irr::scene::IMeshSceneNode		  *_block;
-  irr::scene::IMesh			          *_mesh;
+  irr::scene::IAnimatedMesh       *_mesh;
   irr::scene::ISceneManager		    *_smgr;
   irr::scene::ISceneNodeAnimator	*_collision;
+
+  irr::scene::IAnimatedMeshSceneNode		  *_block;
+
   float					_x;
   float					_y;
   float					_z;
+  int           _flag;
 };
 
 #endif /* !BLOCK_HPP_ */
