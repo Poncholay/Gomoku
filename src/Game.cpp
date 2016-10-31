@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Sun Oct 16 15:32:40 2016 wilmot_g
-** Last update Mon Oct 31 20:03:49 2016 wilmot_g
+** Last update Mon Oct 31 20:36:30 2016 wilmot_g
 */
 
 #include <iostream>
@@ -35,7 +35,8 @@ int           Game::play(int param) {
   thread              *t = NULL;
 
   //TODO : check param and create accordingly
-  players.push_back(new AI(goban, 1, 1));
+  // players.push_back(new AI(goban, 1, 1));
+  players.push_back(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y));
   players.push_back(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y));
   //
   if (displayer.error() || !displayer.instanciate()) return -1;

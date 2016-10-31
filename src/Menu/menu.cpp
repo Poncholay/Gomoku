@@ -102,9 +102,11 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
   _quit = false;
 }
 
-Menu::~Menu()
+Menu::~Menu() {}
+
+void 			Menu::endMenu()
 {
-  nvgDeleteImage(_vg, _backgroundImage);
+	nvgDeleteImage(_vg, _backgroundImage);
   freeMenuData(_vg, &_data);
   nvgDeleteGL2(_vg);
   glfwTerminate();
@@ -115,6 +117,10 @@ int        Menu::play()
   _previousTime = glfwGetTime();
   while (!glfwWindowShouldClose(_window))
     {
+			if (_play)
+				break;
+			else if (_quit)
+				return (-1);
       _mouseClickPosX = -1;
       _mouseClickPosY = -1;
 //      cout << "play " << _play << " settings " << _settings << " quit " << _quit << endl;
