@@ -20,9 +20,9 @@ ifndef AR
 endif
 
 ifeq ($(config),debug)
-  OBJDIR     = obj/Debug/example_gl2
+  OBJDIR     = obj/Debug/menu
   TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/example_gl2
+  TARGET     = $(TARGETDIR)/menu
   DEFINES   += -DNANOVG_GLEW -DDEBUG
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -32,7 +32,7 @@ ifeq ($(config),debug)
   LIBS      += -lnanovg -lGL -lGLU -lm -lGLEW
   RESFLAGS  += $(DEFINES) $(INCLUDES)
   LDDEPS    += libnanovg.a
-  LINKCMD    = $(CC) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
+  LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -42,9 +42,9 @@ ifeq ($(config),debug)
 endif
 
 ifeq ($(config),release)
-  OBJDIR     = obj/Release/example_gl2
+  OBJDIR     = obj/Release/menu
   TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/example_gl2
+  TARGET     = $(TARGETDIR)/menu
   DEFINES   += -DNANOVG_GLEW -DNDEBUG
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -64,9 +64,9 @@ ifeq ($(config),release)
 endif
 
 ifeq ($(config),debug64)
-  OBJDIR     = obj/x64/Debug/example_gl2
+  OBJDIR     = obj/x64/Debug/menu
   TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/example_gl2
+  TARGET     = $(TARGETDIR)/menu
   DEFINES   += -DNANOVG_GLEW -DDEBUG
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -86,9 +86,9 @@ ifeq ($(config),debug64)
 endif
 
 ifeq ($(config),release64)
-  OBJDIR     = obj/x64/Release/example_gl2
+  OBJDIR     = obj/x64/Release/menu
   TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/example_gl2
+  TARGET     = $(TARGETDIR)/menu
   DEFINES   += -DNANOVG_GLEW -DNDEBUG
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -108,9 +108,9 @@ ifeq ($(config),release64)
 endif
 
 ifeq ($(config),debug32)
-  OBJDIR     = obj/x32/Debug/example_gl2
+  OBJDIR     = obj/x32/Debug/menu
   TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/example_gl2
+  TARGET     = $(TARGETDIR)/menu
   DEFINES   += -DNANOVG_GLEW -DDEBUG
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -130,9 +130,9 @@ ifeq ($(config),debug32)
 endif
 
 ifeq ($(config),release32)
-  OBJDIR     = obj/x32/Release/example_gl2
+  OBJDIR     = obj/x32/Release/menu
   TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/example_gl2
+  TARGET     = $(TARGETDIR)/menu
   DEFINES   += -DNANOVG_GLEW -DNDEBUG
   INCLUDES  += -I../src -I../example
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -152,7 +152,7 @@ ifeq ($(config),release32)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/example_gl2.o \
+	$(OBJDIR)/menu.o \
 	$(OBJDIR)/demo.o \
 	$(OBJDIR)/perf.o \
 
@@ -172,7 +172,7 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 	@:
 
 $(TARGET): $(GCH) $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	echo Linking example_gl2
+	echo Linking menu
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -193,7 +193,7 @@ else
 endif
 
 clean:
-	echo Cleaning example_gl2
+	echo Cleaning menu
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)
@@ -215,9 +215,9 @@ $(GCH): $(PCH)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
 endif
 
-$(OBJDIR)/example_gl2.o: ../example/example_gl2.c
+$(OBJDIR)/menu.o: ../example/menu.cpp
 	echo $(notdir $<)
-	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
+	$(SILENT) $(CXX) $(CFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/demo.o: ../example/demo.c
 	echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o "$@" -c "$<"
