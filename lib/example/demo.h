@@ -7,15 +7,15 @@
 extern "C" {
 #endif
 
-struct DemoData {
+struct MenuData {
 	int fontNormal, fontBold, fontIcons, fontEmoji;
 	int images[12];
 };
-typedef struct DemoData DemoData;
+typedef struct MenuData MenuData;
 
-int loadDemoData(NVGcontext* vg, DemoData* data);
-void freeDemoData(NVGcontext* vg, DemoData* data);
-void renderDemo(NVGcontext* vg, float mx, float my, float width, float height, float t, int blowup, DemoData* data);
+int loadMenuData(NVGcontext* vg, MenuData* data);
+void freeMenuData(NVGcontext* vg, MenuData* data);
+void renderDemo(NVGcontext* vg, float mx, float my, float width, float height, float t, int blowup, MenuData* data);
 
 void saveScreenShot(int w, int h, int premult, const char* name);
 

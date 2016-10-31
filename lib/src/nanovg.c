@@ -359,18 +359,12 @@ void nvgDeleteInternal(NVGcontext* ctx)
 
 void nvgBeginFrame(NVGcontext* ctx, int windowWidth, int windowHeight, float devicePixelRatio)
 {
-/*	printf("Tris: draws:%d  fill:%d  stroke:%d  text:%d  TOT:%d\n",
-		ctx->drawCallCount, ctx->fillTriCount, ctx->strokeTriCount, ctx->textTriCount,
-		ctx->fillTriCount+ctx->strokeTriCount+ctx->textTriCount);*/
-
 	ctx->nstates = 0;
 	nvgSave(ctx);
 	nvgReset(ctx);
-
 	nvg__setDevicePixelRatio(ctx, devicePixelRatio);
 
 	ctx->params.renderViewport(ctx->params.userPtr, windowWidth, windowHeight, devicePixelRatio);
-
 	ctx->drawCallCount = 0;
 	ctx->fillTriCount = 0;
 	ctx->strokeTriCount = 0;
@@ -426,7 +420,7 @@ NVGcolor nvgRGBf(float r, float g, float b)
 NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
 	NVGcolor color;
-	// Use longer initialization to suppress warning.
+
 	color.r = r / 255.0f;
 	color.g = g / 255.0f;
 	color.b = b / 255.0f;
@@ -437,7 +431,7 @@ NVGcolor nvgRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned cha
 NVGcolor nvgRGBAf(float r, float g, float b, float a)
 {
 	NVGcolor color;
-	// Use longer initialization to suppress warning.
+
 	color.r = r;
 	color.g = g;
 	color.b = b;
@@ -461,7 +455,7 @@ NVGcolor nvgLerpRGBA(NVGcolor c0, NVGcolor c1, float u)
 {
 	int i;
 	float oneminu;
-	NVGcolor cint = {0};
+	NVGcolor cint = {{{0}}};
 
 	u = nvg__clampf(u, 0.0f, 1.0f);
 	oneminu = 1.0f - u;
@@ -469,7 +463,6 @@ NVGcolor nvgLerpRGBA(NVGcolor c0, NVGcolor c1, float u)
 	{
 		cint.rgba[i] = c0.rgba[i] * oneminu + c1.rgba[i] * u;
 	}
-
 	return cint;
 }
 
@@ -1009,12 +1002,14 @@ void nvgResetScissor(NVGcontext* ctx)
 	state->scissor.extent[1] = -1.0f;
 }
 
-// Global composite operation.
-void nvgGlobalCompositeOperation(NVGcontext* ctx, int op)
-{
-	NVGstate* state = nvg__getState(ctx);
-	state->compositeOperation = nvg__compositeOperationState(op);
-}
+// // Global composite operation.
+// void nvgGlobalCompositeOperation(NVGcontext* ctx, int op)
+// {
+// 	NVGstate* state = nvg__getState(ctx);
+// 	bzero(state, sizeof(*state));
+// 	state = nvg__getState(ctx);
+// 	state->compositeOperation = nvg__compositeOperationState(op);
+// }
 
 void nvgGlobalCompositeBlendFunc(NVGcontext* ctx, int sfactor, int dfactor)
 {
@@ -2852,13 +2847,11 @@ void nvgTextMetrics(NVGcontext* ctx, float* ascender, float* descender, float* l
 	float invscale = 1.0f / scale;
 
 	if (state->fontId == FONS_INVALID) return;
-
 	fonsSetSize(ctx->fs, state->fontSize*scale);
 	fonsSetSpacing(ctx->fs, state->letterSpacing*scale);
 	fonsSetBlur(ctx->fs, state->fontBlur*scale);
 	fonsSetAlign(ctx->fs, state->textAlign);
 	fonsSetFont(ctx->fs, state->fontId);
-
 	fonsVertMetrics(ctx->fs, ascender, descender, lineh);
 	if (ascender != NULL)
 		*ascender *= invscale;

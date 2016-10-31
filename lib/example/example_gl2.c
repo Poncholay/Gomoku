@@ -74,15 +74,12 @@ int main()
 	glfwWindowHint(GLFW_SAMPLES, 4);
 #endif
 
-	window = glfwCreateWindow(1000, 600, "NanoVG", NULL, NULL);
-//	window = glfwCreateWindow(1000, 600, "NanoVG", glfwGetPrimaryMonitor(), NULL);
+	window = glfwCreateWindow(1000, 600, "Gomoku", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		return -1;
 	}
-
 	glfwSetKeyCallback(window, key);
-
 	glfwMakeContextCurrent(window);
 #ifdef NANOVG_GLEW
     if(glewInit() != GLEW_OK) {
@@ -103,12 +100,9 @@ int main()
 
 	if (loadDemoData(vg, &data) == -1)
 		return -1;
-
 	glfwSwapInterval(0);
-
 	glfwSetTime(0);
 	prevt = glfwGetTime();
-
 	while (!glfwWindowShouldClose(window))
 	{
 		double mx, my, t, dt;
@@ -120,7 +114,6 @@ int main()
 		dt = t - prevt;
 		prevt = t;
 		updateGraph(&fps, dt);
-
 		glfwGetCursorPos(window, &mx, &my);
 		glfwGetWindowSize(window, &winWidth, &winHeight);
 		glfwGetFramebufferSize(window, &fbWidth, &fbHeight);
@@ -135,27 +128,19 @@ int main()
 		else
 			glClearColor(0.3f, 0.3f, 0.32f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
-
 		nvgBeginFrame(vg, winWidth, winHeight, pxRatio);
-
 		renderDemo(vg, mx,my, winWidth,winHeight, t, blowup, &data);
 		renderGraph(vg, 5,5, &fps);
-
 		nvgEndFrame(vg);
-
 		if (screenshot) {
 			screenshot = 0;
 			saveScreenShot(fbWidth, fbHeight, premult, "dump.png");
 		}
-		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
 	freeDemoData(vg, &data);
-
 	nvgDeleteGL2(vg);
-
 	glfwTerminate();
 	return 0;
 }

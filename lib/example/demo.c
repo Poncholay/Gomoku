@@ -25,7 +25,7 @@
 #define ICON_TRASH 0xE729
 
 //static float minf(float a, float b) { return a < b ? a : b; }
-static float maxf(float a, float b) { return a > b ? a : b; }
+//static float maxf(float a, float b) { return a > b ? a : b; }
 //static float absf(float a) { return a >= 0.0f ? a : -a; }
 static float clampf(float a, float mn, float mx) { return a < mn ? mn : (a > mx ? mx : a); }
 
@@ -802,50 +802,50 @@ void drawLines(NVGcontext* vg, float x, float y, float w, float h, float t)
 	nvgRestore(vg);
 }
 
-int loadDemoData(NVGcontext* vg, DemoData* data)
+int loadMenuData(NVGcontext* vg, MenuData* data)
 {
-	int i;
+	// int i;
 
 	if (vg == NULL)
 		return -1;
 
-	for (i = 0; i < 12; i++) {
-		char file[128];
-		snprintf(file, 128, "../example/images/image%d.jpg", i+1);
-		data->images[i] = nvgCreateImage(vg, file, 0);
-		if (data->images[i] == 0) {
-			printf("Could not load %s.\n", file);
-			return -1;
-		}
-	}
+	// for (i = 0; i < 12; i++) {
+	// 	char file[128];
+	// 	snprintf(file, 128, "../example/images/image%d.jpg", i+1);
+	// 	data->images[i] = nvgCreateImage(vg, file, 0);
+	// 	if (data->images[i] == 0) {
+	// 		printf("Could not load %s.\n", file);
+	// 		return -1;
+	// 	}
+	// }
 
-	data->fontIcons = nvgCreateFont(vg, "icons", "../example/entypo.ttf");
-	if (data->fontIcons == -1) {
-		printf("Could not add font icons.\n");
-		return -1;
-	}
+	// data->fontIcons = nvgCreateFont(vg, "icons", "../example/entypo.ttf");
+	// if (data->fontIcons == -1) {
+	// 	printf("Could not add font icons.\n");
+	// 	return -1;
+	// }
 	data->fontNormal = nvgCreateFont(vg, "sans", "../example/Roboto-Regular.ttf");
 	if (data->fontNormal == -1) {
 		printf("Could not add font italic.\n");
 		return -1;
 	}
-	data->fontBold = nvgCreateFont(vg, "sans-bold", "../example/Roboto-Bold.ttf");
-	if (data->fontBold == -1) {
-		printf("Could not add font bold.\n");
-		return -1;
-	}
+	// data->fontBold = nvgCreateFont(vg, "sans-bold", "../example/Roboto-Bold.ttf");
+	// if (data->fontBold == -1) {
+	// 	printf("Could not add font bold.\n");
+	// 	return -1;
+	// }
 	data->fontEmoji = nvgCreateFont(vg, "emoji", "../example/NotoEmoji-Regular.ttf");
 	if (data->fontEmoji == -1) {
 		printf("Could not add font emoji.\n");
 		return -1;
 	}
 	nvgAddFallbackFontId(vg, data->fontNormal, data->fontEmoji);
-	nvgAddFallbackFontId(vg, data->fontBold, data->fontEmoji);
+	// nvgAddFallbackFontId(vg, data->fontBold, data->fontEmoji);
 
 	return 0;
 }
 
-void freeDemoData(NVGcontext* vg, DemoData* data)
+void freeMenuData(NVGcontext* vg, MenuData* data)
 {
 	int i;
 
@@ -856,121 +856,121 @@ void freeDemoData(NVGcontext* vg, DemoData* data)
 		nvgDeleteImage(vg, data->images[i]);
 }
 
-void drawParagraph(NVGcontext* vg, float x, float y, float width, float height, float mx, float my)
-{
-	NVGtextRow rows[3];
-	NVGglyphPosition glyphs[100];
-	const char* text = "This is longer chunk of text.\n  \n  Would have used lorem ipsum but she    was busy jumping over the lazy dog with the fox and all the men who came to the aid of the party.🎉";
-	const char* start;
-	const char* end;
-	int nrows, i, nglyphs, j, lnum = 0;
-	float lineh;
-	float caretx, px;
-	float bounds[4];
-	float a;
-	float gx,gy;
-	int gutter = 0;
-	NVG_NOTUSED(height);
-
-	nvgSave(vg);
-
-	nvgFontSize(vg, 18.0f);
-	nvgFontFace(vg, "sans");
-	nvgTextAlign(vg, NVG_ALIGN_LEFT|NVG_ALIGN_TOP);
-	nvgTextMetrics(vg, NULL, NULL, &lineh);
-
-	// The text break API can be used to fill a large buffer of rows,
-	// or to iterate over the text just few lines (or just one) at a time.
-	// The "next" variable of the last returned item tells where to continue.
-	start = text;
-	end = text + strlen(text);
-	while ((nrows = nvgTextBreakLines(vg, start, end, width, rows, 3))) {
-		for (i = 0; i < nrows; i++) {
-			NVGtextRow* row = &rows[i];
-			int hit = mx > x && mx < (x+width) && my >= y && my < (y+lineh);
-
-			nvgBeginPath(vg);
-			nvgFillColor(vg, nvgRGBA(255,255,255,hit?64:16));
-			nvgRect(vg, x, y, row->width, lineh);
-			nvgFill(vg);
-
-			nvgFillColor(vg, nvgRGBA(255,255,255,255));
-			nvgText(vg, x, y, row->start, row->end);
-
-			if (hit) {
-				caretx = (mx < x+row->width/2) ? x : x+row->width;
-				px = x;
-				nglyphs = nvgTextGlyphPositions(vg, x, y, row->start, row->end, glyphs, 100);
-				for (j = 0; j < nglyphs; j++) {
-					float x0 = glyphs[j].x;
-					float x1 = (j+1 < nglyphs) ? glyphs[j+1].x : x+row->width;
-					float gx = x0 * 0.3f + x1 * 0.7f;
-					if (mx >= px && mx < gx)
-						caretx = glyphs[j].x;
-					px = gx;
-				}
-				nvgBeginPath(vg);
-				nvgFillColor(vg, nvgRGBA(255,192,0,255));
-				nvgRect(vg, caretx, y, 1, lineh);
-				nvgFill(vg);
-
-				gutter = lnum+1;
-				gx = x - 10;
-				gy = y + lineh/2;
-			}
-			lnum++;
-			y += lineh;
-		}
-		// Keep going...
-		start = rows[nrows-1].next;
-	}
-
-	if (gutter) {
-		char txt[16];
-		snprintf(txt, sizeof(txt), "%d", gutter);
-		nvgFontSize(vg, 13.0f);
-		nvgTextAlign(vg, NVG_ALIGN_RIGHT|NVG_ALIGN_MIDDLE);
-
-		nvgTextBounds(vg, gx,gy, txt, NULL, bounds);
-
-		nvgBeginPath(vg);
-		nvgFillColor(vg, nvgRGBA(255,192,0,255));
-		nvgRoundedRect(vg, (int)bounds[0]-4,(int)bounds[1]-2, (int)(bounds[2]-bounds[0])+8, (int)(bounds[3]-bounds[1])+4, ((int)(bounds[3]-bounds[1])+4)/2-1);
-		nvgFill(vg);
-
-		nvgFillColor(vg, nvgRGBA(32,32,32,255));
-		nvgText(vg, gx,gy, txt, NULL);
-	}
-
-	y += 20.0f;
-
-	nvgFontSize(vg, 13.0f);
-	nvgTextAlign(vg, NVG_ALIGN_LEFT|NVG_ALIGN_TOP);
-	nvgTextLineHeight(vg, 1.2f);
-
-	nvgTextBoxBounds(vg, x,y, 150, "Hover your mouse over the text to see calculated caret position.", NULL, bounds);
-
-	// Fade the tooltip out when close to it.
-	gx = fabsf((mx - (bounds[0]+bounds[2])*0.5f) / (bounds[0] - bounds[2]));
-	gy = fabsf((my - (bounds[1]+bounds[3])*0.5f) / (bounds[1] - bounds[3]));
-	a = maxf(gx, gy) - 0.5f;
-	a = clampf(a, 0, 1);
-	nvgGlobalAlpha(vg, a);
-
-	nvgBeginPath(vg);
-	nvgFillColor(vg, nvgRGBA(220,220,220,255));
-	nvgRoundedRect(vg, bounds[0]-2,bounds[1]-2, (int)(bounds[2]-bounds[0])+4, (int)(bounds[3]-bounds[1])+4, 3);
-	px = (int)((bounds[2]+bounds[0])/2);
-	nvgMoveTo(vg, px,bounds[1] - 10);
-	nvgLineTo(vg, px+7,bounds[1]+1);
-	nvgLineTo(vg, px-7,bounds[1]+1);
-	nvgFill(vg);
-
-	nvgFillColor(vg, nvgRGBA(0,0,0,220));
-	nvgTextBox(vg, x,y, 150, "Hover your mouse over the text to see calculated caret position.", NULL);
-
-	nvgRestore(vg);
-}
+// void drawParagraph(NVGcontext* vg, float x, float y, float width, float height, float mx, float my)
+// {
+// 	NVGtextRow rows[3];
+// 	NVGglyphPosition glyphs[100];
+// 	const char* text = "PLAY \n\nSETTINGS\n\nQUIT";
+// 	const char* start;
+// 	const char* end;
+// 	int nrows, i, nglyphs, j, lnum = 0;
+// 	float lineh;
+// 	float caretx, px;
+// 	float bounds[4];
+// 	float a;
+// 	float gx,gy;
+// 	int gutter = 0;
+// 	NVG_NOTUSED(height);
+//
+// 	nvgSave(vg);
+//
+// 	nvgFontSize(vg, 38.0f);
+// 	nvgFontFace(vg, "sans");
+// 	nvgTextAlign(vg, NVG_ALIGN_CENTER|NVG_ALIGN_CENTER);
+// 	nvgTextMetrics(vg, NULL, NULL, &lineh);
+//
+// 	// The text break API can be used to fill a large buffer of rows,
+// 	// or to iterate over the text just few lines (or just one) at a time.
+// 	// The "next" variable of the last returned item tells where to continue.
+// 	start = text;
+// 	end = text + strlen(text);
+// 	while ((nrows = nvgTextBreakLines(vg, start, end, width, rows, 3))) {
+// 		for (i = 0; i < nrows; i++) {
+// 			NVGtextRow* row = &rows[i];
+// 			int hit = mx > x && mx < (x+width) && my >= y && my < (y+lineh);
+//
+// 			nvgBeginPath(vg);
+// 			nvgFillColor(vg, nvgRGBA(255,255,255,hit?64:0));
+// 			nvgRect(vg, x, y, row->width, lineh);
+// 			nvgFill(vg);
+//
+// 			nvgFillColor(vg, nvgRGBA(255,255,255,255));
+// 			nvgText(vg, x, y, row->start, row->end);
+//
+// 			if (hit) {
+// 				caretx = (mx < x+row->width/2) ? x : x+row->width;
+// 				px = x;
+// 				nglyphs = nvgTextGlyphPositions(vg, x, y, row->start, row->end, glyphs, 100);
+// 				for (j = 0; j < nglyphs; j++) {
+// 					float x0 = glyphs[j].x;
+// 					float x1 = (j+1 < nglyphs) ? glyphs[j+1].x : x+row->width;
+// 					float gx = x0 * 0.3f + x1 * 0.7f;
+// 					if (mx >= px && mx < gx)
+// 						caretx = glyphs[j].x;
+// 					px = gx;
+// 				}
+// 				nvgBeginPath(vg);
+// 				nvgFillColor(vg, nvgRGBA(255,192,0,255));
+// 				nvgRect(vg, caretx, y, 1, lineh);
+// 				nvgFill(vg);
+//
+// 				gutter = lnum+1;
+// 				gx = x - 10;
+// 				gy = y + lineh/2;
+// 			}
+// 			lnum++;
+// 			y += lineh;
+// 		}
+// 		// Keep going...
+// 		start = rows[nrows-1].next;
+// 	}
+//
+// 	if (gutter) {
+// 		char txt[16];
+// 		snprintf(txt, sizeof(txt), "%d", gutter);
+// 		nvgFontSize(vg, 13.0f);
+// 		nvgTextAlign(vg, NVG_ALIGN_RIGHT|NVG_ALIGN_MIDDLE);
+//
+// 		nvgTextBounds(vg, gx,gy, txt, NULL, bounds);
+//
+// 		nvgBeginPath(vg);
+// 		nvgFillColor(vg, nvgRGBA(255,192,0,255));
+// 		nvgRoundedRect(vg, (int)bounds[0]-4,(int)bounds[1]-2, (int)(bounds[2]-bounds[0])+8, (int)(bounds[3]-bounds[1])+4, ((int)(bounds[3]-bounds[1])+4)/2-1);
+// 		nvgFill(vg);
+//
+// 		nvgFillColor(vg, nvgRGBA(32,32,32,255));
+// 		nvgText(vg, gx,gy, txt, NULL);
+// 	}
+//
+// 	y += 20.0f;
+//
+// 	nvgFontSize(vg, 13.0f);
+// 	nvgTextAlign(vg, NVG_ALIGN_LEFT|NVG_ALIGN_TOP);
+// 	nvgTextLineHeight(vg, 1.2f);
+//
+// 	nvgTextBoxBounds(vg, x,y, 150, "Hover your mouse over the text to see calculated caret position.", NULL, bounds);
+//
+// 	// Fade the tooltip out when close to it.
+// 	gx = fabsf((mx - (bounds[0]+bounds[2])*0.5f) / (bounds[0] - bounds[2]));
+// 	gy = fabsf((my - (bounds[1]+bounds[3])*0.5f) / (bounds[1] - bounds[3]));
+// 	a = maxf(gx, gy) - 0.5f;
+// 	a = clampf(a, 0, 1);
+// 	nvgGlobalAlpha(vg, a);
+//
+// 	nvgBeginPath(vg);
+// 	nvgFillColor(vg, nvgRGBA(220,220,220,255));
+// 	nvgRoundedRect(vg, bounds[0]-2,bounds[1]-2, (int)(bounds[2]-bounds[0])+4, (int)(bounds[3]-bounds[1])+4, 3);
+// 	px = (int)((bounds[2]+bounds[0])/2);
+// 	nvgMoveTo(vg, px,bounds[1] - 10);
+// 	nvgLineTo(vg, px+7,bounds[1]+1);
+// 	nvgLineTo(vg, px-7,bounds[1]+1);
+// 	nvgFill(vg);
+//
+// 	nvgFillColor(vg, nvgRGBA(0,0,0,220));
+// 	nvgTextBox(vg, x,y, 150, "Hover your mouse over the text to see calculated caret position.", NULL);
+//
+// 	nvgRestore(vg);
+// }
 
 void drawWidths(NVGcontext* vg, float x, float y, float width)
 {
@@ -1061,64 +1061,64 @@ void drawScissor(NVGcontext* vg, float x, float y, float t)
 }
 
 void renderDemo(NVGcontext* vg, float mx, float my, float width, float height,
-				float t, int blowup, DemoData* data)
+				float t, int blowup, MenuData* data)
 {
-	float x,y,popy;
+//	float x,y,popy;
 
-	drawEyes(vg, width - 250, 50, 150, 100, mx, my, t);
-	drawParagraph(vg, width - 450, 50, 150, 100, mx, my);
-	drawGraph(vg, 0, height/2, width, height/2, t);
-	drawColorwheel(vg, width - 300, height - 300, 250.0f, 250.0f, t);
+//	drawEyes(vg, width - 250, 50, 150, 100, mx, my, t);
+	//drawParagraph(vg, width - 450, 50, 150, 100, mx, my);
+//	drawGraph(vg, 0, height/2, width, height/2, t);
+	//drawColorwheel(vg, width - 300, height - 300, 250.0f, 250.0f, t);
 
 	// Line joints
-	drawLines(vg, 120, height-50, 600, 50, t);
+//	drawLines(vg, 120, height-50, 600, 50, t);
 
 	// Line caps
-	drawWidths(vg, 10, 50, 30);
+	//drawWidths(vg, 10, 50, 30);
 
 	// Line caps
-	drawCaps(vg, 10, 300, 30);
+//	drawCaps(vg, 10, 300, 30);
 
-	drawScissor(vg, 50, height-80, t);
+	//drawScissor(vg, 50, height-80, t);
 
-	nvgSave(vg);
-	if (blowup) {
-		nvgRotate(vg, sinf(t*0.3f)*5.0f/180.0f*NVG_PI);
-		nvgScale(vg, 2.0f, 2.0f);
-	}
+//	nvgSave(vg);
+	// if (blowup) {
+	// 	nvgRotate(vg, sinf(t*0.3f)*5.0f/180.0f*NVG_PI);
+	// 	nvgScale(vg, 2.0f, 2.0f);
+	// }
 
 	// Widgets
-	drawWindow(vg, "Jin caca", 50, 50, 300, 400);
-	x = 60; y = 95;
-	drawSearchBox(vg, "Search", x,y,280,25);
-	y += 40;
-	drawDropDown(vg, "Effects", x,y,280,28);
-	popy = y + 14;
-	y += 45;
+//	drawWindow(vg, "Jin caca", 50, 50, 300, 400);
+	//x = 60; y = 95;
+	//drawSearchBox(vg, "Search", x,y,280,25);
+	//y += 40;
+	//drawDropDown(vg, "Effects", x,y,280,28);
+	//popy = y + 14;
+	//y += 45;
 
 	// Form
-	drawLabel(vg, "Login", x,y, 280,20);
-	y += 25;
-	drawEditBox(vg, "Jin ? caca.",  x,y, 280,28);
-	y += 35;
-	drawEditBox(vg, "Password", x,y, 280,28);
-	y += 38;
-	drawCheckBox(vg, "Remember me", x,y, 140,28);
-	drawButton(vg, ICON_LOGIN, "Sign in", x+138, y, 140, 28, nvgRGBA(0,96,128,255));
-	y += 45;
+//	drawLabel(vg, "Login", x,y, 280,20);
+	//y += 25;
+//	drawEditBox(vg, "Jin ? caca.",  x,y, 280,28);
+//	y += 35;
+	//drawEditBox(vg, "Password", x,y, 280,28);
+//	y += 38;
+	//drawCheckBox(vg, "Remember me", x,y, 140,28);
+	//drawButton(vg, ICON_LOGIN, "Sign in", x+138, y, 140, 28, nvgRGBA(0,96,128,255));
+	//y += 45;
 
 	// Slider
-	drawLabel(vg, "Diameter", x,y, 280,20);
-	y += 25;
-	drawEditBoxNum(vg, "123.00", "px", x+180,y, 100,28);
-	drawSlider(vg, 0.4f, x,y, 170,28);
-	y += 55;
-
-	drawButton(vg, ICON_TRASH, "Delete", x, y, 160, 28, nvgRGBA(128,16,8,255));
-	drawButton(vg, 0, "Cancel", x+170, y, 110, 28, nvgRGBA(0,0,0,0));
-
-	// Thumbnails box
-	drawThumbnails(vg, 365, popy-30, 160, 300, data->images, 12, t);
+//	drawLabel(vg, "Diameter", x,y, 280,20);
+//	y += 25;
+	// drawEditBoxNum(vg, "123.00", "px", x+180,y, 100,28);
+	// drawSlider(vg, 0.4f, x,y, 170,28);
+	// y += 55;
+	//
+	// drawButton(vg, ICON_TRASH, "Delete", x, y, 160, 28, nvgRGBA(128,16,8,255));
+	// drawButton(vg, 0, "Cancel", x+170, y, 110, 28, nvgRGBA(0,0,0,0));
+	//
+	// // Thumbnails box
+	// drawThumbnails(vg, 365, popy-30, 160, 300, data->images, 12, t);
 
 	nvgRestore(vg);
 }

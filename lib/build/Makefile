@@ -6,19 +6,19 @@ ifndef config
 endif
 export config
 
-PROJECTS := nanovg example_gl2
+PROJECTS := nanovg menu
 
 .PHONY: all clean help $(PROJECTS)
 
 all: $(PROJECTS)
 
-nanovg: 
+nanovg:
 	@echo "==== Building nanovg ($(config)) ===="
 	@${MAKE} --no-print-directory -C . -f nanovg.make
 
-example_gl2: nanovg
-	@echo "==== Building example_gl2 ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f example_gl2.make
+menu: nanovg
+	@echo "==== Building menu ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f menu.make
 
 
 clean:
@@ -26,4 +26,4 @@ clean:
 
 fclean: clean
 	rm libnanovg.a
-	rm example_gl2
+	rm menu
