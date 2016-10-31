@@ -27,6 +27,8 @@ public:
   }
   ~Block() {}
 
+  void                                  setVisible(bool v = true) {_block->setVisible(v);}
+
   irr::scene::IAnimatedMeshSceneNode		*getBlock() const {return _block;}
   void                                  destroy()         {_block->remove();}
 

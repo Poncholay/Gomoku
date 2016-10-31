@@ -42,6 +42,9 @@ public:
   void				setCaption(const irr::core::stringw &);
   int					display(bool = false);
 
+	irr::scene::ICameraSceneNode 	*getCamera() 			const {return _camera;}
+	EventHandler									&getReceiver()					{return _receiver;}
+
   static irr::scene::ISceneManager	*getSmgr(irr::scene::ISceneManager *smgr = NULL) {
     static irr::scene::ISceneManager	*_smgr = NULL;
     return _smgr = smgr ? smgr : _smgr;
@@ -60,7 +63,6 @@ private:
   bool                          instanciateCamera();
   void                          updateFPS();
   void                          updateAnim(bool = false);
-  int                           manageEvents(bool);
 
   //Irrlicht
   EventHandler                  _receiver;
@@ -80,7 +82,6 @@ private:
   irr::scene::ISceneNode        *_skydome;
   AxesSceneNode                 *_axes;
   bool                          _error;
-  Block                         *_placeholder;
 
   //Anim
   chrono::high_resolution_clock::time_point _animateTime;

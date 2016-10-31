@@ -18,13 +18,13 @@
 class EventHandler : public irr::IEventReceiver {
 public:
   ~EventHandler() {}
-  EventHandler(int x, int y) {
-    _x = x;
-    _y = y;
+  EventHandler() {
     for (irr::u32 i = 0; i < irr::KEY_KEY_CODES_COUNT; ++i) {
 	     _keyIsDown[i] = false;
 	     _keyWasPressed[i] = false;
     }
+    _mouse = false;
+    _pressed = false;
   }
 
   static EventHandler	*get(EventHandler *e = NULL, bool r = false) {
@@ -35,18 +35,25 @@ public:
   bool checkEnd() {return _keyWasPressed[irr::KEY_ESCAPE];}
   int  eventPlayer(irr::scene::ICameraSceneNode *, Block *);
 
-  irr::core::position2di getMouse() {_mouse = false; return (_cursor);}
-  bool wasMouse() const {return (_mouse);}
-  bool IsKeyDown(irr::EKEY_CODE keyCode) const {return (_keyIsDown[keyCode]);}
-  bool WasKeyPressed(irr::EKEY_CODE keyCode) {bool tmp = _keyWasPressed[keyCode]; _keyWasPressed[keyCode] = false; return (tmp);}
+  irr::core::position2di getMousePos() {_mouse = false; return _cursor;}
+  bool mouseMoved() const {return _mouse;}
+  bool mouseIsPressed() const {return _pressed;}
+  bool isKeyDown(irr::EKEY_CODE keyCode) const {return _keyIsDown[keyCode];}
+  bool wasKeyPressed(irr::EKEY_CODE keyCode) {bool tmp = _keyWasPressed[keyCode]; _keyWasPressed[keyCode] = false; return tmp;}
   bool OnEvent(const irr::SEvent &event) {
     if (event.EventType == irr::EET_MOUSE_INPUT_EVENT) {
-	    _cursor = irr::core::position2di(event.MouseInput.X, event.MouseInput.Y);
-	    _mouse = true;
+      if (event.MouseInput.Event == irr::EMIE_MOUSE_MOVED) {
+	      _cursor = irr::core::position2di(event.MouseInput.X, event.MouseInput.Y);
+        _mouse = true;
+      }
+      else if (event.MouseInput.Event == irr::EMIE_LMOUSE_PRESSED_DOWN)
+        _pressed = true;
+      else if (event.MouseInput.Event == irr::EMIE_LMOUSE_LEFT_UP)
+        _pressed = false;
     }
-    if (event.EventType == irr::EET_KEY_INPUT_EVENT && !event.KeyInput.PressedDown)
+    else if (event.EventType == irr::EET_KEY_INPUT_EVENT && !event.KeyInput.PressedDown)
       _keyWasPressed[event.KeyInput.Key] = true;
-    if (event.EventType == irr::EET_KEY_INPUT_EVENT)
+    else if (event.EventType == irr::EET_KEY_INPUT_EVENT)
       _keyIsDown[event.KeyInput.Key] = event.KeyInput.PressedDown;
     return false;
   }
@@ -55,9 +62,8 @@ private:
   bool				                              _keyWasPressed[irr::KEY_KEY_CODES_COUNT];
   bool				                              _keyIsDown[irr::KEY_KEY_CODES_COUNT];
   bool				                              _mouse;
+  bool                                      _pressed;
   irr::core::position2di				            _cursor;
-  int                                       _x;
-  int                                       _y;
 };
 
 #endif /* EVENTHANDLER_HPP_ */

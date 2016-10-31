@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include "Displayer.hpp"
 
-Displayer::Displayer(int x, int y) : _receiver(x, y) {
+Displayer::Displayer(int x, int y) : _receiver() {
   _x = x;
   _y = y;
   _time = 1.0;
@@ -37,8 +37,6 @@ Displayer::Displayer(int x, int y) : _receiver(x, y) {
     _map = vector<vector<Block *> >             (y, row);
     _axes = new AxesSceneNode(0, _smgr, 1);
     _caption = L"Gomoku";
-    _placeholder = new Block(0, 0, 0, _smgr->getMesh("./assets/whitego.obj"), _smgr);
-    if (_placeholder->create(0.008) == -1) _error = true; else
     _skydome = _smgr->addSkyBoxSceneNode(
       _driver->getTexture("assets/skybox/criminal-element_up.png"),
       _driver->getTexture("assets/skybox/criminal-element_dn.png"),
@@ -69,19 +67,6 @@ void				          Displayer::updateFPS() {
     }
 }
 
-int                   Displayer::manageEvents(bool anim) {
-  static bool			    start = false;
-  int                 ret = 0;
-
-  if (_receiver.checkEnd())
-    return 1;
-  if (!anim && start) {
-    ret = _receiver.eventPlayer(_camera, _placeholder);
-  }
-  start = true;
-  return ret;
-}
-
 bool                  Displayer::placeDraught(int x, int y, int p) {
   float               size = 0.202;
 
@@ -89,9 +74,9 @@ bool                  Displayer::placeDraught(int x, int y, int p) {
     return false;
   if (_map[y][x])
     removeDraught(x, y);
-  float posX = 0.0130 - y * size / _x;
+  float posX = 0.0130 - y * size / (_x - 1);
   float posY = 1;
-  float posZ = 0.1595 - x * size / _y;
+  float posZ = 0.1595 - x * size / (_y - 1);
   _map[y][x] = new Block(posX, posY, posZ, _smgr->getMesh(string(string("./assets/") + (p == 1 ? "white" : "black") + "go.obj").c_str()), _smgr);
   if (_map[y][x]->create(0.008) == -1) return false;
   _isAnimating = true;
@@ -194,7 +179,7 @@ int				            Displayer::display(bool anim) {
   _guienv->drawAll();
   _driver->endScene();
   updateFPS();
-  return manageEvents(anim);
+  return _receiver.checkEnd();
 }
 
 bool                  Displayer::isRunning() const {return _device->run();}
