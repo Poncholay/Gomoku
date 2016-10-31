@@ -5,12 +5,17 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:23:37 2016 wilmot_g
-** Last update Mon Oct 31 20:34:29 2016 wilmot_g
+** Last update Mon Oct 31 21:22:36 2016 wilmot_g
 */
 
 #include "Human.hh"
 
-Human::Human(Goban &g, Displayer &d, int nb, int x, int y) : _displayer(d), _goban(g) {_nb = nb; _x = x; _y = y;}
+Human::Human(Goban &g, Displayer &d, int nb, int x, int y) : _displayer(d), _goban(g) {
+  _nb = nb;
+  _x = x;
+  _y = y;
+}
+
 Human::~Human() {}
 
 void        Human::play(Referee r) {
@@ -20,8 +25,11 @@ void        Human::play(Referee r) {
   Block                       *placeholder;
   bool                        outside;
 
+  _displayer.mutex.lock();
   placeholder = new Block(0, 0, 0, Displayer::getSmgr()->getMesh(string(string("./assets/") + (_nb == 1 ? "white" : "black") + "go.obj").c_str()), Displayer::getSmgr());
-  if (placeholder->create(0.008) == -1) return;
+  _displayer.mutex.unlock();
+  if (placeholder->create(0.008) == -1)
+    return;
   do {
     _i = 0;
     _j = 0;
@@ -51,6 +59,8 @@ void        Human::play(Referee r) {
   } while (!_displayer.getReceiver().checkEnd() && (!r.checkPlay(_j, _i, _nb) || outside));
   if (!_displayer.getReceiver().checkEnd())
     _goban.addDraught(_j, _i, _nb, true);
+  _displayer.mutex.lock();
   placeholder->destroy();
   delete placeholder;
+  _displayer.mutex.unlock();
 }

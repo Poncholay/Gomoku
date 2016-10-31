@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Sun Oct 16 15:32:40 2016 wilmot_g
-** Last update Mon Oct 31 20:36:30 2016 wilmot_g
+** Last update Mon Oct 31 21:05:50 2016 wilmot_g
 */
 
 #include <iostream>
@@ -51,6 +51,7 @@ int           Game::play(int param) {
         t->join();
         delete t;
         t = NULL;
+        if (displayer.getReceiver().checkEnd()) break;
         displayer.animate();
       }
     }

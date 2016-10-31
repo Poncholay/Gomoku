@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:20:43 2016 wilmot_g
-** Last update Mon Oct 31 20:05:22 2016 wilmot_g
+** Last update Mon Oct 31 21:21:19 2016 wilmot_g
 */
 
 #ifndef HUMAN_HH_

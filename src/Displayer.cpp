@@ -15,7 +15,7 @@
 Displayer::Displayer(int x, int y) : _receiver() {
   _x = x;
   _y = y;
-  _time = 1.0;
+  _time = 0.5;
   _isAnimating = false;
   _error = false;
   _lastFPS = -1;
@@ -175,8 +175,10 @@ int				            Displayer::display(bool anim) {
   _driver->beginScene(true, true, irr::video::SColor(255, 100, 150, 255));
   if (isAnimating())
     updateAnim();
+  mutex.lock();
   _smgr->drawAll();
   _guienv->drawAll();
+  mutex.unlock();
   _driver->endScene();
   updateFPS();
   return _receiver.checkEnd();

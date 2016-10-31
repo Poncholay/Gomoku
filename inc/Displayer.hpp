@@ -21,6 +21,7 @@ using namespace std;
 # include "Axes.hpp"
 # include "EventHandler.hpp"
 # include "Dimensions.hh"
+# include "Mutex.hpp"
 
 enum {
 	ID_IsNotPickable = 0,
@@ -53,6 +54,8 @@ public:
     static irr::video::IVideoDriver	*_driver = NULL;
     return _driver = driver ? driver : _driver;
   }
+
+	Mutex													mutex;
 
 private:
 
