@@ -50,6 +50,7 @@ public:
   ~Menu();
 
   int   play();
+  void  endMenu();
   int   drawImg(int, int, int, int, int);
   int   drawParagraph(float, float, float, const char *);
   bool  isInit();

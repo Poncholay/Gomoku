@@ -16,7 +16,11 @@ int         main(int ac, char **av) {
 
   if (!menu.isInit())
     return (-1);
-  menu.play();
+  if (menu.play() == -1) {
+    menu.endMenu();
+    return (0);
+  }
+  menu.endMenu();
 
   Game      game;
   game.play(0);
