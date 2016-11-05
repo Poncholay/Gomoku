@@ -20,6 +20,13 @@
 #include <GLFW/glfw3.h>
 #include "demo.h"
 #include "perf.h"
+#include "SDL2/SDL_mixer.h"
+
+typedef struct  s_sounds
+{
+  Mix_Chunk     *apparition;
+  Mix_Music     *back;
+}               t_sounds;
 
 class         Menu {
   GLFWwindow* _window;
@@ -44,6 +51,7 @@ class         Menu {
   bool        _quit;
   const char  *_menu;
   const char  *_typeOfGame;
+  t_sounds		_sounds;
 
 public:
   Menu();
@@ -54,6 +62,8 @@ public:
   int   drawImg(int, int, int, int, int);
   int   drawParagraph(float, float, float, const char *);
   bool  isInit();
+  int   loadSound(const std::string &, Mix_Chunk **) const;
+  int   loadSounds();
 };
 
 #endif /* !MENU_HH_ */

@@ -29,7 +29,9 @@ function gomoku_project(_kind)
 			"glfw",
 			"X11",
 			"Xxf86vm",
-			"pthread"
+			"pthread",
+			"SDL2_mixer-2.0",
+			"SDL2"
 		}
 
 		files {

@@ -100,9 +100,41 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
   _play = false;
   _settings = false;
   _quit = false;
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1)
+    {
+      std::cerr << "Could not initiate MIX" << std::endl;
+      throw std::string("Cannot init song.");
+    }
+  Mix_AllocateChannels(2);
+  Mix_VolumeMusic(MIX_MAX_VOLUME/2);
+  loadSounds();
+  Mix_PlayMusic(_sounds.back, -1);
 }
 
 Menu::~Menu() {}
+
+int			Menu::loadSound(const std::string &path, Mix_Chunk **sound) const
+{
+  if ((*sound = Mix_LoadWAV(path.c_str())) == NULL)
+    {
+      std::cerr << "Could not load " << path << std::endl;
+      return (-1);
+    }
+  return (0);
+}
+
+int			Menu::loadSounds()
+{
+  // if ((loadSound("./assets/Menu/chinese_music.wav", &_sounds.apparition)) == -1)
+  //   return (-1);
+  if ((_sounds.back = Mix_LoadMUS("./assets/Menu/backMusic.wav")) == NULL)
+    {
+      std::cerr << "Could not load backMusic" << std::endl;
+      return (-1);
+    }
+  return (1);
+}
 
 void 			Menu::endMenu()
 {
@@ -118,7 +150,7 @@ int        Menu::play()
   while (!glfwWindowShouldClose(_window))
     {
 			if (_play)
-				break;
+				return (0);
 			else if (_quit)
 				return (-1);
       _mouseClickPosX = -1;
@@ -172,7 +204,7 @@ int        Menu::play()
       glfwSwapBuffers(_window);
       glfwPollEvents();
     }
-  return (0);
+  return (-1);
 }
 
 bool        Menu::isInit()
