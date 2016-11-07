@@ -50,7 +50,10 @@ class         Menu {
   bool        _quit;
   const char  *_menu;
   const char  *_typeOfGame;
+  const char  *_settingsText;
   t_sounds		_sounds;
+  int         _typeOfGameValue;
+  bool        _click;
 
 public:
   Menu();

@@ -5,7 +5,7 @@
 ** Login   <saurs_f@epitech.net>
 **
 ** Started on  Mon Nov 07 22:35:02 2016 saurs_f
-** Last update Mon Nov 07 22:35:47 2016 wilmot_g
+** Last update Mon Nov 07 22:52:44 2016 wilmot_g
 */
 
 #include "Menu.hh"
@@ -30,18 +30,13 @@ static void key(GLFWwindow* window, int key, int scancode, int action, int mods)
 	NVG_NOTUSED(mods);
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-		blowup = !blowup;
-	if (key == GLFW_KEY_S && action == GLFW_PRESS)
-		screenshot = 1;
-	if (key == GLFW_KEY_P && action == GLFW_PRESS)
-		premult = !premult;
 }
 
-Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA\n\nIA vs IA\n\nEXIT")
+Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA\n\nIA vs IA\n\nEXIT"), _settingsText("EXIT")
 {
   _init = true;
   _vg = NULL;
+	_typeOfGameValue = -1;
   if (!glfwInit()) {
     cerr << "Failed to init GLFW." << endl;
     _init = false;
@@ -113,6 +108,7 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
   _quit = false;
 
 	Sounds::get().playMusic("menu");
+	_click = false;
 }
 
 Menu::~Menu() {}
@@ -125,23 +121,27 @@ void 			Menu::endMenu()
   glfwTerminate();
 }
 
+int createParticles(GLFWwindow *window, int width, int height);
+
 int        Menu::play()
 {
+	createParticles(_window, _windowWidth, _windowHeight);
   _previousTime = glfwGetTime();
   while (!glfwWindowShouldClose(_window))
     {
-			if (_play)
-				return (0);
-			else if (_quit)
+
+			if (_typeOfGameValue != -1)
+				return (_typeOfGameValue);
+			if (_quit)
 				return (-1);
       _mouseClickPosX = -1;
       _mouseClickPosY = -1;
-//      cout << "play " << _play << " settings " << _settings << " quit " << _quit << endl;
+
       //get the fps and set value
       _timer = glfwGetTime();
       _duration = _timer - _previousTime;
       _previousTime = _timer;
-      updateGraph(&_fps, _duration);
+      // updateGraph(&_fps, _duration);
 
       // get info about window and environment
       glfwGetCursorPos(_window, &_mousePosX, &_mousePosY);
@@ -161,16 +161,19 @@ int        Menu::play()
       glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 
       //begin update window
-      if (glfwGetMouseButton(_window, GLFW_MOUSE_BUTTON_LEFT))
-        {
-          _mouseClickPosX = _mousePosX;
-          _mouseClickPosY = _mousePosY;
-        }
+			int state = glfwGetMouseButton(_window, GLFW_MOUSE_BUTTON_LEFT);
+			if (state == GLFW_PRESS && !_click) {
+      	_mouseClickPosX = _mousePosX;
+      	_mouseClickPosY = _mousePosY;
+				_click = true;
+			} else if (state == GLFW_RELEASE) {
+				_click = false;
+			}
       nvgBeginFrame(_vg, _windowWidth, _windowHeight, pxRatio);
 
       //print background
       drawImg(0, 0, _windowWidth, _windowHeight, _backgroundImage);
-      drawParagraph(_windowWidth / 2 - 50, _windowHeight / 2 - 50, 200, _play ? _typeOfGame : _menu);
+      drawParagraph(_windowWidth / 2 - 50, _windowHeight / 2 - 50, 200, _play ? _typeOfGame : _settings ? _settingsText : _menu);
 
         //renderDemo(_vg, _mousePosX, _mousePosY, _windowWidth, _windowHeight, _timer, blowup, &_data);
       //      renderGraph(_vg, 5, 5, &_fps);
@@ -248,12 +251,24 @@ int             Menu::drawParagraph(float x, float y, float width, const char *t
 			nvgFillColor(_vg, nvgRGBA(255,255,255,255));
 			nvgText(_vg, x, y, row->start, row->end);
 			y += lineh;
-      if (clicked && pos == 1)
-        _play = true;
-      else if (clicked && pos == 2)
-        _settings = true;
-      else if (clicked && pos == 3)
-        _quit = true;
+			if (_click) {
+				if (!_play && !_settings) {
+		      if (clicked && pos == 1)
+		        _play = true;
+		      else if (clicked && pos == 2)
+		        _settings = true;
+		      else if (clicked && pos == 3)
+		        _quit = true;
+				} else if (_play) {
+					if (clicked && (pos == 1 || pos == 2 || pos == 3))
+		        _typeOfGameValue = pos;
+					else if (clicked && pos == 4)
+				    _play = false;
+				} else if (_settings) {
+					if (clicked && pos == 1)
+						_settings = false;
+				}
+			}
 		}
 		start = rows[nrows-1].next;
 	}
