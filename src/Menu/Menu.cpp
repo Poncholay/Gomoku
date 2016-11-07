@@ -198,7 +198,6 @@ int        Menu::play()
       //print background
       drawImg(0, 0, _windowWidth, _windowHeight, _backgroundImage);
       drawParagraph(_windowWidth / 2 - 50, _windowHeight / 2 - 50, 200, _play ? _typeOfGame : _settings ? _settingsText : _menu);
-			drawCheckBox("Rules", 200, 20, 20, 20);
         //renderDemo(_vg, _mousePosX, _mousePosY, _windowWidth, _windowHeight, _timer, blowup, &_data);
       //      renderGraph(_vg, 5, 5, &_fps);
 
@@ -226,9 +225,9 @@ void 	Menu::drawCheckBox(const char* text, float x, float y, float w, float h)
 	char icon[8];
 	NVG_NOTUSED(w);
 
-	nvgFontSize(_vg, 18.0f);
+	nvgFontSize(_vg, 38.0f);
 	nvgFontFace(_vg, "sans");
-	nvgFillColor(_vg, nvgRGBA(255,255,255,160));
+	nvgFillColor(_vg, nvgRGBA(255,255,255,255));
 
 	nvgTextAlign(_vg,NVG_ALIGN_LEFT|NVG_ALIGN_MIDDLE);
 	nvgText(_vg, x+28,y+h*0.5f,text, NULL);
@@ -277,7 +276,6 @@ int             Menu::drawParagraph(float x, float y, float width, const char *t
   int           pos;
 
 	nvgSave(_vg);
-
 	nvgFontSize(_vg, 38.0f);
 	nvgFontFace(_vg, "sans");
 	nvgTextAlign(_vg, NVG_ALIGN_LEFT|NVG_ALIGN_TOP);
@@ -286,6 +284,12 @@ int             Menu::drawParagraph(float x, float y, float width, const char *t
 	start = text;
 	end = text + strlen(text);
   pos = 0;
+	if (_settings) {
+		drawCheckBox("RULES", x, y, width, width);
+		y += lineh;
+		if (_mouseClickPosX > x && _mouseClickPosX < (x + width) && _mouseClickPosY >= y && _mouseClickPosY < (y + lineh))
+			_options = !_options;
+	}
 	while ((nrows = nvgTextBreakLines(_vg, start, end, width, rows, 3))) {
 		for (i = 0; i < nrows; i++) {
 			NVGtextRow* row = &rows[i];
