@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Sun Oct 16 15:32:40 2016 wilmot_g
-** Last update Mon Oct 31 21:05:50 2016 wilmot_g
+** Last update Mon Nov 07 11:34:57 2016 wilmot_g
 */
 
 #include <iostream>
@@ -34,6 +34,7 @@ int           Game::play(int param) {
   atomic<bool>        done(true);
   thread              *t = NULL;
 
+  goban.setReferee(&referee);
   //TODO : check param and create accordingly
   // players.push_back(new AI(goban, 1, 1));
   players.push_back(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y));

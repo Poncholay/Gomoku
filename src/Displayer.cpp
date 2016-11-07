@@ -72,8 +72,6 @@ bool                  Displayer::placeDraught(int x, int y, int p) {
 
   if (x >= _x || y >= _y || x < 0 || y < 0)
     return false;
-  if (_map[y][x])
-    removeDraught(x, y);
   float posX = 0.0130 - y * size / (_x - 1);
   float posY = 1;
   float posZ = 0.1595 - x * size / (_y - 1);
@@ -82,14 +80,22 @@ bool                  Displayer::placeDraught(int x, int y, int p) {
   _isAnimating = true;
   _animateTime = chrono::high_resolution_clock::now();
   _then = _device->getTimer()->getTime();
+  _time = 0.5;
   return true;
 }
 
 bool                  Displayer::removeDraught(int x, int y) {
   if (x >= _x || y >= _y || x < 0 || y < 0)
     return false;
-  _map[y][x]->destroy();
-  delete _map[y][x];
+  if (_map[y][x]) {
+    _map[y][x]->destroy();
+    delete _map[y][x];
+  }
+  _map[y][x] = NULL;
+  _isAnimating = true;
+  _animateTime = chrono::high_resolution_clock::now();
+  _then = _device->getTimer()->getTime();
+  _time = 0;
   return true;
 }
 
@@ -98,12 +104,14 @@ void                  Displayer::updateAnim(bool force) {
   const irr::u32		  now = _device->getTimer()->getTime();
   const irr::f32		  frameDeltaTime = (irr::f32)(now - _then) / 1000.f;
 
-  irr::core::vector3df pos = _map[_animY][_animX]->getBlock()->getPosition();
-  irr::core::vector3df extent = _map[_animY][_animX]->getExtent();
+  if (get<2>(_anim.front()) == 0)
+    return;
+  irr::core::vector3df pos = _map[get<1>(_anim.front())][get<0>(_anim.front())]->getBlock()->getPosition();
+  irr::core::vector3df extent = _map[get<1>(_anim.front())][get<0>(_anim.front())]->getExtent();
   pos.Y -= frameDeltaTime * MOVEMENT_SPEED;
   pos.Y = pos.Y < 0.690 * extent.Y ? 0.690 * extent.Y : pos.Y;
   if (force) pos.Y = 0.690 * extent.Y;
-  _map[_animY][_animX]->getBlock()->setPosition(pos);
+    _map[get<1>(_anim.front())][get<0>(_anim.front())]->getBlock()->setPosition(pos);
   _then = now;
 }
 
@@ -113,18 +121,24 @@ bool                  Displayer::isAnimating() {
       chrono::duration_cast<chrono::microseconds>(_animateTime.time_since_epoch()).count() + static_cast<long>(_time * 1000000))
     return true;
   updateAnim(true);
+  _anim.pop_front();
   _isAnimating = false;
-  return false;
+  return animate();
 }
 
 void                  Displayer::setAnimate(int x, int y, int p) {
-  _animX = x;
-  _animY = y;
-  _p = p;
+  tuple<int, int, int>  anim;
+
+  get<0>(anim) = x;
+  get<1>(anim) = y;
+  get<2>(anim) = p;
+  _anim.push_back(anim);
 }
 
 bool                  Displayer::animate() {
-  return _p != 0 ? placeDraught(_animX, _animY, _p) : removeDraught(_animX, _animY);
+  if (_anim.size() == 0)
+    return false;
+  return get<2>(_anim.front()) != 0 ? placeDraught(get<0>(_anim.front()), get<1>(_anim.front()), get<2>(_anim.front())) : removeDraught(get<0>(_anim.front()), get<1>(_anim.front()));
 }
 
 bool                  Displayer::instanciate() {
