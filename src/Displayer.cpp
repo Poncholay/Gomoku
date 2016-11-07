@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <unistd.h>
 #include "Displayer.hpp"
+#include "Sounds.hpp"
 
 Displayer::Displayer(int x, int y) : _receiver() {
   _x = x;
@@ -72,6 +73,7 @@ bool                  Displayer::placeDraught(int x, int y, int p) {
 
   if (x >= _x || y >= _y || x < 0 || y < 0)
     return false;
+  Sounds::get().playSound("play");
   float posX = 0.0130 - y * size / (_x - 1);
   float posY = 1;
   float posZ = 0.1595 - x * size / (_y - 1);
@@ -87,6 +89,7 @@ bool                  Displayer::placeDraught(int x, int y, int p) {
 bool                  Displayer::removeDraught(int x, int y) {
   if (x >= _x || y >= _y || x < 0 || y < 0)
     return false;
+  Sounds::get().playSound("pop");
   if (_map[y][x]) {
     _map[y][x]->destroy();
     delete _map[y][x];

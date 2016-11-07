@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 13:38:26 2016 wilmot_g
-** Last update Mon Oct 31 13:44:45 2016 wilmot_g
+** Last update Mon Nov 07 22:34:47 2016 wilmot_g
 */
 
 #ifndef MENU_HH_
@@ -25,7 +25,6 @@
 typedef struct  s_sounds
 {
   Mix_Chunk     *apparition;
-  Mix_Music     *back;
 }               t_sounds;
 
 class         Menu {
@@ -62,8 +61,6 @@ public:
   int   drawImg(int, int, int, int, int);
   int   drawParagraph(float, float, float, const char *);
   bool  isInit();
-  int   loadSound(const std::string &, Mix_Chunk **) const;
-  int   loadSounds();
 };
 
 #endif /* !MENU_HH_ */

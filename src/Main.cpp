@@ -5,13 +5,22 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 16:30:25 2016 wilmot_g
-** Last update Mon Oct 31 20:35:55 2016 wilmot_g
+** Last update Mon Nov 07 22:48:31 2016 wilmot_g
 */
 
+#include "Sounds.hpp"
 #include "Game.hh"
 #include "Menu.hh"
+#include "SdlError.hpp"
 
 int         main(int ac, char **av) {
+  try {
+    Sounds::get().init();
+  } catch(const SdlError &e) {
+    cerr << e.what() << endl;
+    return -1;
+  }
+  
   Menu      menu;
 
   if (!menu.isInit())

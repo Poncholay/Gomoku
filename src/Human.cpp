@@ -5,10 +5,11 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:23:37 2016 wilmot_g
-** Last update Mon Nov 07 10:26:37 2016 wilmot_g
+** Last update Mon Nov 07 22:51:29 2016 wilmot_g
 */
 
 #include "Human.hh"
+#include "Sounds.hpp"
 
 Human::Human(Goban &g, Displayer &d, int nb, int x, int y) : _displayer(d), _goban(g) {
   _nb = nb;
