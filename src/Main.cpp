@@ -20,15 +20,17 @@ int         main(int ac, char **av) {
     cerr << e.what() << endl;
     return -1;
   }
-  
+
   Menu      menu;
+  int value;
 
   if (!menu.isInit())
     return (-1);
-  if (menu.play() == -1) {
+  if ((value = menu.play()) == -1) {
     menu.endMenu();
     return (0);
   }
+  std::cout << value << std::endl;
   menu.endMenu();
 
   Game      game;

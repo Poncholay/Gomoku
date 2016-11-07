@@ -819,11 +819,11 @@ int loadMenuData(NVGcontext* vg, MenuData* data)
 	// 	}
 	// }
 
-	// data->fontIcons = nvgCreateFont(vg, "icons", "../example/entypo.ttf");
-	// if (data->fontIcons == -1) {
-	// 	printf("Could not add font icons.\n");
-	// 	return -1;
-	// }
+	data->fontIcons = nvgCreateFont(vg, "icons", "./assets/Menu/entypo.ttf");
+	if (data->fontIcons == -1) {
+		printf("Could not add font icons.\n");
+		return -1;
+	}
 	data->fontNormal = nvgCreateFont(vg, "sans", "./assets/Menu/Roboto-Regular.ttf");
 	if (data->fontNormal == -1) {
 		printf("Could not add font italic.\n");

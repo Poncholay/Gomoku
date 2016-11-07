@@ -47,6 +47,7 @@ class         Menu {
   const char  *_settingsText;
   int         _typeOfGameValue;
   bool        _click;
+  bool        _options;
 
 public:
   Menu();
@@ -57,6 +58,7 @@ public:
   int   drawImg(int, int, int, int, int);
   int   drawParagraph(float, float, float, const char *);
   bool  isInit();
+  void 	drawCheckBox(const char*, float, float, float, float);
 };
 
 #endif /* !MENU_HH_ */

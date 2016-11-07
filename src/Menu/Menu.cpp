@@ -15,6 +15,8 @@
 
 using namespace std;
 
+#define ICON_CHECK 0x2713
+
 int blowup = 0;
 int screenshot = 0;
 int premult = 0;
@@ -22,6 +24,27 @@ int premult = 0;
 void printErrorFunc(int error, const char *desc)
 {
 	cerr << "GLFW error " << error << ": " << desc << endl;
+}
+
+static char* cpToUTF8(int cp, char* str)
+{
+	int n = 0;
+	if (cp < 0x80) n = 1;
+	else if (cp < 0x800) n = 2;
+	else if (cp < 0x10000) n = 3;
+	else if (cp < 0x200000) n = 4;
+	else if (cp < 0x4000000) n = 5;
+	else if (cp <= 0x7fffffff) n = 6;
+	str[n] = '\0';
+	switch (n) {
+	case 6: str[5] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0x4000000;
+	case 5: str[4] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0x200000;
+	case 4: str[3] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0x10000;
+	case 3: str[2] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0x800;
+	case 2: str[1] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0xc0;
+	case 1: str[0] = cp;
+	}
+	return str;
 }
 
 static void key(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -42,7 +65,7 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
     _init = false;
     return ;
   }
-  initGraph(&_fps, GRAPH_RENDER_FPS, "Frame Time");
+  // initGraph(&_fps, GRAPH_RENDER_FPS, "Frame Time");
 
   //set the callback function for all errors
   glfwSetErrorCallback(printErrorFunc);
@@ -109,6 +132,7 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
 
 	Sounds::get().playMusic("menu");
 	_click = false;
+	_options = false;
 }
 
 Menu::~Menu() {}
@@ -174,7 +198,7 @@ int        Menu::play()
       //print background
       drawImg(0, 0, _windowWidth, _windowHeight, _backgroundImage);
       drawParagraph(_windowWidth / 2 - 50, _windowHeight / 2 - 50, 200, _play ? _typeOfGame : _settings ? _settingsText : _menu);
-
+			drawCheckBox("Rules", 200, 20, 20, 20);
         //renderDemo(_vg, _mousePosX, _mousePosY, _windowWidth, _windowHeight, _timer, blowup, &_data);
       //      renderGraph(_vg, 5, 5, &_fps);
 
@@ -194,6 +218,34 @@ int        Menu::play()
 bool        Menu::isInit()
 {
   return (_init);
+}
+
+void 	Menu::drawCheckBox(const char* text, float x, float y, float w, float h)
+{
+	NVGpaint bg;
+	char icon[8];
+	NVG_NOTUSED(w);
+
+	nvgFontSize(_vg, 18.0f);
+	nvgFontFace(_vg, "sans");
+	nvgFillColor(_vg, nvgRGBA(255,255,255,160));
+
+	nvgTextAlign(_vg,NVG_ALIGN_LEFT|NVG_ALIGN_MIDDLE);
+	nvgText(_vg, x+28,y+h*0.5f,text, NULL);
+
+	bg = nvgBoxGradient(_vg, x+1,y+(int)(h*0.5f)-9+1, 18,18, 3,3, nvgRGBA(255,255,255,32), nvgRGBA(255,255,255,92));
+	nvgBeginPath(_vg);
+	nvgRoundedRect(_vg, x+1,y+(int)(h*0.5f)-9, 18,18, 3);
+	nvgFillPaint(_vg, bg);
+	nvgFill(_vg);
+
+	if (_options) {
+		nvgFontSize(_vg, 40);
+		nvgFontFace(_vg, "icons");
+		nvgFillColor(_vg, nvgRGBA(255,255,255,128));
+		nvgTextAlign(_vg,NVG_ALIGN_CENTER|NVG_ALIGN_MIDDLE);
+		nvgText(_vg, x+9+2, y+h*0.5f, cpToUTF8(ICON_CHECK,icon), NULL);
+	}
 }
 
 int         Menu::drawImg(int posX, int posY, int width, int height, int refImg)
