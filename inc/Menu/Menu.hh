@@ -20,12 +20,6 @@
 #include <GLFW/glfw3.h>
 #include "demo.h"
 #include "perf.h"
-#include "SDL2/SDL_mixer.h"
-
-typedef struct  s_sounds
-{
-  Mix_Chunk     *apparition;
-}               t_sounds;
 
 class         Menu {
   GLFWwindow* _window;
@@ -51,7 +45,6 @@ class         Menu {
   const char  *_menu;
   const char  *_typeOfGame;
   const char  *_settingsText;
-  t_sounds		_sounds;
   int         _typeOfGameValue;
   bool        _click;
 

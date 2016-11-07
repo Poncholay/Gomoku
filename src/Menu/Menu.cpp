@@ -180,11 +180,11 @@ int        Menu::play()
 
       //end update window
       nvgEndFrame(_vg);
-      if (screenshot)
-        {
-          screenshot = 0;
-          saveScreenShot(_frameBufferWidth, _frameBufferHeight, premult, "dump.png");
-        }
+      // if (screenshot)
+      //   {
+      //     screenshot = 0;
+      //     saveScreenShot(_frameBufferWidth, _frameBufferHeight, premult, "dump.png");
+      //   }
       glfwSwapBuffers(_window);
       glfwPollEvents();
     }
