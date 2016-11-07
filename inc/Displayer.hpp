@@ -15,6 +15,7 @@ using namespace std;
 
 # include <vector>
 # include <tuple>
+# include <list>
 # include <chrono>
 # include "IPlayer.hh"
 # include "Block.hpp"
@@ -91,7 +92,7 @@ private:
   chrono::high_resolution_clock::time_point _animateTime;
 
   bool                          _isAnimating;
-	vector<tuple<int, int, int> > _anim;
+	list<tuple<int, int, int> >   _anim;
   // int                           _animX;
   // int                           _animY;
   // int                           _p;
