@@ -98,12 +98,12 @@ void                  Displayer::updateAnim(bool force) {
   const irr::u32		  now = _device->getTimer()->getTime();
   const irr::f32		  frameDeltaTime = (irr::f32)(now - _then) / 1000.f;
 
-  irr::core::vector3df pos = _map[_animY][_animX]->getBlock()->getPosition();
-  irr::core::vector3df extent = _map[_animY][_animX]->getExtent();
+  irr::core::vector3df pos = _map[get<1>(_anim[0])][get<0>(_anim[0])]->getBlock()->getPosition();
+  irr::core::vector3df extent = _map[get<1>(_anim[0])][get<0>(_anim[0])]->getExtent();
   pos.Y -= frameDeltaTime * MOVEMENT_SPEED;
   pos.Y = pos.Y < 0.690 * extent.Y ? 0.690 * extent.Y : pos.Y;
   if (force) pos.Y = 0.690 * extent.Y;
-  _map[_animY][_animX]->getBlock()->setPosition(pos);
+  _map[get<1>(_anim[0])][get<0>(_anim[0])]->getBlock()->setPosition(pos);
   _then = now;
 }
 
@@ -114,17 +114,31 @@ bool                  Displayer::isAnimating() {
     return true;
   updateAnim(true);
   _isAnimating = false;
+  animate();
   return false;
 }
 
 void                  Displayer::setAnimate(int x, int y, int p) {
-  _animX = x;
-  _animY = y;
-  _p = p;
+tuple<int, int, int>  anim;
+
+
+get<0>(anim) = x;
+get<1>(anim) = y;
+get<2>(anim) = p;
+
+_anim.push_back(anim);
+  // _animX = x;
+  // _animY = y;
+  // _p = p;
 }
 
 bool                  Displayer::animate() {
-  return _p != 0 ? placeDraught(_animX, _animY, _p) : removeDraught(_animX, _animY);
+  if (_anim.size()) {
+    // _p != 0 ? placeDraught(_animX, _animY, _p) : removeDraught(_animX, _animY);
+    get<2>(_anim[0]) != 0 ? placeDraught(get<0>(_anim[0]), get<1>(_anim[0]), get<2>(_anim[0])) : removeDraught(get<0>(_anim[0]), get<1>(_anim[0]));
+    return true;
+  }
+  return false;
 }
 
 bool                  Displayer::instanciate() {

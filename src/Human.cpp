@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:23:37 2016 wilmot_g
-** Last update Mon Oct 31 21:22:36 2016 wilmot_g
+** Last update Mon Nov 07 10:26:37 2016 wilmot_g
 */
 
 #include "Human.hh"
@@ -56,7 +56,7 @@ void        Human::play(Referee r) {
         placeholder->setVisible(false);
       }
     } while (!_displayer.getReceiver().checkEnd() && !_displayer.getReceiver().mouseIsPressed());
-  } while (!_displayer.getReceiver().checkEnd() && (!r.checkPlay(_j, _i, _nb) || outside));
+  } while (!_displayer.getReceiver().checkEnd() && (r.checkPlay(_j, _i, _nb) == REPLAY || outside));
   if (!_displayer.getReceiver().checkEnd())
     _goban.addDraught(_j, _i, _nb, true);
   _displayer.mutex.lock();

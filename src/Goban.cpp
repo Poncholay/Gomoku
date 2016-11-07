@@ -41,12 +41,16 @@ std::vector<int>  &Goban::operator[](int box) {
 }
 
 void Goban::addDraught(int x, int y, int player, bool move) {
-  if (move) _displayer.setAnimate(x, y, player);
+  if (move) {
+    _displayer.setAnimate(x, y, player);
+    if (_r) _r->updatePair(x, y, player);
+  }
   _board[y].at(x) = player;
 }
 
 void Goban::removeDraught(int x, int y, bool move) {
-  if (move) _displayer.setAnimate(x, y, 0);
+  if (move)
+    _displayer.setAnimate(x, y, 0);
   _board[y].at(x) = 0;
 }
 
@@ -58,6 +62,7 @@ void Goban::printBoard() const {
   }
 }
 
+void Goban::setReferee(Referee *r)   {_r = r;}
 int Goban::getXBoard() const {return _xBoard;}
 int Goban::getYBoard() const {return _yBoard;}
 std::vector<std::vector<int> >  Goban::getBoard() const {return _board;}

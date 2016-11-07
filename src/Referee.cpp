@@ -50,8 +50,8 @@ int Referee::checkWinByPair(int x, int y, int p) {
 }
 
 void Referee::removePair(int x, int y, int x2, int y2, int player) {
-  goban.removeDraught(x, y);
-  goban.removeDraught(x2, y2);
+  goban.removeDraught(x, y, true);
+  goban.removeDraught(x2, y2, true);
   player == 1 ? nbPairplayer1++ : nbPairplayer2++;
 }
 

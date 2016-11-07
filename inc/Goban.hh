@@ -14,15 +14,18 @@
 # include <iostream>
 # include <string>
 # include <vector>
+# include "Referee.hh"
 # include "Displayer.hpp"
 # include "Dimensions.hh"
 
 class Displayer;
+class Referee;
 
 class Goban {
 private:
   std::vector<std::vector<int> >      _board;
   Displayer                           &_displayer;
+  Referee                             *_r;
   int _xBoard;
   int _yBoard;
 
@@ -33,6 +36,7 @@ public:
 
   Goban &operator=(Goban &);
   std::vector<int>   &operator[](int);
+  void setReferee(Referee *r);
   int getXBoard() const;
   int getYBoard() const;
   std::vector<std::vector<int> >  getBoard() const;

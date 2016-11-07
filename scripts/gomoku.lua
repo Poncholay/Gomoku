@@ -16,7 +16,12 @@ function gomoku_project(_kind)
 		includedirs {
 			GOMOKU_DIR .. "inc",
 			GOMOKU_DIR .. "inc/Irrlicht",
-			GOMOKU_DIR .. "inc/Menu"
+			GOMOKU_DIR .. "inc/Menu",
+			GOMOKU_DIR .. "inc/SDL"
+		}
+
+		linkoptions {
+			"-Wl,-rpath,../../../lib/Linux"
 		}
 
 		links {
@@ -30,8 +35,8 @@ function gomoku_project(_kind)
 			"X11",
 			"Xxf86vm",
 			"pthread",
-			"SDL2_mixer-2.0",
-			"SDL2"
+			"SDL2",
+			"SDL2_mixer-2.0"
 		}
 
 		files {

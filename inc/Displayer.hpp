@@ -14,6 +14,7 @@
 using namespace std;
 
 # include <vector>
+# include <tuple>
 # include <chrono>
 # include "IPlayer.hh"
 # include "Block.hpp"
@@ -90,11 +91,12 @@ private:
   chrono::high_resolution_clock::time_point _animateTime;
 
   bool                          _isAnimating;
-  int                           _animX;
-  int                           _animY;
+	vector<tuple<int, int, int> > _anim;
+  // int                           _animX;
+  // int                           _animY;
+  // int                           _p;
   int                           _x;
   int                           _y;
-  int                           _p;
   float                         _time;
 };
 
