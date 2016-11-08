@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Tue Oct 25 13:41:48 2016 Adrien Milcent
+// Last update Tue Nov  8 13:13:35 2016 Combaud Alban
 //
 
 #include "Referee.hh"
@@ -183,7 +183,7 @@ bool Referee::checkWinBy5(int x, int y, int player) {
   for (int i = xsave; i < goban.getXBoard(); i++) {
     count == 0 ? xsave = i : 0;
     goban[y][i] == player ? count++ : count = 0;
-    if (count >= 5 && checkHorizon(xsave, y, player, 5))
+    if (count >= 5 && (checkHorizon(xsave, y, player, 5) || !_advanced))
       return true;
     else if (count >= 5)
       i = goban.getXBoard();
@@ -194,7 +194,7 @@ bool Referee::checkWinBy5(int x, int y, int player) {
   for (int i = ysave; i < goban.getYBoard(); i++) {
     count == 0 ? ysave = i : 0;
     goban[i][x] == player ? count++ : count = 0;
-    if (count >= 5 && checkVertical(x, ysave, player, 5))
+    if (count >= 5 && (checkVertical(x, ysave, player, 5) || !_advanced))
       return true;
     else if (count >= 5)
       i = goban.getYBoard();
@@ -207,7 +207,7 @@ bool Referee::checkWinBy5(int x, int y, int player) {
   for (int ytmp = y - tmp; ytmp < goban.getYBoard() && xtmp < goban.getXBoard(); ytmp++) {
     count == 0 ? xsave = xtmp, ysave = ytmp : 0;
     goban[ytmp][xtmp++] == player ? count++ : count = 0;
-    if (count >= 5 && checkDiagoDown(xsave, ysave, player, 5))
+    if (count >= 5 && (checkDiagoDown(xsave, ysave, player, 5) || !_advanced))
       return true;
     else if (count >= 5)
       ytmp = goban.getYBoard();
@@ -222,7 +222,7 @@ bool Referee::checkWinBy5(int x, int y, int player) {
   for (int ytmp = y + tmp; ytmp >= 0 && xtmp < goban.getXBoard(); ytmp--) {
     count == 0 ? xsave = xtmp, ysave = ytmp : 0;
     goban[ytmp][xtmp++] == player ? count++ : count = 0;
-    if (count == 5 && checkDiagoUp(xsave, ysave, player, 5))
+    if (count == 5 && (checkDiagoUp(xsave, ysave, player, 5) || !_advanced))
       return true;
     else if (count >= 5)
       ytmp = -1;
@@ -346,7 +346,7 @@ Result  Referee::checkWin(int x, int y, int player) {
       goban.removeDraught(x, y);
       return WIN;
     }
-  if (checkRules(x, y, player, 0)) {
+  if (_advanced && checkRules(x, y, player, 0)) {
     goban.removeDraught(x, y);
     return REPLAY;
   }
