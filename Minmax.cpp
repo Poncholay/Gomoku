@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 13:59:50 2016 Adrien Milcent
-// Last update Tue Oct 25 13:42:25 2016 Adrien Milcent
+// Last update Tue Nov  8 11:56:33 2016 Adrien Milcent
 //
 
 #include "Minmax.hh"
@@ -21,9 +21,9 @@ Minmax::~Minmax() {
 }
 
 std::pair<int, int> Minmax::loop(std::vector<std::vector<int> > &goban, int nbPlayer, Referee referee) {
-  int max = -100000;
+  int min_nb = 100000;
   int nbTurn = _nbTurn;
-  int tmp, maxi, maxj, nbOpponent;
+  int tmp = 0, mini = 0, minj = 0, nbOpponent = 0;
 
   if (nbPlayer == 1)
     nbOpponent = 2;
@@ -39,49 +39,48 @@ std::pair<int, int> Minmax::loop(std::vector<std::vector<int> > &goban, int nbPl
         else if (nbTurn == 0)
           tmp = eval(goban, nbPlayer, false, nbPlayer);
         else
-          tmp  = min(goban, nbTurn - 1, nbPlayer, nbOpponent, referee);
-        if (tmp > max) {
-          max = tmp;
-          maxi = i;
-          maxj = j;
+          tmp  = max(goban, nbTurn - 1, nbPlayer, nbOpponent, referee);
+        if (tmp > min_nb) {
+          min_nb = tmp;
+          mini = i;
+          minj = j;
         }
         goban[i][j] = 0;
       }
     }
   }
-  std::pair<int, int> result = std::pair<int, int> (maxj, maxi);
+  std::pair<int, int> result = std::pair<int, int> (minj, mini);
   return result;
 }
 
 int Minmax::min(std::vector<std::vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpponent, Referee referee) {
-  int min = 100000;
-  int tmp;
-  int lel;
+  int min_nb = 100000;
+  int tmp = 0;
 
   for (unsigned int i = 0; i < goban.size(); ++i) {
     for (unsigned int j = 0; j < goban.size(); ++j) {
       if (goban[i][j] == 0) {
         goban[i][j] = nbPlayer;
-        if ((lel = referee.checkPlay(j, i, nbPlayer)) == WIN)
+        if (referee.checkPlay(j, i, nbPlayer) == WIN)
           tmp = eval(goban, nbPlayer, true, nbPlayer);
         else if (nbTurn == 0)
           tmp = eval(goban, nbPlayer, false, nbPlayer);
         else
           tmp = max(goban, nbTurn - 1, nbPlayer, nbOpponent, referee);
 
-        if (tmp < min) {
-          min = tmp;
+        if (tmp < min_nb) {
+          min_nb = tmp;
         }
         goban[i][j] = 0;
       }
     }
   }
-  return min;
+  return min_nb;
 }
 
 int Minmax::max(std::vector<std::vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpponent, Referee referee) {
-  int max = -100000;
-  int tmp;
+  int max_nb = -100000;
+  int tmp = 0;
 
   for (unsigned int i = 0; i < goban.size(); ++i) {
     for (unsigned int j = 0; j < goban.size(); ++j) {
@@ -94,14 +93,14 @@ int Minmax::max(std::vector<std::vector<int> > &goban, int nbTurn, int nbPlayer,
         else
           tmp = min(goban, nbTurn - 1, nbPlayer, nbOpponent, referee);
 
-        if (tmp > max) {
-          max = tmp;
+        if (tmp > max_nb) {
+          max_nb = tmp;
         }
         goban[i][j] = 0;
       }
     }
   }
-  return max;
+  return max_nb;
 }
 
 void Minmax::checkDiag(std::vector<std::vector<int> > &goban, int &seriej1, int &seriej2, int gobanLength, int length, int i, int j, int nb) {
@@ -200,9 +199,11 @@ int Minmax::eval(std::vector<std::vector<int> > &goban, int nbPlayer, bool win, 
       }
     }
     if (nbPlayer == nbWinner)
-      return 1000 - nbDraughts;
-    else
-      return -1000 + nbDraughts;
+      return 10000 - nbDraughts;
+    else {
+      std::cout << "c'est la merde: " << -10000 + nbDraughts << std::endl;
+      return -10000 + nbDraughts;
+    }
   }
   else {
     // countSeries(goban, seriej1, seriej2, 5);

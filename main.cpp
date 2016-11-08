@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 17:25:59 2016 Adrien Milcent
-// Last update Tue Oct 25 13:36:43 2016 Adrien Milcent
+// Last update Tue Nov  8 11:59:18 2016 Adrien Milcent
 //
 
 #include "Referee.hh"
@@ -13,7 +13,7 @@
 
 int main()
 {
-  Goban goban(6, 6);
+  Goban goban(19, 19);
   Referee referee(goban);
   AI      ai1(goban, 1, 1);
   AI      ai2(goban, 2, 1);
