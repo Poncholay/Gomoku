@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Sun Oct 16 15:32:40 2016 wilmot_g
-** Last update Tue Nov 08 11:19:21 2016 wilmot_g
+** Last update Tue Nov  8 13:32:52 2016 Adrien Milcent
 */
 
 #include <iostream>
@@ -17,7 +17,7 @@
 #include "Human.hh"
 #include "Sounds.hpp"
 
-Game::Game()  {_players = 2;}
+Game::Game()  {_players = 3;}
 Game::~Game() {}
 
 void          Game::doPlay(IPlayer *player, Referee referee, atomic<bool> &done) {

@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 16:30:25 2016 wilmot_g
-** Last update Mon Nov 07 22:48:31 2016 wilmot_g
+** Last update Tue Nov  8 13:33:20 2016 Adrien Milcent
 */
 
 #include "Sounds.hpp"
@@ -35,4 +35,6 @@ int         main(int ac, char **av) {
 
   Game      game;
   game.play(0);
+
+  return 0;
 }
