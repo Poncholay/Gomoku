@@ -37,6 +37,7 @@ public:
 
 	void 				setScore(const string &score);
 	void 				drawScore();
+	void 				drawWin(int);
   void        setUpdate(int, int, int);
   bool        isAnimating();
   void        setAnimate(int, int, int);
@@ -45,7 +46,7 @@ public:
   bool        isRunning() const;
   bool        error() const;
   void				setCaption(const irr::core::stringw &);
-  int					display(bool = false);
+  int					display(int = 0);
 
 	irr::scene::ICameraSceneNode 	*getCamera() 			const {return _camera;}
 	EventHandler									&getReceiver()					{return _receiver;}

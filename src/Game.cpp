@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Tue Nov 08 19:42:22 2016 wilmot_g
+** Last update Tue Nov 08 22:36:52 2016 wilmot_g
 */
 
 #include <iostream>
@@ -20,8 +20,8 @@
 Game::Game()  {_players = 1;}
 Game::~Game() {}
 
-void          Game::doPlay(IPlayer *player, Referee referee, atomic<bool> &done, atomic<int> &play_value) {
-  play_value = player->play(referee);
+void          Game::doPlay(IPlayer *player, Referee referee, atomic<bool> &done, atomic<int> &playValue) {
+  playValue = player->play(referee);
   done = true;
 }
 
@@ -41,11 +41,13 @@ int           Game::play(int param) {
   Goban       goban(displayer);
   Referee     referee(goban, _rules);
   int         ret = 0;
-  int         turn = 0;
+  int         turn = 1;
   vector<IPlayer *>   players;
   atomic<bool>        done(true);
-  atomic<int>         play_value(0);
+  atomic<int>         playValue(CONTINUE);
   thread              *t = NULL;
+
+  if (displayer.error() || !displayer.instanciate()) return -1;
 
   Sounds::get().stopMusic();
   Sounds::get().playMusic("game");
@@ -54,16 +56,14 @@ int           Game::play(int param) {
   players.push_back(_players != 3 ? (IPlayer *)(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y)) : (IPlayer *)(new AI(goban, 1, 1)));
   players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 1)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
 
-  if (displayer.error() || !displayer.instanciate()) return -1;
-
-  while (displayer.isRunning() && play_value != -1 && play_value != 1) {
+  while (displayer.isRunning() && !displayer.getReceiver().checkEnd() && playValue == CONTINUE) {
     displayer.setScore(score(referee, players));
     if ((ret = displayer.display()) != 0)
       break;
     if (!displayer.isAnimating() && done) {
-      if (!t) {
+      if (!t && playValue == CONTINUE) {
         done = false;
-        t = new thread(doPlay, players[(turn = turn ? 0 : 1)], referee, ref(done), ref(play_value));
+        t = new thread(doPlay, players[(turn = turn ? 0 : 1)], referee, ref(done), ref(playValue));
       } else {
         t->join();
         delete t;
@@ -73,9 +73,10 @@ int           Game::play(int param) {
       }
     }
   }
-  if (play_value == 1) {
-    std::cout << "Win" << std::endl;
-  }
+  if (playValue == WIN || playValue == WIN_INVERSE)
+    while (displayer.isRunning() && displayer.isAnimating())
+      if ((ret = displayer.display(playValue == WIN ? turn + 1 : turn ? 1 : 2)) != 0 || displayer.getReceiver().checkEnd())
+        break;
   if (t) {t->join(); delete t;}
   Sounds::get().stopMusic();
   Sounds::get().stopSounds();

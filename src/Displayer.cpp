@@ -61,6 +61,13 @@ void                  Displayer::drawScore() {
   }
 }
 
+void                  Displayer::drawWin(int p) {
+  if (_font) {
+    string str = "Player " + to_string(p) + " wins";
+    irr::core::stringw s(str.c_str());
+    _font->draw(s, irr::core::rect<irr::s32>(1920 / 2 - 100, 1080 / 2 - 25, 1920 / 2 + 100, 1080 / 2 + 25), irr::video::SColor(255, 255, 255, 255), true, true);
+  }
+}
 
 void				          Displayer::updateFPS() {
   int				          fps = _driver->getFPS();
@@ -182,7 +189,8 @@ bool                  Displayer::instanciateCamera() {
 
   if (!(_camera = Displayer::getSmgr()->addCameraSceneNodeFPS(0, 50, 0.001f, -1, keyMap, 4))) return false;
   _camera->setNearValue(0.001f);
-  _camera->setPosition(irr::core::vector3df(0, 0.5, 0));
+  _camera->setPosition(irr::core::vector3df(0.2, 0.7, -0.2));
+  _camera->setTarget(irr::core::vector3df(0, 0.5, 0));
   return true;
 }
 
@@ -197,7 +205,7 @@ bool                  Displayer::instanciateLights() {
   return _smgr->addLightSceneNode(billboard, irr::core::vector3df(0, 0, 0), irr::video::SColorf(1, 1, 1), 1) != NULL;
 }
 
-int				            Displayer::display(bool anim) {
+int				            Displayer::display(int win) {
   _driver->beginScene(true, true, irr::video::SColor(255, 100, 150, 255));
   if (isAnimating())
     updateAnim();
@@ -206,6 +214,7 @@ int				            Displayer::display(bool anim) {
   _guienv->drawAll();
   mutex.unlock();
   drawScore();
+  if (win != 0) drawWin(win);
   _driver->endScene();
   updateFPS();
   return _receiver.checkEnd();

@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:23:37 2016 wilmot_g
-** Last update Tue Nov 08 19:37:45 2016 wilmot_g
+** Last update Tue Nov 08 22:16:17 2016 wilmot_g
 */
 
 #include "Human.hh"
@@ -25,6 +25,7 @@ int        Human::play(Referee r) {
   irr::core::triangle3df      hitTriangle;
   Block                       *placeholder;
   bool                        outside;
+  int                         ret = 0;
 
   _displayer.mutex.lock();
   placeholder = new Block(0, 0, 0, Displayer::getSmgr()->getMesh(string(string("./assets/") + (_nb == 1 ? "white" : "black") + "go.obj").c_str()), Displayer::getSmgr());
@@ -57,14 +58,14 @@ int        Human::play(Referee r) {
         placeholder->setVisible(false);
       }
     } while (!_displayer.getReceiver().checkEnd() && !_displayer.getReceiver().mouseIsPressed());
-  } while (!_displayer.getReceiver().checkEnd() && (r.checkPlay(_j, _i, _nb) == REPLAY || outside));
+  } while (!_displayer.getReceiver().checkEnd() && ((ret = r.checkPlay(_j, _i, _nb)) == REPLAY || outside));
   if (!_displayer.getReceiver().checkEnd())
     _goban.addDraught(_j, _i, _nb, true);
   _displayer.mutex.lock();
   placeholder->destroy();
   delete placeholder;
   _displayer.mutex.unlock();
-  return 0;
+  return _goban.full() ? -1 : ret;
 }
 
 string  Human::getType() const {
