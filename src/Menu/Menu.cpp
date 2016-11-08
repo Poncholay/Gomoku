@@ -250,6 +250,11 @@ int        Menu::play()
 								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 + 80 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)-8 + 80 + 28;
 			if (clicked)
 				_validate = true;
+			drawButton(_vg, "QUIT", tmpX + 20, tmpY + (int)(_windowWidth/4*0.5f)-8 + 120, _windowWidth / 3, 28, nvgRGBA(0,96,128,255));
+			clicked = _mouseClickPosX > tmpX + 20 && _mouseClickPosX < (tmpX + 20 + _windowWidth / 3) &&
+								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 + 120 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)-8 + 120 + 28;
+			if (clicked)
+				_quit = true;
       //end update window
       nvgEndFrame(_vg);
       glfwSwapBuffers(_window);
