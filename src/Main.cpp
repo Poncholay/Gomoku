@@ -33,6 +33,10 @@ int         main(int ac, char **av) {
       menu.endMenu();
       return (0);
     }
+    if (value > 3) {
+      game.setAdvancedRules(true);
+      value -= 3;
+    }
     game.setPlayers(value);
     game.play(0);
   }

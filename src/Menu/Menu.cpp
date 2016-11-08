@@ -167,7 +167,7 @@ int        Menu::play()
   while (!glfwWindowShouldClose(_window))
     {
 			if (_typeOfGameValue != -1)
-				return (_typeOfGameValue);
+				return (_options ? _typeOfGameValue + 3 : _typeOfGameValue);
 			if (_quit)
 				return (-1);
       _mouseClickPosX = -1;
@@ -230,14 +230,12 @@ void 	Menu::drawCheckBox(const char* text, float x, float y, float w, float h)
 	char icon[8];
 	NVG_NOTUSED(w);
 
-	nvgFontSize(_vg, 38.0f);
-	nvgFontFace(_vg, "sans");
 	nvgFillColor(_vg, nvgRGBA(255,255,255,255));
 
 	nvgTextAlign(_vg,NVG_ALIGN_LEFT|NVG_ALIGN_MIDDLE);
 	nvgText(_vg, x+28,y+h*0.5f,text, NULL);
 
-	bg = nvgBoxGradient(_vg, x+1,y+(int)(h*0.5f)-9+1, 18,18, 3,3, nvgRGBA(255,255,255,32), nvgRGBA(255,255,255,92));
+	bg = nvgBoxGradient(_vg, x+1,y+(int)(h*0.5f)-9+1, 18,18, 3,3, nvgRGBA(255,255,255,32), nvgRGBA(255,255,255,255));
 	nvgBeginPath(_vg);
 	nvgRoundedRect(_vg, x+1,y+(int)(h*0.5f)-9, 18,18, 3);
 	nvgFillPaint(_vg, bg);
@@ -246,7 +244,7 @@ void 	Menu::drawCheckBox(const char* text, float x, float y, float w, float h)
 	if (_options) {
 		nvgFontSize(_vg, 40);
 		nvgFontFace(_vg, "icons");
-		nvgFillColor(_vg, nvgRGBA(255,255,255,128));
+		nvgFillColor(_vg, nvgRGBA(255,255,255,255));
 		nvgTextAlign(_vg,NVG_ALIGN_CENTER|NVG_ALIGN_MIDDLE);
 		nvgText(_vg, x+9+2, y+h*0.5f, cpToUTF8(ICON_CHECK,icon), NULL);
 	}
@@ -290,8 +288,12 @@ int             Menu::drawParagraph(float x, float y, float width, const char *t
 	end = text + strlen(text);
   pos = 0;
 	if (_settings) {
-		drawCheckBox("RULES", x, y, width, width);
-		if (_mouseClickPosX > x && _mouseClickPosX < (x + width) && _mouseClickPosY >= y && _mouseClickPosY < (y + lineh))
+		drawCheckBox("RULES", x, y - 50, width, width);
+		nvgFontFace(_vg, "sans");
+		nvgTextAlign(_vg, NVG_ALIGN_LEFT|NVG_ALIGN_TOP);
+		nvgTextMetrics(_vg, NULL, NULL, &lineh);
+		y += (lineh * 2);
+		if (_mouseClickPosX > x && _mouseClickPosX < (x + width) && _mouseClickPosY >= y - 50 && _mouseClickPosY < (y - 50 + lineh))
 			_options = !_options;
 	}
 	while ((nrows = nvgTextBreakLines(_vg, start, end, width, rows, 3))) {
@@ -324,8 +326,9 @@ int             Menu::drawParagraph(float x, float y, float width, const char *t
 					else if (clicked && pos == 4)
 				    _play = false;
 				} else if (_settings) {
-					if (clicked && pos == 1)
+					if (clicked && pos == 1) {
 						_settings = false;
+					}
 				}
 			}
 		}
