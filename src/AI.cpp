@@ -24,9 +24,7 @@ int     AI::play(Referee referee) {
   if (result.first != -1 && result.second != -1) {
     res = referee.checkPlay(result.first, result.second, _nbPlayer);
     _goban.addDraught(result.first, result.second, _nbPlayer, true);
-    if (res == WIN)
-      return 1;
-    return 0;
+    return res;
   }
   return -1;
 }
