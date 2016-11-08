@@ -33,6 +33,7 @@ Displayer::Displayer(int x, int y) : _receiver() {
     getSmgr(_smgr = _device->getSceneManager());
     _device->getCursorControl()->setVisible(false);
     _guienv = _device->getGUIEnvironment();
+    _font = _guienv->getFont("./assets/bigfont.png");
     _then = _device->getTimer()->getTime();
     vector<Block *> row = vector<Block *>       (x, NULL);
     _map = vector<vector<Block *> >             (y, row);
@@ -52,6 +53,14 @@ Displayer::Displayer(int x, int y) : _receiver() {
 Displayer::~Displayer() {_device->drop();}
 
 void				          Displayer::setCaption(const irr::core::stringw &caption) {_caption = caption;}
+
+void                  Displayer::drawScore() {
+  if (_font && _receiver.isKeyDown(irr::KEY_TAB)) {
+    irr::core::stringw s(_score.c_str());
+    _font->draw(s, irr::core::rect<irr::s32>(0, 0, 200, 50), irr::video::SColor(255, 255, 255, 255));
+  }
+}
+
 
 void				          Displayer::updateFPS() {
   int				          fps = _driver->getFPS();
@@ -196,10 +205,12 @@ int				            Displayer::display(bool anim) {
   _smgr->drawAll();
   _guienv->drawAll();
   mutex.unlock();
+  drawScore();
   _driver->endScene();
   updateFPS();
   return _receiver.checkEnd();
 }
 
+void                  Displayer::setScore(const string &score) {_score = score;}
 bool                  Displayer::isRunning() const {return _device->run();}
 bool                  Displayer::error() const {return _error;}

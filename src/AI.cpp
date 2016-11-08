@@ -21,3 +21,7 @@ void     AI::play(Referee referee) {
   std::pair<int, int> result = _algo.loop(goban, _nbPlayer, referee);
   _goban.addDraught(result.first, result.second, _nbPlayer, true);
 }
+
+string  AI::getType() const {
+  return "AI   ";
+}

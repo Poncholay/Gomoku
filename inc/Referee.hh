@@ -44,6 +44,7 @@ public:
   bool checkVertical(int x, int y, int player, int max);
   bool checkDiagoDown(int x, int y, int player, int max);
   bool checkDiagoUp(int x, int y, int player, int max);
+  string getPairs(int) const;
   Goban &getGoban();
 
   bool _advanced;

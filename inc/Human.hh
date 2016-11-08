@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:20:43 2016 wilmot_g
-** Last update Mon Oct 31 21:21:19 2016 wilmot_g
+** Last update Tue Nov 08 19:02:48 2016 wilmot_g
 */
 
 #ifndef HUMAN_HH_
@@ -21,6 +21,7 @@ public:
   ~Human();
 
   void play(Referee);
+  string getType() const;
 
 private:
   Displayer   &_displayer;

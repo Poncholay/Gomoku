@@ -30,6 +30,7 @@ public:
   ~AI();
 
   void play(Referee);
+  string getType() const;
 };
 
 #endif /* !AI_HH_ */

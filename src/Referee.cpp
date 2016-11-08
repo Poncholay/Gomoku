@@ -353,3 +353,7 @@ Result  Referee::checkWin(int x, int y, int player) {
   goban.removeDraught(x, y);
   return CONTINUE;
 }
+
+string Referee::getPairs(int p) const {
+  return p == 1 ? to_string(nbPairplayer1) : to_string(nbPairplayer2);
+}

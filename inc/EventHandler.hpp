@@ -51,10 +51,11 @@ public:
       else if (event.MouseInput.Event == irr::EMIE_LMOUSE_LEFT_UP)
         _pressed = false;
     }
-    else if (event.EventType == irr::EET_KEY_INPUT_EVENT && !event.KeyInput.PressedDown)
+    if (event.EventType == irr::EET_KEY_INPUT_EVENT && !event.KeyInput.PressedDown)
       _keyWasPressed[event.KeyInput.Key] = true;
-    else if (event.EventType == irr::EET_KEY_INPUT_EVENT)
+    if (event.EventType == irr::EET_KEY_INPUT_EVENT) {
       _keyIsDown[event.KeyInput.Key] = event.KeyInput.PressedDown;
+    }
     return false;
   }
 

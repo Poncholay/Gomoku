@@ -35,6 +35,8 @@ public:
   Displayer(int = GOBAN_X, int = GOBAN_Y);
   ~Displayer();
 
+	void 				setScore(const string &score);
+	void 				drawScore();
   void        setUpdate(int, int, int);
   bool        isAnimating();
   void        setAnimate(int, int, int);
@@ -93,12 +95,11 @@ private:
 
   bool                          _isAnimating;
 	list<tuple<int, int, int> >   _anim;
-  // int                           _animX;
-  // int                           _animY;
-  // int                           _p;
   int                           _x;
   int                           _y;
   float                         _time;
+	irr::gui::IGUIFont						*_font;
+	string 												_score;
 };
 
 #endif /* DISPLAYER_HPP_ */

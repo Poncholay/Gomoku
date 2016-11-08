@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Sun Oct 16 15:32:40 2016 wilmot_g
-** Last update Tue Nov 08 11:19:21 2016 wilmot_g
+** Last update Tue Nov 08 19:17:19 2016 wilmot_g
 */
 
 #include <iostream>
@@ -17,7 +17,7 @@
 #include "Human.hh"
 #include "Sounds.hpp"
 
-Game::Game()  {_players = 2;}
+Game::Game()  {_players = 1;}
 Game::~Game() {}
 
 void          Game::doPlay(IPlayer *player, Referee referee, atomic<bool> &done) {
@@ -27,6 +27,14 @@ void          Game::doPlay(IPlayer *player, Referee referee, atomic<bool> &done)
 
 void          Game::setPlayers(int p) {_players = p;}
 void          Game::setAdvancedRules(bool r) {_rules = r;}
+
+string        Game::score(const Referee &r, const vector<IPlayer *> &p) {
+  string      score;
+
+  score += "Player 1 (" + p[0]->getType() + ") : " + r.getPairs(1) + "\n";
+  score += "Player 2 (" + p[0]->getType() + ") : " + r.getPairs(2) + "\n";
+  return score;
+}
 
 int           Game::play(int param) {
   Displayer   displayer;
@@ -47,6 +55,7 @@ int           Game::play(int param) {
 
   if (displayer.error() || !displayer.instanciate()) return -1;
   while (displayer.isRunning()) {
+    displayer.setScore(score(referee, players));
     if ((ret = displayer.display()) != 0)
       break;
     if (!displayer.isAnimating() && done) {

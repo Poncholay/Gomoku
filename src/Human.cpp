@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:23:37 2016 wilmot_g
-** Last update Mon Nov 07 22:51:29 2016 wilmot_g
+** Last update Tue Nov 08 19:14:32 2016 wilmot_g
 */
 
 #include "Human.hh"
@@ -64,4 +64,8 @@ void        Human::play(Referee r) {
   placeholder->destroy();
   delete placeholder;
   _displayer.mutex.unlock();
+}
+
+string  Human::getType() const {
+  return "Human";
 }
