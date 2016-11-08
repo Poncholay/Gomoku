@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 13:59:50 2016 Adrien Milcent
-// Last update Tue Nov  8 11:56:33 2016 Adrien Milcent
+// Last update Tue Nov  8 13:41:41 2016 Adrien Milcent
 //
 
 #include "Minmax.hh"
@@ -21,10 +21,10 @@ Minmax::~Minmax() {
 }
 
 std::pair<int, int> Minmax::loop(std::vector<std::vector<int> > &goban, int nbPlayer, Referee referee) {
-  int min_nb = 100000;
+  int max_nb = -100000;
   int nbTurn = _nbTurn;
-  int tmp = 0, mini = 0, minj = 0, nbOpponent = 0;
 
+  int tmp = 0, maxi = -1, maxj = -1, nbOpponent = 0;
   if (nbPlayer == 1)
     nbOpponent = 2;
   else
@@ -40,16 +40,16 @@ std::pair<int, int> Minmax::loop(std::vector<std::vector<int> > &goban, int nbPl
           tmp = eval(goban, nbPlayer, false, nbPlayer);
         else
           tmp  = max(goban, nbTurn - 1, nbPlayer, nbOpponent, referee);
-        if (tmp > min_nb) {
-          min_nb = tmp;
-          mini = i;
-          minj = j;
+        if (tmp > max_nb) {
+          max_nb = tmp;
+          maxi = i;
+          maxj = j;
         }
         goban[i][j] = 0;
       }
     }
   }
-  std::pair<int, int> result = std::pair<int, int> (minj, mini);
+  std::pair<int, int> result = std::pair<int, int> (maxj, maxi);
   return result;
 }
 
