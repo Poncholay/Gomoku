@@ -948,12 +948,12 @@ int createParticles(GLFWwindow *window, int width, int height)
     // GLFWwindow* window;
     // GLFWmonitor* monitor = NULL;
 
-    if (!glfwInit())
-    {
-        fprintf(stderr, "Failed to initialize GLFW\n");
-        exit(EXIT_FAILURE);
-    }
-
+    // if (!glfwInit())
+    // {
+    //     fprintf(stderr, "Failed to initialize GLFW\n");
+    //     exit(EXIT_FAILURE);
+    // }
+    //
     // while ((ch = getopt(argc, argv, "fh")) != -1)
     // {
     //     switch (ch)
@@ -1060,7 +1060,6 @@ int createParticles(GLFWwindow *window, int width, int height)
     while (!glfwWindowShouldClose(window) && !quit)
     {
         draw_scene(window, glfwGetTime());
-
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

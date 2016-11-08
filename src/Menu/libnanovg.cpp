@@ -802,6 +802,87 @@ void drawLines(NVGcontext* vg, float x, float y, float w, float h, float t)
 	nvgRestore(vg);
 }
 
+int         drawImg(NVGcontext *_vg, int posX, int posY, int width, int height, int refImg)
+{
+  int       saveX;
+  int       saveY;
+  NVGpaint  imgPaint;
+
+  saveX = width;
+  saveY = height;
+  nvgImageSize(_vg, refImg, &saveX, &saveY);
+  imgPaint = nvgImagePattern(_vg, posX, posY, width, height, 0, refImg, 1);
+  nvgBeginPath(_vg);
+  nvgRoundedRect(_vg, posX, posY, width, height, 0);
+  nvgFillPaint(_vg, imgPaint);
+  nvgFill(_vg);
+  return (0);
+}
+
+void 	drawCheckBox(NVGcontext *_vg, const char* text, float x, float y, float w, float h, bool _options)
+{
+	NVGpaint bg;
+	char icon[8];
+	NVG_NOTUSED(w);
+	nvgFontSize(_vg, 20.0f);
+	nvgFontFace(_vg, "sans");
+	nvgTextAlign(_vg, NVG_ALIGN_LEFT|NVG_ALIGN_TOP);
+
+	nvgFillColor(_vg, nvgRGBA(255,255,255,255));
+
+	nvgTextAlign(_vg,NVG_ALIGN_LEFT|NVG_ALIGN_MIDDLE);
+	nvgText(_vg, x+28,y+h*0.5f,text, NULL);
+
+	bg = nvgBoxGradient(_vg, x+1,y+(int)(h*0.5f)-9+1, 18,18, 3,3, nvgRGBA(255,255,255,32), nvgRGBA(255,255,255,255));
+	nvgBeginPath(_vg);
+	nvgRoundedRect(_vg, x+1,y+(int)(h*0.5f)-9, 18,18, 3);
+	nvgFillPaint(_vg, bg);
+	nvgFill(_vg);
+
+	if (_options) {
+		nvgFontSize(_vg, 40);
+		nvgFontFace(_vg, "icons");
+		nvgFillColor(_vg, nvgRGBA(255,255,255,255));
+		nvgTextAlign(_vg,NVG_ALIGN_CENTER|NVG_ALIGN_MIDDLE);
+		nvgText(_vg, x+9+2, y+h*0.5f, cpToUTF8(ICON_CHECK,icon), NULL);
+	}
+}
+
+void drawButton(NVGcontext* vg, const char* text, float x, float y, float w, float h, NVGcolor col)
+{
+	NVGpaint bg;
+	char icon[8];
+	float cornerRadius = 4.0f;
+	float tw = 0, iw = 0;
+
+	bg = nvgLinearGradient(vg, x,y,x,y+h, nvgRGBA(255,255,255,isBlack(col)?16:32), nvgRGBA(0,0,0,isBlack(col)?16:32));
+	nvgBeginPath(vg);
+	nvgRoundedRect(vg, x+1,y+1, w-2,h-2, cornerRadius-1);
+	if (!isBlack(col)) {
+		nvgFillColor(vg, col);
+		nvgFill(vg);
+	}
+	nvgFillPaint(vg, bg);
+	nvgFill(vg);
+
+	nvgBeginPath(vg);
+	nvgRoundedRect(vg, x+0.5f,y+0.5f, w-1,h-1, cornerRadius-0.5f);
+	nvgStrokeColor(vg, nvgRGBA(0,0,0,48));
+	nvgStroke(vg);
+
+	nvgFontSize(vg, 20.0f);
+	nvgFontFace(vg, "sans");
+	tw = nvgTextBounds(vg, 0,0, text, NULL, NULL);
+
+	nvgFontSize(vg, 20.0f);
+	nvgFontFace(vg, "sans");
+	nvgTextAlign(vg,NVG_ALIGN_LEFT|NVG_ALIGN_MIDDLE);
+	nvgFillColor(vg, nvgRGBA(0,0,0,160));
+	nvgText(vg, x+w*0.5f-tw*0.5f+iw*0.25f,y+h*0.5f-1,text, NULL);
+	nvgFillColor(vg, nvgRGBA(255,255,255,160));
+	nvgText(vg, x+w*0.5f-tw*0.5f+iw*0.25f,y+h*0.5f,text, NULL);
+}
+
 int loadMenuData(NVGcontext* vg, MenuData* data)
 {
 	// int i;
@@ -829,11 +910,11 @@ int loadMenuData(NVGcontext* vg, MenuData* data)
 		printf("Could not add font italic.\n");
 		return -1;
 	}
-	// data->fontBold = nvgCreateFont(vg, "sans-bold", "../example/Roboto-Bold.ttf");
-	// if (data->fontBold == -1) {
-	// 	printf("Could not add font bold.\n");
-	// 	return -1;
-	// }
+	data->fontBold = nvgCreateFont(vg, "sans-bold", "./assets/Menu/Roboto-Bold.ttf");
+	if (data->fontBold == -1) {
+		printf("Could not add font bold.\n");
+		return -1;
+	}
 	data->fontEmoji = nvgCreateFont(vg, "emoji", "./assets/Menu/NotoEmoji-Regular.ttf");
 	if (data->fontEmoji == -1) {
 		printf("Could not add font emoji.\n");

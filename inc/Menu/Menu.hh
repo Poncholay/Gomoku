@@ -17,9 +17,16 @@
 #endif
 #include <fstream>
 #include <iostream>
+#include <vector>
 #include <GLFW/glfw3.h>
 #include "demo.h"
 #include "perf.h"
+
+void drawWindow(NVGcontext*, const char *, float, float, float, float);
+void drawDropDown(NVGcontext*, const char *, float, float, float, float);
+void drawButton(NVGcontext*, const char*, float, float, float, float, NVGcolor);
+void drawCheckBox(NVGcontext*, const char*, float, float, float, float, bool);
+int  drawImg(NVGcontext *, int, int, int, int, int);
 
 class         Menu {
   GLFWwindow* _window;
@@ -48,6 +55,8 @@ class         Menu {
   int         _typeOfGameValue;
   bool        _click;
   bool        _options;
+  bool        _validate;
+  std::vector<std::string>  _vectorOfGame;
 
 public:
   Menu();
@@ -55,10 +64,7 @@ public:
 
   int   play();
   void  endMenu();
-  int   drawImg(int, int, int, int, int);
-  int   drawParagraph(float, float, float, const char *);
   bool  isInit();
-  void 	drawCheckBox(const char*, float, float, float, float);
   int   resetValues();
 };
 

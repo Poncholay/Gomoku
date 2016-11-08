@@ -59,7 +59,7 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
 {
   _init = true;
   _vg = NULL;
-	_typeOfGameValue = -1;
+	_typeOfGameValue = 1;
   if (!glfwInit()) {
     cerr << "Failed to init GLFW." << endl;
     _init = false;
@@ -132,7 +132,12 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
 
 	Sounds::get().playMusic("menu");
 	_click = false;
-	_options = false;
+	_options = true;
+
+	_vectorOfGame.push_back("1 vs 1");
+	_vectorOfGame.push_back("1 vs IA");
+	_vectorOfGame.push_back("IA vs IA");
+	_validate = false;
 }
 
 Menu::~Menu() {}
@@ -154,10 +159,11 @@ int 			Menu::resetValues()
   _quit = false;
 	Sounds::get().playMusic("menu");
 	_click = true;
-	_options = false;
-	_typeOfGameValue = -1;
+	_options = true;
+	_typeOfGameValue = 1;
 	_mouseClickPosX = -1;
 	_mouseClickPosY = -1;
+	_validate = false;
 }
 
 int        Menu::play()
@@ -166,7 +172,7 @@ int        Menu::play()
   _previousTime = glfwGetTime();
   while (!glfwWindowShouldClose(_window))
     {
-			if (_typeOfGameValue != -1)
+			if (_validate)
 				return (_options ? _typeOfGameValue + 3 : _typeOfGameValue);
 			if (_quit)
 				return (-1);
@@ -208,9 +214,27 @@ int        Menu::play()
       nvgBeginFrame(_vg, _windowWidth, _windowHeight, pxRatio);
 
       //print background
-      drawImg(0, 0, _windowWidth, _windowHeight, _backgroundImage);
-      drawParagraph(_windowWidth / 2 - 50, _windowHeight / 2 - 50, 200, _play ? _typeOfGame : _settings ? _settingsText : _menu);
-
+      drawImg(_vg, 0, 0, _windowWidth, _windowHeight, _backgroundImage);
+      // drawParagraph(_windowWidth / 2 - 50, _windowHeight / 2 - 50, 200, _play ? _typeOfGame : _settings ? _settingsText : _menu);
+			int tmpX = ((_windowWidth / 2) - 250) < 0 ? 0 : (_windowWidth / 2) - 250;
+			int tmpY = ((_windowHeight / 2) - 250) < 0 ? 0 : (_windowHeight / 2) - 250;
+			drawWindow(_vg, "GOMOKU", tmpX, tmpY, ((_windowWidth) / 2), _windowHeight - (_windowHeight / 3));
+			drawDropDown(_vg, strdup(_vectorOfGame[_typeOfGameValue - 1].c_str()), tmpX + 20, tmpY + 50, _windowWidth / 3, 28);
+			int clicked = _mouseClickPosX > tmpX + 20 && _mouseClickPosX < (tmpX + 20 + _windowWidth / 3) && _mouseClickPosY >= tmpY + 50 && _mouseClickPosY < (tmpY + 78);
+			if (clicked)
+				++_typeOfGameValue;
+			if (_typeOfGameValue > 3)
+				_typeOfGameValue = 1;
+			drawCheckBox(_vg, "RULES", tmpX + 20, tmpY, _windowWidth / 3, _windowWidth / 4, _options);
+			clicked = _mouseClickPosX > tmpX + 20 && _mouseClickPosX < (tmpX + 20 + _windowWidth / 3) &&
+								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)+12;
+			if (clicked)
+				_options = !_options;
+			drawButton(_vg, "PLAY", tmpX + 20, tmpY + (int)(_windowWidth/4*0.5f)-8 + 60, _windowWidth / 3, 28, nvgRGBA(0,96,128,255));
+			clicked = _mouseClickPosX > tmpX + 20 && _mouseClickPosX < (tmpX + 20 + _windowWidth / 3) &&
+								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 + 60 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)-8 + 60 + 28;
+			if (clicked)
+				_validate = true;
       //end update window
       nvgEndFrame(_vg);
       glfwSwapBuffers(_window);
@@ -222,118 +246,4 @@ int        Menu::play()
 bool        Menu::isInit()
 {
   return (_init);
-}
-
-void 	Menu::drawCheckBox(const char* text, float x, float y, float w, float h)
-{
-	NVGpaint bg;
-	char icon[8];
-	NVG_NOTUSED(w);
-
-	nvgFillColor(_vg, nvgRGBA(255,255,255,255));
-
-	nvgTextAlign(_vg,NVG_ALIGN_LEFT|NVG_ALIGN_MIDDLE);
-	nvgText(_vg, x+28,y+h*0.5f,text, NULL);
-
-	bg = nvgBoxGradient(_vg, x+1,y+(int)(h*0.5f)-9+1, 18,18, 3,3, nvgRGBA(255,255,255,32), nvgRGBA(255,255,255,255));
-	nvgBeginPath(_vg);
-	nvgRoundedRect(_vg, x+1,y+(int)(h*0.5f)-9, 18,18, 3);
-	nvgFillPaint(_vg, bg);
-	nvgFill(_vg);
-
-	if (_options) {
-		nvgFontSize(_vg, 40);
-		nvgFontFace(_vg, "icons");
-		nvgFillColor(_vg, nvgRGBA(255,255,255,255));
-		nvgTextAlign(_vg,NVG_ALIGN_CENTER|NVG_ALIGN_MIDDLE);
-		nvgText(_vg, x+9+2, y+h*0.5f, cpToUTF8(ICON_CHECK,icon), NULL);
-	}
-}
-
-int         Menu::drawImg(int posX, int posY, int width, int height, int refImg)
-{
-  int       saveX;
-  int       saveY;
-  NVGpaint  imgPaint;
-
-
-  saveX = width;
-  saveY = height;
-  nvgImageSize(_vg, refImg, &saveX, &saveY);
-  imgPaint = nvgImagePattern(_vg, posX, posY, width, height, 0, refImg, 1);
-  nvgBeginPath(_vg);
-  nvgRoundedRect(_vg, posX, posY, width, height, 0);
-  nvgFillPaint(_vg, imgPaint);
-  nvgFill(_vg);
-  return (0);
-}
-
-int             Menu::drawParagraph(float x, float y, float width, const char *text)
-{
-	NVGtextRow    rows[3];
-	const char*   start;
-	const char*   end;
-	int           nrows;
-  int           i;
-	float         lineh;
-  int           pos;
-
-	nvgSave(_vg);
-	nvgFontSize(_vg, 38.0f);
-	nvgFontFace(_vg, "sans");
-	nvgTextAlign(_vg, NVG_ALIGN_LEFT|NVG_ALIGN_TOP);
-	nvgTextMetrics(_vg, NULL, NULL, &lineh);
-
-	start = text;
-	end = text + strlen(text);
-  pos = 0;
-	if (_settings) {
-		drawCheckBox("RULES", x, y - 50, width, width);
-		nvgFontFace(_vg, "sans");
-		nvgTextAlign(_vg, NVG_ALIGN_LEFT|NVG_ALIGN_TOP);
-		nvgTextMetrics(_vg, NULL, NULL, &lineh);
-		y += (lineh * 2);
-		if (_mouseClickPosX > x && _mouseClickPosX < (x + width) && _mouseClickPosY >= y - 50 && _mouseClickPosY < (y - 50 + lineh))
-			_options = !_options;
-	}
-	while ((nrows = nvgTextBreakLines(_vg, start, end, width, rows, 3))) {
-		for (i = 0; i < nrows; i++) {
-			NVGtextRow* row = &rows[i];
-      int hit = _mousePosX > x && _mousePosX < (x + width) && _mousePosY >= y && _mousePosY < (y + lineh);
-			int clicked = _mouseClickPosX > x && _mouseClickPosX < (x + width) && _mouseClickPosY >= y && _mouseClickPosY < (y + lineh);
-			nvgBeginPath(_vg);
-      if (row->width != 0)
-        {
-          ++pos;
-          nvgFillColor(_vg, nvgRGBA(255,255,255,hit?64:0));
-    			nvgRect(_vg, x, y, row->width, lineh);
-    			nvgFill(_vg);
-        }
-			nvgFillColor(_vg, nvgRGBA(255,255,255,255));
-			nvgText(_vg, x, y, row->start, row->end);
-			y += lineh;
-			if (_click) {
-				if (!_play && !_settings) {
-		      if (clicked && pos == 1)
-		        _play = true;
-		      else if (clicked && pos == 2)
-		        _settings = true;
-		      else if (clicked && pos == 3)
-		        _quit = true;
-				} else if (_play) {
-					if (clicked && (pos == 1 || pos == 2 || pos == 3))
-		        _typeOfGameValue = pos;
-					else if (clicked && pos == 4)
-				    _play = false;
-				} else if (_settings) {
-					if (clicked && pos == 1) {
-						_settings = false;
-					}
-				}
-			}
-		}
-		start = rows[nrows-1].next;
-	}
-	nvgRestore(_vg);
-  return (0);
 }
