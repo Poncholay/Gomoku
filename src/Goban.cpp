@@ -62,6 +62,7 @@ void Goban::printBoard() const {
   }
 }
 
+bool Goban::full() const {for (auto i : _board) for(auto j : i) if (j == 0) return false; return true;}
 void Goban::setReferee(Referee *r)   {_r = r;}
 int Goban::getXBoard() const {return _xBoard;}
 int Goban::getYBoard() const {return _yBoard;}

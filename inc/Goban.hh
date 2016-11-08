@@ -39,6 +39,7 @@ public:
   void setReferee(Referee *r);
   int getXBoard() const;
   int getYBoard() const;
+  bool full() const;
   std::vector<std::vector<int> >  getBoard() const;
 
   void addDraught(int, int, int, bool = false);

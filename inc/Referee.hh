@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:15:51 2016 Combaud Alban
-// Last update Tue Oct 25 13:38:28 2016 Adrien Milcent
+// Last update Tue Nov  8 17:19:35 2016 Combaud Alban
 //
 
 #ifndef REFEREE_HH_
@@ -21,12 +21,15 @@ class Goban;
 enum Result {
 WIN,
 CONTINUE,
-REPLAY  };
+REPLAY,
+WIN_INVERSE  };
 
 class Referee {
 private:
   int   nbPairplayer1;
   int   nbPairplayer2;
+  bool  isBroke1;
+  bool  isBroke2;
   Goban &goban;
 public:
   Referee(Goban &, bool);
@@ -44,6 +47,7 @@ public:
   bool checkVertical(int x, int y, int player, int max);
   bool checkDiagoDown(int x, int y, int player, int max);
   bool checkDiagoUp(int x, int y, int player, int max);
+  string getPairs(int) const;
   Goban &getGoban();
 
   bool _advanced;
