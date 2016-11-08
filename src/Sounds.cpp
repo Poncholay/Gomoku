@@ -41,7 +41,6 @@ bool       Sounds::loadSound(const string &so, const string &s) {
 void			Sounds::playSound(const string &s) {
   Mix_Chunk *sound = _sounds[s];
 
-    cout << s << endl;
   if (sound) {
       Mix_VolumeChunk(sound, _volume);
       Mix_PlayChannel(-1, sound, 0);

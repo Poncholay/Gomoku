@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Sun Oct 16 15:32:40 2016 wilmot_g
-** Last update Mon Nov 07 22:30:57 2016 wilmot_g
+** Last update Tue Nov 08 10:36:13 2016 wilmot_g
 */
 
 #include <iostream>
@@ -24,6 +24,9 @@ void          Game::doPlay(IPlayer *player, Referee referee, atomic<bool> &done)
   player->play(referee);
   done = true;
 }
+
+void          Game::setPlayers(int p) {_players = p;}
+void          Game::setAdvancedRules(bool r) {_rules = r;}
 
 int           Game::play(int param) {
   Displayer   displayer;

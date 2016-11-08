@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 16:07:43 2016 wilmot_g
-** Last update Wed Oct 26 22:29:30 2016 wilmot_g
+** Last update Tue Nov 08 10:35:08 2016 wilmot_g
 */
 
 #ifndef GAME_HH_
@@ -21,6 +21,12 @@ public:
 
   static void doPlay(IPlayer *, Referee, atomic<bool> &);
   int         play(int);
+
+  void        setPlayers(int);
+  void        setAdvancedRules(bool);
+
+  int         _players;
+  bool        _rules;
 };
 
 #endif /* !GAME_HH_ */
