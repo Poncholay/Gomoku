@@ -10,16 +10,14 @@
 
 #include "Referee.hh"
 
-Referee::Referee(Goban &poncholay) : nbPairplayer1(0), nbPairplayer2(0), goban(poncholay)
-{
+Referee::Referee(Goban &poncholay, bool advanced) : nbPairplayer1(0), nbPairplayer2(0), goban(poncholay) {
+  _advanced = advanced;
 }
 
-Referee::~Referee()
-{
-}
+Referee::~Referee() {}
 
 Goban &Referee::getGoban() {
-  return goban;
+    return goban;
 }
 
 void Referee::setPair(int nb, int player) {

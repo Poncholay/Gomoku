@@ -29,7 +29,7 @@ private:
   int   nbPairplayer2;
   Goban &goban;
 public:
-  Referee(Goban &);
+  Referee(Goban &, bool);
   ~Referee();
 
   Result checkPlay(int, int, int);
@@ -45,6 +45,8 @@ public:
   bool checkDiagoDown(int x, int y, int player, int max);
   bool checkDiagoUp(int x, int y, int player, int max);
   Goban &getGoban();
+
+  bool _advanced;
 };
 
 #endif

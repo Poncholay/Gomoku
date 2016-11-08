@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Sun Oct 16 15:32:40 2016 wilmot_g
-** Last update Tue Nov 08 10:36:13 2016 wilmot_g
+** Last update Tue Nov 08 11:19:21 2016 wilmot_g
 */
 
 #include <iostream>
@@ -17,7 +17,7 @@
 #include "Human.hh"
 #include "Sounds.hpp"
 
-Game::Game()  {}
+Game::Game()  {_players = 2;}
 Game::~Game() {}
 
 void          Game::doPlay(IPlayer *player, Referee referee, atomic<bool> &done) {
@@ -31,7 +31,7 @@ void          Game::setAdvancedRules(bool r) {_rules = r;}
 int           Game::play(int param) {
   Displayer   displayer;
   Goban       goban(displayer);
-  Referee     referee(goban);
+  Referee     referee(goban, _rules);
   int         ret = 0;
   int         turn = 0;
   vector<IPlayer *>   players;
@@ -42,11 +42,8 @@ int           Game::play(int param) {
   Sounds::get().playMusic("game");
   goban.setReferee(&referee);
 
-  //TODO : check param and create accordingly
-  // players.push_back(new AI(goban, 1, 1));
-  players.push_back(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y));
-  players.push_back(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y));
-  //
+  players.push_back(_players != 3 ? (IPlayer *)(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y)) : (IPlayer *)(new AI(goban, 1, 1)));
+  players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 1)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
 
   if (displayer.error() || !displayer.instanciate()) return -1;
   while (displayer.isRunning()) {
