@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Tue Nov  8 13:13:35 2016 Combaud Alban
+// Last update Tue Oct 25 13:41:48 2016 Adrien Milcent
 //
 
 #include "Referee.hh"
@@ -219,6 +219,7 @@ bool Referee::checkWinBy5(int x, int y, int player) {
   (y + x < goban.getYBoard() ? x : goban.getYBoard() - y - 1);
 
   xtmp = x - tmp;
+
   for (int ytmp = y + tmp; ytmp >= 0 && xtmp < goban.getXBoard(); ytmp--) {
     count == 0 ? xsave = xtmp, ysave = ytmp : 0;
     goban[ytmp][xtmp++] == player ? count++ : count = 0;
