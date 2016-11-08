@@ -30,10 +30,10 @@ int         main(int ac, char **av) {
     menu.endMenu();
     return (0);
   }
-  std::cout << value << std::endl;
   menu.endMenu();
 
   Game      game;
+  game.setPlayers(value);
   game.play(0);
 
   return 0;
