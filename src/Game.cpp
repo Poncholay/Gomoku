@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Tue Nov 08 22:36:52 2016 wilmot_g
+** Last update Tue Nov 08 23:39:50 2016 wilmot_g
 */
 
 #include <iostream>
@@ -32,7 +32,7 @@ string        Game::score(const Referee &r, const vector<IPlayer *> &p) {
   string      score;
 
   score += "Player 1 (" + p[0]->getType() + ") : " + r.getPairs(1) + "\n";
-  score += "Player 2 (" + p[0]->getType() + ") : " + r.getPairs(2) + "\n";
+  score += "Player 2 (" + p[1]->getType() + ") : " + r.getPairs(2) + "\n";
   return score;
 }
 
