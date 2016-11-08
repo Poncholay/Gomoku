@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:20:43 2016 wilmot_g
-** Last update Tue Nov  8 14:10:13 2016 Adrien Milcent
+** Last update Tue Nov  8 15:26:43 2016 Adrien Milcent
 */
 
 #ifndef HUMAN_HH_
@@ -20,7 +20,7 @@ public:
   Human(Goban &, Displayer &, int, int, int);
   ~Human();
 
-  bool play(Referee);
+  int play(Referee);
 
 private:
   Displayer   &_displayer;
