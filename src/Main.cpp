@@ -22,17 +22,24 @@ int         main(int ac, char **av) {
   }
 
   Menu      menu;
-  int value;
+  int value = 0;
+  Game      game;
 
   if (!menu.isInit())
     return (-1);
-  if ((value = menu.play()) == -1) {
-    menu.endMenu();
-    return (0);
+  while (value != -1) {
+    menu.resetValues();
+    if ((value = menu.play()) == -1) {
+      menu.endMenu();
+      return (0);
+    }
+    if (value > 3) {
+      game.setAdvancedRules(true);
+      value -= 3;
+    }
+    game.setPlayers(value);
+    game.play(0);
   }
   menu.endMenu();
-
-  Game      game;
-  game.setPlayers(value);
-  game.play(0);
+  return (0);
 }

@@ -59,6 +59,7 @@ public:
   int   drawParagraph(float, float, float, const char *);
   bool  isInit();
   void 	drawCheckBox(const char*, float, float, float, float);
+  int   resetValues();
 };
 
 #endif /* !MENU_HH_ */
