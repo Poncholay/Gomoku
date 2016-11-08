@@ -328,7 +328,7 @@ void drawSlider(NVGcontext* vg, float pos, float x, float y, float w, float h)
 //	nvgClearState(vg);
 
 	// Slot
-	bg = nvgBoxGradient(vg, x,cy-2+1, w,4, 2,2, nvgRGBA(0,0,0,32), nvgRGBA(0,0,0,128));
+	bg = nvgBoxGradient(vg, x,cy-2+1, w,4, 2,2, nvgRGBA(0,0,0,32), nvgRGBA(255,255,255,255));
 	nvgBeginPath(vg);
 	nvgRoundedRect(vg, x,cy-2, w,4, 2);
 	nvgFillPaint(vg, bg);
@@ -344,7 +344,7 @@ void drawSlider(NVGcontext* vg, float pos, float x, float y, float w, float h)
 	nvgFill(vg);
 
 	// Knob
-	knob = nvgLinearGradient(vg, x,cy-kr,x,cy+kr, nvgRGBA(255,255,255,16), nvgRGBA(0,0,0,16));
+	knob = nvgLinearGradient(vg, x,cy-kr,x,cy+kr, nvgRGBA(255,255,255,16), nvgRGBA(0,0,0,255));
 	nvgBeginPath(vg);
 	nvgCircle(vg, x+(int)(pos*w),cy, kr-1);
 	nvgFillColor(vg, nvgRGBA(40,43,48,255));

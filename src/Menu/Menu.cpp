@@ -138,6 +138,7 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
 	_vectorOfGame.push_back("1 vs IA");
 	_vectorOfGame.push_back("IA vs IA");
 	_validate = false;
+	_volume = 0.5f;
 }
 
 Menu::~Menu() {}
@@ -230,9 +231,23 @@ int        Menu::play()
 								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)+12;
 			if (clicked)
 				_options = !_options;
-			drawButton(_vg, "PLAY", tmpX + 20, tmpY + (int)(_windowWidth/4*0.5f)-8 + 60, _windowWidth / 3, 28, nvgRGBA(0,96,128,255));
+			drawSlider(_vg, _volume, tmpX + 20, tmpY + (int)(_windowWidth/4*0.5f)-8 + 40, _windowWidth / 3, 48);
 			clicked = _mouseClickPosX > tmpX + 20 && _mouseClickPosX < (tmpX + 20 + _windowWidth / 3) &&
-								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 + 60 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)-8 + 60 + 28;
+								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 + 50 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)+62;
+			if (clicked) {
+				_volume = 0.0f;
+				int cmpt = 0;
+				int tmp = ((_windowWidth / 3) / 10) * 1;
+				while (_mouseClickPosX - tmpX + 10 > tmp && cmpt != 10) {
+					++cmpt;
+					tmp = ((_windowWidth / 3) / 10) * (cmpt + 1);
+				}
+				_volume = 0.1f * cmpt;
+				Mix_VolumeMusic(MIX_MAX_VOLUME * _volume);
+			}
+			drawButton(_vg, "PLAY", tmpX + 20, tmpY + (int)(_windowWidth/4*0.5f)-8 + 80, _windowWidth / 3, 28, nvgRGBA(0,96,128,255));
+			clicked = _mouseClickPosX > tmpX + 20 && _mouseClickPosX < (tmpX + 20 + _windowWidth / 3) &&
+								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 + 80 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)-8 + 80 + 28;
 			if (clicked)
 				_validate = true;
       //end update window

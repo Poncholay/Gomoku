@@ -27,6 +27,7 @@ void drawDropDown(NVGcontext*, const char *, float, float, float, float);
 void drawButton(NVGcontext*, const char*, float, float, float, float, NVGcolor);
 void drawCheckBox(NVGcontext*, const char*, float, float, float, float, bool);
 int  drawImg(NVGcontext *, int, int, int, int, int);
+void drawSlider(NVGcontext*, float, float, float, float, float);
 
 class         Menu {
   GLFWwindow* _window;
@@ -56,6 +57,7 @@ class         Menu {
   bool        _click;
   bool        _options;
   bool        _validate;
+  float       _volume;
   std::vector<std::string>  _vectorOfGame;
 
 public:
