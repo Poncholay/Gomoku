@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Sun Oct 16 15:32:40 2016 wilmot_g
-** Last update Tue Nov  8 13:32:52 2016 Adrien Milcent
+** Last update Tue Nov  8 14:13:07 2016 Adrien Milcent
 */
 
 #include <iostream>
@@ -17,11 +17,11 @@
 #include "Human.hh"
 #include "Sounds.hpp"
 
-Game::Game()  {_players = 3;}
+Game::Game()  {_players = 1;}
 Game::~Game() {}
 
-void          Game::doPlay(IPlayer *player, Referee referee, atomic<bool> &done) {
-  player->play(referee);
+void          Game::doPlay(IPlayer *player, Referee referee, atomic<bool> &done, atomic<bool> &play_value) {
+  play_value = player->play(referee);
   done = true;
 }
 
@@ -36,6 +36,7 @@ int           Game::play(int param) {
   int         turn = 0;
   vector<IPlayer *>   players;
   atomic<bool>        done(true);
+  atomic<bool>         play_value(true);
   thread              *t = NULL;
 
   Sounds::get().stopMusic();
@@ -46,13 +47,13 @@ int           Game::play(int param) {
   players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 1)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
 
   if (displayer.error() || !displayer.instanciate()) return -1;
-  while (displayer.isRunning()) {
+  while (displayer.isRunning() && play_value) {
     if ((ret = displayer.display()) != 0)
       break;
     if (!displayer.isAnimating() && done) {
       if (!t) {
         done = false;
-        t = new thread(doPlay, players[(turn = turn ? 0 : 1)], referee, ref(done));
+        t = new thread(doPlay, players[(turn = turn ? 0 : 1)], referee, ref(done), ref(play_value));
       } else {
         t->join();
         delete t;

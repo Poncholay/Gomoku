@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:23:37 2016 wilmot_g
-** Last update Mon Nov 07 22:51:29 2016 wilmot_g
+** Last update Tue Nov  8 14:13:25 2016 Adrien Milcent
 */
 
 #include "Human.hh"
@@ -19,7 +19,7 @@ Human::Human(Goban &g, Displayer &d, int nb, int x, int y) : _displayer(d), _gob
 
 Human::~Human() {}
 
-void        Human::play(Referee r) {
+bool        Human::play(Referee r) {
   irr::core::line3d<irr::f32> ray;
   irr::core::vector3df        intersection;
   irr::core::triangle3df      hitTriangle;
@@ -30,7 +30,7 @@ void        Human::play(Referee r) {
   placeholder = new Block(0, 0, 0, Displayer::getSmgr()->getMesh(string(string("./assets/") + (_nb == 1 ? "white" : "black") + "go.obj").c_str()), Displayer::getSmgr());
   _displayer.mutex.unlock();
   if (placeholder->create(0.008) == -1)
-    return;
+    return true;
   do {
     _i = 0;
     _j = 0;
@@ -64,4 +64,5 @@ void        Human::play(Referee r) {
   placeholder->destroy();
   delete placeholder;
   _displayer.mutex.unlock();
+  return true;
 }
