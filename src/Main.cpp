@@ -37,6 +37,8 @@ int         main(int ac, char **av) {
       game.setAdvancedRules(true);
       value -= 3;
     }
+    else
+      game.setAdvancedRules(false);
     game.setPlayers(value);
     game.play(0);
   }
