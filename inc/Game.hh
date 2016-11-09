@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 16:07:43 2016 wilmot_g
-** Last update Tue Nov 08 19:39:57 2016 wilmot_g
+** Last update Wed Nov  9 13:43:42 2016 Combaud Alban
 */
 
 #ifndef GAME_HH_
@@ -19,7 +19,7 @@ public:
   Game();
   ~Game();
 
-  static void doPlay(IPlayer *, Referee, atomic<bool> &, atomic<int> &);
+  static void doPlay(IPlayer *, Referee &, atomic<bool> &, atomic<int> &);
   int         play(int);
 
   string      score(const Referee &r, const vector<IPlayer *> &p);

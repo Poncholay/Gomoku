@@ -5,12 +5,12 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Tue Nov  8 13:17:05 2016 Adrien Milcent
+// Last update Wed Nov  9 13:45:25 2016 Combaud Alban
 //
 
 #include "Referee.hh"
 
-Referee::Referee(Goban &poncholay, bool advanced) : nbPairplayer1(0), nbPairplayer2(0), goban(poncholay), isBroke1(false), isBroke2(false) {
+Referee::Referee(Goban &poncholay, bool advanced) : nbPairplayer1(4), nbPairplayer2(4), goban(poncholay), isBroke1(false), isBroke2(false) {
   _advanced = advanced;
 }
 

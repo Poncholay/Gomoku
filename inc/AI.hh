@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 14:19:59 2016 Adrien Milcent
-// Last update Tue Nov  8 15:27:16 2016 Adrien Milcent
+// Last update Wed Nov  9 13:33:52 2016 Combaud Alban
 //
 
 #ifndef AI_HH_
@@ -30,7 +30,7 @@ public:
   ~AI();
 
   string getType() const;
-  int play(Referee);
+  int play(Referee &);
 };
 
 #endif /* !AI_HH_ */

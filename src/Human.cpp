@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:23:37 2016 wilmot_g
-** Last update Tue Nov 08 22:16:17 2016 wilmot_g
+** Last update Wed Nov  9 13:31:43 2016 Combaud Alban
 */
 
 #include "Human.hh"
@@ -19,7 +19,7 @@ Human::Human(Goban &g, Displayer &d, int nb, int x, int y) : _displayer(d), _gob
 
 Human::~Human() {}
 
-int        Human::play(Referee r) {
+int        Human::play(Referee &r) {
   irr::core::line3d<irr::f32> ray;
   irr::core::vector3df        intersection;
   irr::core::triangle3df      hitTriangle;

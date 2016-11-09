@@ -20,7 +20,7 @@
 Game::Game()  {_players = 1;}
 Game::~Game() {}
 
-void          Game::doPlay(IPlayer *player, Referee referee, atomic<bool> &done, atomic<int> &playValue) {
+void          Game::doPlay(IPlayer *player, Referee &referee, atomic<bool> &done, atomic<int> &playValue) {
   playValue = player->play(referee);
   done = true;
 }
@@ -63,7 +63,7 @@ int           Game::play(int param) {
     if (!displayer.isAnimating() && done) {
       if (!t && playValue == CONTINUE) {
         done = false;
-        t = new thread(doPlay, players[(turn = turn ? 0 : 1)], referee, ref(done), ref(playValue));
+        t = new thread(doPlay, players[(turn = turn ? 0 : 1)], ref(referee), ref(done), ref(playValue));
       } else {
         t->join();
         delete t;

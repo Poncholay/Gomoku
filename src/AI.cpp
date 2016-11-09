@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 14:20:06 2016 Adrien Milcent
-// Last update Tue Nov  8 15:32:41 2016 Adrien Milcent
+// Last update Wed Nov  9 13:34:07 2016 Combaud Alban
 //
 
 #include "AI.hh"
@@ -16,7 +16,7 @@ AI::AI(Goban &goban, int nbPlayer, int nbTurn): _algo(Minmax(nbTurn)), _goban(go
 
 AI::~AI() {}
 
-int     AI::play(Referee referee) {
+int     AI::play(Referee &referee) {
   int res = 0;
   std::vector<std::vector<int> > goban = _goban.getBoard();
   std::pair<int, int> result = _algo.loop(goban, _nbPlayer, referee);
