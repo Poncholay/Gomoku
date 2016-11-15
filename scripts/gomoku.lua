@@ -5,7 +5,7 @@
 -- Login   <wilmot_g@epitech.net>
 --
 -- Started on  Sun Oct 16 17:48:12 2016 wilmot_g
--- Last update Sun Oct 16 17:48:12 2016 wilmot_g
+-- Last update Mon Nov 14 17:40:16 2016 Adrien Milcent
 --
 
 function gomoku_project(_kind)
@@ -21,7 +21,7 @@ function gomoku_project(_kind)
 		}
 
 		linkoptions {
-			"-Wl,-rpath,../../../lib/Linux"
+			"-pg -Wl,-rpath,../../../lib/Linux"
 		}
 
 		links {

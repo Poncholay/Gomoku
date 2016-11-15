@@ -5,7 +5,7 @@
 // Login   <wilmot_g@epitech.net>
 //
 // Started on  Wed Apr 27 10:41:04 2016 guillaume wilmot
-// Last update Sun Jun  5 21:46:38 2016 guillaume wilmot
+// Last update Tue Nov 15 15:27:54 2016 Adrien Milcent
 //
 
 #ifndef DISPLAYER_HPP_
@@ -46,6 +46,7 @@ public:
   bool        isRunning() const;
   bool        error() const;
   void				setCaption(const irr::core::stringw &);
+	void				setTime(float);
   int					display(int = 0);
 
 	irr::scene::ICameraSceneNode 	*getCamera() 			const {return _camera;}

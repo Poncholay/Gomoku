@@ -5,7 +5,7 @@
 // Login   <wilmot_g@epitech.net>
 //
 // Started on  Wed Apr 27 10:47:57 2016 guillaume wilmot
-// Last update Sun Jun  5 22:42:26 2016 guillaume wilmot
+// Last update Tue Nov 15 15:26:59 2016 Adrien Milcent
 //
 
 #include <stdexcept>
@@ -221,5 +221,6 @@ int				            Displayer::display(int win) {
 }
 
 void                  Displayer::setScore(const string &score) {_score = score;}
+void                  Displayer::setTime(float newTime) {_time = newTime;}
 bool                  Displayer::isRunning() const {return _device->run();}
 bool                  Displayer::error() const {return _error;}

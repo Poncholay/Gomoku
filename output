@@ -1,0 +1,413 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  Ts/call  Ts/call  name    
+  4.72      4.42     4.42                             std::vector<int, std::allocator<int> >::operator[](unsigned long)
+  4.58      8.71     4.29                             Minmax::countSeries(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, int&, int&, int, int, int)
+  4.07     12.52     3.81                             std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::operator[](unsigned long)
+  3.29     15.60     3.08                             std::vector<int, std::allocator<int> >::vector(std::vector<int, std::allocator<int> > const&)
+  2.84     18.26     2.66                             Minmax::checkDiag(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, int&, int&, int, int, int, int)
+  2.65     20.74     2.48                             Referee::checkWinBy5(int, int, int)
+  2.19     22.79     2.05                             Referee::checkRules(int, int, int, int)
+  2.16     24.81     2.02                             std::_Vector_base<int, std::allocator<int> >::~_Vector_base()
+  2.12     26.80     1.99                             std::vector<int, std::allocator<int> >::size() const
+  2.02     28.69     1.90                             std::_Niter_base<__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > > >::iterator_type std::__niter_base<__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > > >(__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >)
+  1.99     30.55     1.86                             std::reference_wrapper<int>::reference_wrapper(int&)
+  1.89     32.32     1.77                             int* std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, int*>(__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, int*)
+  1.75     33.96     1.64                             int* std::__copy_move<false, true, std::random_access_iterator_tag>::__copy_m<int>(int const*, int const*, int*)
+  1.44     35.31     1.35                             __gnu_cxx::__alloc_traits<std::allocator<int> >::_S_select_on_copy(std::allocator<int> const&)
+  1.43     36.65     1.34                             std::_Reference_wrapper_base_impl<false, false, int>::_Reference_wrapper_base_impl()
+  1.41     37.97     1.32                             std::vector<int, std::allocator<int> >::~vector()
+  1.39     39.27     1.31                             std::_Vector_base<int, std::allocator<int> >::_Vector_impl::_Vector_impl(std::allocator<int> const&)
+  1.32     40.51     1.24                             __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >::__normal_iterator(int const* const&)
+  1.32     41.75     1.24                             std::_Reference_wrapper_base<int>::_Reference_wrapper_base()
+  1.31     42.97     1.23                             void std::_Destroy_aux<false>::__destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*)
+  1.28     44.17     1.20                             std::allocator<int>::allocator(std::allocator<int> const&)
+  1.25     45.34     1.17                             std::reference_wrapper<int>::get() const
+  1.22     46.49     1.15                             std::_Iter_base<__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, false>::_S_base(__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >)
+  1.22     47.63     1.14                             std::_Miter_base<__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > > >::iterator_type std::__miter_base<__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > > >(__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >)
+  1.20     48.75     1.12                             Minmax::addScore(int, int&)
+  1.16     49.84     1.09                             int* std::copy<__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, int*>(__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, int*)
+  1.15     50.92     1.08                             std::reference_wrapper<int> std::ref<int>(int&)
+  1.11     51.96     1.04                             std::vector<int, std::allocator<int> >::begin() const
+  1.05     52.94     0.98                             bool __gnu_cxx::operator!=<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >(__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > > const&, __gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > > const&)
+  1.01     53.89     0.95                             std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned long)
+  1.00     54.83     0.94                             void std::_Destroy<std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*)
+  0.96     55.72     0.90                             void std::_Destroy<int*, int>(int*, int*, std::allocator<int>&)
+  0.93     56.59     0.87                             std::vector<int, std::allocator<int> >::end() const
+  0.92     57.45     0.86                             std::vector<int, std::allocator<int> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >*>(__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, __gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >*)
+  0.89     58.28     0.83                             std::allocator_traits<std::allocator<int> >::select_on_container_copy_construction(std::allocator<int> const&)
+  0.88     59.11     0.83                             std::_Weak_result_type<int>::_Weak_result_type()
+  0.87     59.92     0.82                             int* std::__uninitialized_copy<true>::__uninit_copy<__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, int*>(__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, int*)
+  0.86     60.73     0.81                             void std::_Construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> > const&>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> > const&)
+  0.86     61.54     0.81                             __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*)
+  0.84     62.33     0.79                             int* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, int*, int>(__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, int*, std::allocator<int>&)
+  0.84     63.11     0.79                             std::_Vector_base<int, std::allocator<int> >::_M_get_Tp_allocator()
+  0.80     63.86     0.75                             void std::_Destroy<int*>(int*, int*)
+  0.78     64.59     0.73                             int* std::__copy_move_a<false, int const*, int*>(int const*, int const*, int*)
+  0.78     65.32     0.73                             int* std::uninitialized_copy<__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, int*>(__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, int*)
+  0.76     66.03     0.71                             std::_Iter_base<__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, true>::_S_base(__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >)
+  0.74     66.72     0.69                             __gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >::operator++()
+  0.74     67.41     0.69                             int* std::__addressof<int>(int&)
+  0.73     68.10     0.69                             std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long)
+  0.73     68.78     0.68                             std::allocator<int>::~allocator()
+  0.69     69.43     0.65                             std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned long, std::allocator<int> const&)
+  0.67     70.06     0.63                             std::_Vector_base<int, std::allocator<int> >::_M_deallocate(int*, unsigned long)
+  0.66     70.68     0.62                             irr::video::COpenGLDriver::setActiveTexture(unsigned int, irr::video::ITexture const*)
+  0.66     71.30     0.62                             std::_Weak_result_type_impl<int>::_Weak_result_type_impl()
+  0.65     71.91     0.61                             std::vector<int, std::allocator<int> >* std::__addressof<std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >&)
+  0.64     72.51     0.60                             std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long)
+  0.64     73.10     0.60                             std::allocator_traits<std::allocator<int> >::deallocate(std::allocator<int>&, int*, unsigned long)
+  0.62     73.69     0.59                             irr::core::equals(float, float, float)
+  0.58     74.23     0.54                             irr::video::COpenGLDriver::disableTextures(unsigned int)
+  0.57     74.76     0.54                             Goban::operator[](int)
+  0.54     75.27     0.51                             std::_Niter_base<int*>::iterator_type std::__niter_base<int*>(int*)
+  0.52     75.76     0.49                             Goban::getXBoard() const
+  0.50     76.22     0.47                             std::_Iter_base<int*, false>::_S_base(int*)
+  0.46     76.66     0.44                             Goban::getYBoard() const
+  0.44     77.07     0.41                             std::vector<int, std::allocator<int> >::_M_range_check(unsigned long) const
+  0.43     77.47     0.40                             __gnu_cxx::new_allocator<int>::deallocate(int*, unsigned long)
+  0.40     77.84     0.38                             __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >::base() const
+  0.40     78.22     0.38                             std::reference_wrapper<int>::operator int&() const
+  0.40     78.59     0.37                             operator new(unsigned long, void*)
+  0.38     78.95     0.36                             __gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >::base() const
+  0.37     79.30     0.35                             std::_Maybe_get_result_type<int, void>::_Maybe_get_result_type()
+  0.35     79.63     0.33                             std::_Vector_base<int, std::allocator<int> >::_Vector_impl::~_Vector_impl()
+  0.35     79.95     0.33                             __gnu_cxx::new_allocator<int>::~new_allocator()
+  0.34     80.27     0.32                             __gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >::operator*() const
+  0.34     80.59     0.32                             __gnu_cxx::new_allocator<int>::new_allocator(__gnu_cxx::new_allocator<int> const&)
+  0.33     80.90     0.31                             Referee::checkWinByPair(int, int, int)
+  0.32     81.20     0.30                             void std::__do_alloc_on_move<std::allocator<std::vector<int, std::allocator<int> > > >(std::allocator<std::vector<int, std::allocator<int> > >&, std::allocator<std::vector<int, std::allocator<int> > >&, std::integral_constant<bool, true>)
+  0.30     81.48     0.29                             std::_Vector_base<int, std::allocator<int> >::_M_get_Tp_allocator() const
+  0.29     81.75     0.27                             __gnu_cxx::new_allocator<int>::max_size() const
+  0.29     82.02     0.27                             std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::operator=(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&)
+  0.29     82.29     0.27                             std::vector<int, std::allocator<int> > const& std::forward<std::vector<int, std::allocator<int> > const&>(std::remove_reference<std::vector<int, std::allocator<int> > const&>::type&)
+  0.27     82.54     0.25                             irr::core::CMatrix4<float>::isIdentity() const
+  0.26     82.78     0.24                             __gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >::__normal_iterator(std::vector<int, std::allocator<int> > const* const&)
+  0.25     83.01     0.23                             Minmax::min(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, int, int, int, Referee, int, int)
+  0.25     83.24     0.23                             std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::vector(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&)
+  0.25     83.47     0.23                             irr::video::COpenGLDriver::STextureStageCache::operator[](int) const
+  0.23     83.69     0.22                             irr::video::COpenGLDriver::STextureStageCache::set(unsigned int, irr::video::ITexture const*)
+  0.22     83.90     0.21                             Minmax::max(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, int, int, int, Referee, int, int)
+  0.21     84.10     0.20                             irr::video::SMaterialLayer::operator=(irr::video::SMaterialLayer const&)
+  0.21     84.30     0.20                             irr::scene::CAnimatedMeshSceneNode::render()
+  0.20     84.49     0.19                             std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::end() const
+  0.19     84.67     0.18                             irr::video::COpenGLDriver::setBasicRenderStates(irr::video::SMaterial const&, irr::video::SMaterial const&, bool)
+  0.19     84.85     0.18                             std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::~_Vector_base()
+  0.18     85.02     0.17                             irr::core::CMatrix4<float>::operator*(irr::core::CMatrix4<float> const&) const
+  0.17     85.18     0.16                             irr::video::SMaterial::operator=(irr::video::SMaterial const&)
+  0.16     85.33     0.15                             irr::executeBlit_TextureCopy_24_to_32(irr::SBlitJob const*)
+  0.16     85.48     0.15                             irr::core::string<char, irr::core::irrAllocator<char> >::operator==(char const*) const
+  0.15     85.62     0.14                             jpeg_idct_islow
+  0.15     85.76     0.14                             irr::video::COpenGLDriver::setTransform(irr::video::E_TRANSFORMATION_STATE, irr::core::CMatrix4<float> const&)
+  0.15     85.90     0.14                             irr::video::COpenGLDriver::drawVertexPrimitiveList(void const*, unsigned int, void const*, unsigned int, irr::video::E_VERTEX_TYPE, irr::scene::E_PRIMITIVE_TYPE, irr::video::E_INDEX_TYPE)
+  0.15     86.04     0.14                             std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::size() const
+  0.15     86.18     0.14                             std::pair<int, int>::pair<int&, int&, void>(int&, int&)
+  0.15     86.32     0.14                             irr::scene::ISceneNode::OnAnimate(unsigned int)
+  0.14     86.45     0.14                             __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::allocate(unsigned long, void const*)
+  0.14     86.59     0.14                             std::vector<int, std::allocator<int> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >*>(__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, __gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >*)
+  0.14     86.72     0.13                             __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::max_size() const
+  0.14     86.85     0.13                             void std::_Destroy_aux<true>::__destroy<int*>(int*, int*)
+  0.13     86.97     0.13                             std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_Vector_base(unsigned long, std::allocator<std::vector<int, std::allocator<int> > > const&)
+  0.13     87.10     0.13                             Minmax::eval(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, int, bool, int, int, int)
+  0.13     87.22     0.12                             Referee::checkPlay(int, int, int)
+  0.13     87.34     0.12                             void std::__alloc_on_move<std::allocator<std::vector<int, std::allocator<int> > > >(std::allocator<std::vector<int, std::allocator<int> > >&, std::allocator<std::vector<int, std::allocator<int> > >&)
+  0.12     87.45     0.12                             void std::_Destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*)
+  0.12     87.56     0.11                             Goban::setReferee(Referee*)
+  0.12     87.67     0.11                             __gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >::operator->() const
+  0.11     87.77     0.10                             __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::deallocate(std::vector<int, std::allocator<int> >*, unsigned long)
+  0.11     87.87     0.10                             irr::core::CMatrix4<float>::operator==(irr::core::CMatrix4<float> const&) const
+  0.11     87.97     0.10                             irr::video::SMaterialLayer::operator!=(irr::video::SMaterialLayer const&) const
+  0.11     88.07     0.10                             __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >::operator*() const
+  0.10     88.17     0.10                             std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_create_storage(unsigned long)
+  0.10     88.26     0.09                             irr::scene::CSceneManager::drawAll()
+  0.10     88.35     0.09                             irr::video::CNullDriver::drawMeshBuffer(irr::scene::IMeshBuffer const*)
+  0.10     88.44     0.09                             irr::video::SMaterial::getTexture(unsigned int) const
+  0.10     88.53     0.09                             std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::~vector()
+  0.10     88.62     0.09                             Goban::operator=(Goban&)
+  0.09     88.70     0.08                             _GLOBAL__sub_I__ZN9DisplayerC2Eii
+  0.09     88.78     0.08                             irr::video::COpenGLDriver::setRenderStates3DMode()
+  0.09     88.86     0.08                             __gnu_cxx::__alloc_traits<std::allocator<std::vector<int, std::allocator<int> > > >::_S_select_on_copy(std::allocator<std::vector<int, std::allocator<int> > > const&)
+  0.09     88.94     0.08                             irr::core::vector3d<float>::operator<(irr::core::vector3d<float> const&) const
+  0.09     89.02     0.08                             irr::video::SMaterial::operator!=(irr::video::SMaterial const&) const
+  0.08     89.09     0.08                             irr::core::irrAllocator<irr::core::CMatrix4<float> >::deallocate(irr::core::CMatrix4<float>*)
+  0.07     89.16     0.07                             std::allocator<std::vector<int, std::allocator<int> > >::~allocator()
+  0.07     89.23     0.07                             irr::scene::CAnimatedMeshSceneNode::OnRegisterSceneNode()
+  0.07     89.30     0.07                             std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_get_Tp_allocator()
+  0.06     89.36     0.06                             irr::scene::COBJMeshFileLoader::retrieveVertexIndices(char*, int*, char const*, unsigned int, unsigned int, unsigned int)
+  0.06     89.42     0.06                             std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_deallocate(std::vector<int, std::allocator<int> >*, unsigned long)
+  0.06     89.48     0.06                             std::vector<int, std::allocator<int> >::at(unsigned long)
+  0.06     89.54     0.06                             irr::video::COpenGLDriver::renderArray(void const*, unsigned int, irr::scene::E_PRIMITIVE_TYPE, irr::video::E_INDEX_TYPE)
+  0.06     89.59     0.06                             Goban::addDraught(int, int, int, bool)
+  0.06     89.65     0.06                             std::vector<int, std::allocator<int> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> > >(__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, __gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> > const*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >*, std::allocator<std::vector<int, std::allocator<int> > >&)
+  0.05     89.70     0.05                             irr::core::CMatrix4<float>::setbyproduct_nocheck(irr::core::CMatrix4<float> const&, irr::core::CMatrix4<float> const&)
+  0.05     89.75     0.05                             irr::scene::CSceneNodeAnimatorCameraFPS::animateNode(irr::scene::ISceneNode*, unsigned int)
+  0.05     89.80     0.05                             irr::video::CNullDriver::isHardwareBufferRecommend(irr::scene::IMeshBuffer const*)
+  0.05     89.85     0.05                             irr::video::COpenGLDriver::drawPixel(unsigned int, unsigned int, irr::video::SColor const&)
+  0.05     89.90     0.05                             Referee::checkWin(int, int, int)
+  0.05     89.95     0.05                             __gnu_cxx::new_allocator<int>::new_allocator()
+  0.05     90.00     0.05                             irr::core::array<irr::scene::CSceneManager::DefaultNodeEntry, irr::core::irrAllocator<irr::scene::CSceneManager::DefaultNodeEntry> >::size() const
+  0.05     90.05     0.05                             irr::core::array<unsigned short, irr::core::irrAllocator<unsigned short> >::size() const
+  0.05     90.10     0.05                             irr::core::vector3d<float>::equals(irr::core::vector3d<float> const&, float) const
+  0.05     90.15     0.05                             std::allocator<std::vector<int, std::allocator<int> > >::allocator(std::allocator<std::vector<int, std::allocator<int> > > const&)
+  0.05     90.20     0.05                             std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_allocate(unsigned long)
+  0.05     90.25     0.05                             std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::allocate(std::allocator<std::vector<int, std::allocator<int> > >&, unsigned long)
+  0.05     90.29     0.05                             std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::deallocate(std::allocator<std::vector<int, std::allocator<int> > >&, std::vector<int, std::allocator<int> >*, unsigned long)
+  0.05     90.34     0.05                             std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_Vector_impl::_Vector_impl()
+  0.04     90.38     0.04                             irr::core::list<irr::scene::ISceneNode*>::Iterator::Iterator(irr::core::list<irr::scene::ISceneNode*>::SKListNode*)
+  0.04     90.42     0.04                             irr::core::strtoul10(char const*, char const**)
+  0.04     90.46     0.04                             irr::scene::COBJMeshFileLoader::copyWord(char*, char const*, unsigned int, char const*)
+  0.04     90.50     0.04                             irr::video::COpenGLDriver::setMaterial(irr::video::SMaterial const&)
+  0.04     90.54     0.04                             irr::video::SMaterialLayer::SMaterialLayer()
+  0.04     90.58     0.04                             irr::video::COpenGLExtensionHandler::extGlActiveTexture(unsigned int)
+  0.04     90.62     0.04                             irr::video::COpenGLMaterialRenderer_SOLID::OnSetMaterial(irr::video::SMaterial const&, irr::video::SMaterial const&, bool, irr::video::IMaterialRendererServices*)
+  0.04     90.66     0.04                             irr::core::map<irr::video::S3DVertex, int>::find(irr::video::S3DVertex const&) const
+  0.04     90.70     0.04                             irr::core::array<irr::scene::IMeshBuffer*, irr::core::irrAllocator<irr::scene::IMeshBuffer*> >::size() const
+  0.04     90.74     0.04                             irr::core::CMatrix4<float>::transformBoxEx(irr::core::aabbox3d<float>&) const
+  0.04     90.78     0.04                             irr::video::COpenGLExtensionHandler::queryFeature(irr::video::E_VIDEO_DRIVER_FEATURE) const
+  0.04     90.82     0.04                             irr::video::SColor::operator!=(irr::video::SColor const&) const
+  0.04     90.86     0.04                             std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::begin() const
+  0.04     90.90     0.04                             std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::select_on_container_copy_construction(std::allocator<std::vector<int, std::allocator<int> > > const&)
+  0.04     90.94     0.04                             png_read_filter_row_paeth_multibyte_pixel
+  0.04     90.97     0.04                             irr::video::CNullDriver::drawVertexPrimitiveList(void const*, unsigned int, void const*, unsigned int, irr::video::E_VERTEX_TYPE, irr::scene::E_PRIMITIVE_TYPE, irr::video::E_INDEX_TYPE)
+  0.04     91.01     0.04                             irr::core::CMatrix4<float>::operator[](unsigned int) const
+  0.03     91.04     0.03                             irr::core::isspace(int)
+  0.03     91.07     0.03                             irr::core::CMatrix4<float>::CMatrix4(irr::core::CMatrix4<float> const&, irr::core::CMatrix4<float>::eConstructor)
+  0.03     91.10     0.03                             irr::core::vector2d<float>::vector2d()
+  0.03     91.13     0.03                             irr::core::vector3d<float>::vector3d(irr::core::vector3d<float> const&)
+  0.03     91.16     0.03                             irr::core::isnotzero(float, float)
+  0.03     91.19     0.03                             irr::video::COpenGLDriver::setWrapMode(irr::video::SMaterial const&)
+  0.03     91.22     0.03                             irr::video::SMaterialLayer::getTextureMatrix()
+  0.03     91.25     0.03                             irr::video::COpenGLExtensionHandler::extGlClientActiveTexture(unsigned int)
+  0.03     91.28     0.03                             __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::new_allocator(__gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > > const&)
+  0.03     91.31     0.03                             irr::core::array<unsigned short, irr::core::irrAllocator<unsigned short> >::const_pointer() const
+  0.03     91.34     0.03                             irr::scene::CMeshBuffer<irr::video::S3DVertex>::getHardwareMappingHint_Vertex() const
+  0.03     91.37     0.03                             irr::video::COpenGLTexture::getOpenGLTextureName() const
+  0.03     91.40     0.03                             Goban::getBoard() const
+  0.03     91.43     0.03                             __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >::base() const
+  0.03     91.46     0.03                             std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_Vector_impl::_Vector_impl(std::allocator<std::vector<int, std::allocator<int> > > const&)
+  0.03     91.49     0.03                             void std::_Destroy<std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*, std::allocator<std::vector<int, std::allocator<int> > >&)
+  0.03     91.52     0.03                             decompress_onepass
+  0.03     91.55     0.03                             h2v2_merged_upsample
+  0.03     91.58     0.03                             inflate_fast
+  0.03     91.61     0.03                             jpeg_fill_bit_buffer
+  0.03     91.63     0.03                             irr::core::CMatrix4<float>::operator=(irr::core::CMatrix4<float> const&)
+  0.03     91.66     0.03                             std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::time_since_epoch() const
+  0.02     91.68     0.02                             irr::CIrrDeviceLinux::CCursorControl::updateCursorPos()
+  0.02     91.70     0.02                             irr::core::irrAllocator<irr::core::CMatrix4<float> >::allocate(unsigned long)
+  0.02     91.72     0.02                             irr::core::irrAllocator<irr::core::CMatrix4<float> >::construct(irr::core::CMatrix4<float>*, irr::core::CMatrix4<float> const&)
+  0.02     91.74     0.02                             irr::core::map<irr::video::S3DVertex, int>::RBTree<irr::video::S3DVertex, int>::setLeftChild(irr::core::map<irr::video::S3DVertex, int>::RBTree<irr::video::S3DVertex, int>*)
+  0.02     91.76     0.02                             irr::core::map<irr::video::S3DVertex, int>::insert(irr::core::map<irr::video::S3DVertex, int>::RBTree<irr::video::S3DVertex, int>*)
+  0.02     91.78     0.02                             irr::core::list<irr::scene::ISceneNode*>::Iterator::operator++()
+  0.02     91.80     0.02                             irr::core::array<irr::video::CNullDriver::SMaterialRenderer, irr::core::irrAllocator<irr::video::CNullDriver::SMaterialRenderer> >::operator[](unsigned int)
+  0.02     91.82     0.02                             irr::core::array<irr::video::COpenGLDriver::SUserClipPlane, irr::core::irrAllocator<irr::video::COpenGLDriver::SUserClipPlane> >::operator[](unsigned int)
+  0.02     91.84     0.02                             irr::core::CMatrix4<float>::setRotationRadians(irr::core::vector3d<float> const&)
+  0.02     91.86     0.02                             irr::core::strtof10(char const*, char const**)
+  0.02     91.88     0.02                             irr::scene::ISceneNode::updateAbsolutePosition()
+  0.02     91.90     0.02                             irr::scene::CSceneManager::registerNodeForRendering(irr::scene::ISceneNode*, irr::scene::E_SCENE_NODE_RENDER_PASS)
+  0.02     91.92     0.02                             irr::scene::CLightSceneNode::setVisible(bool)
+  0.02     91.94     0.02                             irr::scene::COBJMeshFileLoader::copyLine(char const*, char const*)
+  0.02     91.96     0.02                             irr::scene::CBillboardSceneNode::OnRegisterSceneNode()
+  0.02     91.98     0.02                             irr::scene::CAnimatedMeshSceneNode::getMeshForCurrentFrame()
+  0.02     92.00     0.02                             irr::video::CNullDriver::getBufferLink(irr::scene::IMeshBuffer const*)
+  0.02     92.02     0.02                             irr::video::SMaterialLayer::~SMaterialLayer()
+  0.02     92.04     0.02                             irr::video::SMaterial::getTextureMatrix(unsigned int)
+  0.02     92.06     0.02                             Displayer::instanciateLights()
+  0.02     92.08     0.02                             Displayer::display(int)
+  0.02     92.10     0.02                             Displayer::updateFPS()
+  0.02     92.12     0.02                             __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::~new_allocator()
+  0.02     92.14     0.02                             irr::IReferenceCounted::drop() const
+  0.02     92.16     0.02                             irr::IReferenceCounted::grab() const
+  0.02     92.18     0.02                             irr::io::CAttributes::findAttribute(char const*) const
+  0.02     92.20     0.02                             irr::core::vector3d<float>::operator*(float) const
+  0.02     92.22     0.02                             irr::video::SColor::toOpenGLColor(unsigned char*) const
+  0.02     92.24     0.02                             Goban::getYMaxCheck() const
+  0.02     92.26     0.02                             int* std::uninitialized_fill_n<int*, unsigned long, int>(int*, unsigned long, int const&)
+  0.02     92.28     0.02                             decode_mcu
+  0.02     92.30     0.02                             ycc_rgb_convert
+  0.02     92.31     0.02                             irr::scene::SAnimatedMesh::getMesh(int, int, int, int)
+  0.02     92.33     0.02                             __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::new_allocator()
+  0.02     92.34     0.02                             irr::core::array<irr::io::IAttribute*, irr::core::irrAllocator<irr::io::IAttribute*> >::size() const
+  0.02     92.36     0.02                             irr::video::CNullDriver::getViewPort() const
+  0.02     92.37     0.02                             irr::video::SColor::getAlpha() const
+  0.02     92.39     0.02                             std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_Vector_impl::~_Vector_impl()
+  0.01     92.40     0.01                             cnd_timedwait(pthread_cond_t*, pthread_mutex_t*, timespec const*)
+  0.01     92.41     0.01                             draw_particles(GLFWwindow*, double, float)
+  0.01     92.42     0.01                             tessellate_floor(float, float, float, float, int)
+  0.01     92.43     0.01                             glnvg__renderFlush(void*, NVGcompositeOperationState)
+  0.01     92.44     0.01                             physics_thread_main(void*)
+  0.01     92.45     0.01                             irr::CIrrDeviceLinux::pollJoysticks()
+  0.01     92.46     0.01                             irr::CIrrDeviceLinux::run()
+  0.01     92.47     0.01                             irr::io::CIntAttribute::getStringW()
+  0.01     92.48     0.01                             irr::gui::IGUIMeshViewer::IGUIMeshViewer(irr::gui::IGUIEnvironment*, irr::gui::IGUIElement*, int, irr::core::rect<int>)
+  0.01     92.49     0.01                             irr::gui::CGUIEnvironment::drawAll()
+  0.01     92.50     0.01                             irr::core::irrAllocator<irr::core::CMatrix4<float> >::destruct(irr::core::CMatrix4<float>*)
+  0.01     92.51     0.01                             irr::core::irrAllocator<irr::core::CMatrix4<float> >::irrAllocator()
+  0.01     92.52     0.01                             irr::core::irrAllocator<irr::core::CMatrix4<float> >::~irrAllocator()
+  0.01     92.53     0.01                             irr::core::irrAllocator<irr::scene::ISceneNode*>::internal_new(unsigned long)
+  0.01     92.54     0.01                             irr::core::irrAllocator<irr::scene::COBJMeshFileLoader::SObjMtl*>::allocate(unsigned long)
+  0.01     92.55     0.01                             irr::core::fast_atof_move(char const*, float&)
+  0.01     92.56     0.01                             irr::core::reciprocal_squareroot(double)
+  0.01     92.57     0.01                             irr::core::reciprocal_squareroot(float)
+  0.01     92.58     0.01                             irr::core::map<irr::video::S3DVertex, int>::ParentLastIterator::getMin(irr::core::map<irr::video::S3DVertex, int>::RBTree<irr::video::S3DVertex, int>*)
+  0.01     92.59     0.01                             irr::core::map<irr::video::S3DVertex, int>::RBTree<irr::video::S3DVertex, int>::setRed()
+  0.01     92.60     0.01                             float irr::core::abs_<float>(float const&)
+  0.01     92.61     0.01                             irr::core::list<irr::scene::ISceneNode*>::end()
+  0.01     92.62     0.01                             irr::core::list<irr::scene::ISceneNodeAnimator*>::begin()
+  0.01     92.63     0.01                             irr::core::array<irr::scene::CSceneManager::DefaultNodeEntry, irr::core::irrAllocator<irr::scene::CSceneManager::DefaultNodeEntry> >::sort()
+  0.01     92.64     0.01                             irr::core::array<irr::scene::CSceneManager::TransparentNodeEntry, irr::core::irrAllocator<irr::scene::CSceneManager::TransparentNodeEntry> >::insert(irr::scene::CSceneManager::TransparentNodeEntry const&, unsigned int)
+  0.01     92.65     0.01                             irr::core::array<irr::video::COpenGLDriver::RequestedLight, irr::core::irrAllocator<irr::video::COpenGLDriver::RequestedLight> >::insert(irr::video::COpenGLDriver::RequestedLight const&, unsigned int)
+  0.01     92.66     0.01                             irr::core::array<irr::video::S3DVertex, irr::core::irrAllocator<irr::video::S3DVertex> >::insert(irr::video::S3DVertex const&, unsigned int)
+  0.01     92.67     0.01                             irr::core::array<irr::video::SMaterial, irr::core::irrAllocator<irr::video::SMaterial> >::push_back(irr::video::SMaterial const&)
+  0.01     92.68     0.01                             irr::core::array<irr::SKeyMap, irr::core::irrAllocator<irr::SKeyMap> >::operator[](unsigned int)
+  0.01     92.69     0.01                             irr::core::array<irr::io::IAttribute*, irr::core::irrAllocator<irr::io::IAttribute*> >::push_back(irr::io::IAttribute* const&)
+  0.01     92.70     0.01                             irr::core::array<irr::scene::ISceneNode*, irr::core::irrAllocator<irr::scene::ISceneNode*> >::operator[](unsigned int)
+  0.01     92.71     0.01                             irr::core::array<irr::scene::IMeshBuffer*, irr::core::irrAllocator<irr::scene::IMeshBuffer*> >::clear()
+  0.01     92.72     0.01                             irr::core::array<irr::scene::IMesh*, irr::core::irrAllocator<irr::scene::IMesh*> >::operator[](unsigned int)
+  0.01     92.73     0.01                             irr::core::array<unsigned short, irr::core::irrAllocator<unsigned short> >::clear()
+  0.01     92.74     0.01                             int const irr::core::clamp<int>(int const&, int const&, int const&)
+  0.01     92.75     0.01                             irr::core::CMatrix4<float>::makeIdentity()
+  0.01     92.76     0.01                             irr::core::CMatrix4<float>::setRotationDegrees(irr::core::vector3d<float> const&)
+  0.01     92.77     0.01                             irr::core::vector2d<unsigned int>::vector2d(unsigned int, unsigned int)
+  0.01     92.78     0.01                             irr::core::vector3d<float>::operator=(irr::core::vector3d<float> const&)
+  0.01     92.79     0.01                             irr::scene::ISceneNode::clone(irr::scene::ISceneNode*, irr::scene::ISceneManager*)
+  0.01     92.80     0.01                             irr::scene::CMeshBuffer<irr::video::S3DVertex>::append(irr::scene::IMeshBuffer const*)
+  0.01     92.81     0.01                             irr::scene::SViewFrustum::setFrom(irr::core::CMatrix4<float> const&)
+  0.01     92.82     0.01                             irr::scene::SViewFrustum::transform(irr::core::CMatrix4<float> const&)
+  0.01     92.83     0.01                             irr::scene::CLightSceneNode::CLightSceneNode(irr::scene::ISceneNode*, irr::scene::ISceneManager*, int, irr::core::vector3d<float> const&, irr::video::SColorf, float)
+  0.01     92.84     0.01                             irr::scene::CCameraSceneNode::OnRegisterSceneNode()
+  0.01     92.85     0.01                             irr::scene::CSkyBoxSceneNode::render()
+  0.01     92.86     0.01                             irr::scene::COBJMeshFileLoader::goNextWord(char const*, char const*, bool)
+  0.01     92.87     0.01                             irr::scene::CBillboardSceneNode::render()
+  0.01     92.88     0.01                             irr::scene::CAnimatedMeshSceneNode::buildFrameNr(unsigned int)
+  0.01     92.89     0.01                             irr::scene::CAnimatedMeshSceneNode::OnAnimate(unsigned int)
+  0.01     92.90     0.01                             irr::video::CFPSCounter::CFPSCounter()
+  0.01     92.91     0.01                             irr::video::IVideoDriver::drawIndexedTriangleList(irr::video::S3DVertex const*, unsigned int, unsigned short const*, unsigned int)
+  0.01     92.92     0.01                             irr::video::COpenGLDriver::SUserClipPlane::SUserClipPlane()
+  0.01     92.93     0.01                             irr::video::COpenGLDriver::getTextureWrapMode(unsigned char)
+  0.01     92.94     0.01                             irr::video::COpenGLDriver::assignHardwareLight(unsigned int)
+  0.01     92.95     0.01                             irr::video::COpenGLDriver::changeRenderContext(irr::video::SExposedVideoData const&, irr::CIrrDeviceLinux*)
+  0.01     92.96     0.01                             irr::video::COpenGLDriver::SHWBufferLink_opengl::SHWBufferLink_opengl(irr::scene::IMeshBuffer const*)
+  0.01     92.97     0.01                             irr::video::COpenGLDriver::addRenderTargetTexture(irr::core::dimension2d<unsigned int> const&, irr::core::string<char, irr::core::irrAllocator<char> > const&, irr::video::ECOLOR_FORMAT)
+  0.01     92.98     0.01                             irr::video::COpenGLDriver::createDeviceDependentTexture(irr::video::IImage*, irr::core::string<char, irr::core::irrAllocator<char> > const&, void*)
+  0.01     92.99     0.01                             irr::video::COpenGLDriver::endScene()
+  0.01     93.00     0.01                             irr::video::SColor::SColor()
+  0.01     93.01     0.01                             irr::video::SLight::SLight(irr::video::SLight const&)
+  0.01     93.02     0.01                             irr::video::SMaterial::SMaterial()
+  0.01     93.03     0.01                             Game::score[abi:cxx11](Referee const&, std::vector<IPlayer*, std::allocator<IPlayer*> > const&)
+  0.01     93.04     0.01                             Menu::play()
+  0.01     93.05     0.01                             Goban::removeDraught(int, int, bool)
+  0.01     93.06     0.01                             Referee::checkVertical(int, int, int, int)
+  0.01     93.07     0.01                             Referee::Referee(Goban&, bool)
+  0.01     93.08     0.01                             Displayer::drawScore()
+  0.01     93.09     0.01                             std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > __gnu_cxx::__to_xstring<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...)
+  0.01     93.10     0.01                             irr::io::CAttributes::getAttributeP(char const*) const
+  0.01     93.11     0.01                             irr::core::map<irr::video::S3DVertex, int>::RBTree<irr::video::S3DVertex, int>::getLeftChild() const
+  0.01     93.12     0.01                             irr::core::map<irr::video::S3DVertex, int>::RBTree<irr::video::S3DVertex, int>::getRightChild() const
+  0.01     93.13     0.01                             irr::core::array<irr::video::S3DVertex, irr::core::irrAllocator<irr::video::S3DVertex> >::const_pointer() const
+  0.01     93.14     0.01                             irr::core::array<irr::video::SMaterial, irr::core::irrAllocator<irr::video::SMaterial> >::size() const
+  0.01     93.15     0.01                             irr::core::array<irr::io::IAttribute*, irr::core::irrAllocator<irr::io::IAttribute*> >::operator[](unsigned int) const
+  0.01     93.16     0.01                             irr::core::array<irr::scene::IMeshBuffer*, irr::core::irrAllocator<irr::scene::IMeshBuffer*> >::operator[](unsigned int) const
+  0.01     93.17     0.01                             irr::core::plane3d<float>::getIntersectionWithPlane(irr::core::plane3d<float> const&, irr::core::vector3d<float>&, irr::core::vector3d<float>&) const
+  0.01     93.18     0.01                             irr::core::plane3d<float>::getIntersectionWithPlanes(irr::core::plane3d<float> const&, irr::core::plane3d<float> const&, irr::core::vector3d<float>&) const
+  0.01     93.19     0.01                             irr::core::CMatrix4<float>::transformVect(irr::core::vector3d<float>&) const
+  0.01     93.20     0.01                             irr::core::vector2d<float>::equals(irr::core::vector2d<float> const&) const
+  0.01     93.21     0.01                             irr::core::vector3d<float>::dotProduct(irr::core::vector3d<float> const&) const
+  0.01     93.22     0.01                             irr::core::vector3d<float>::getLengthSQ() const
+  0.01     93.23     0.01                             irr::core::vector3d<float>::getLength() const
+  0.01     93.24     0.01                             irr::core::vector3d<float>::operator==(irr::core::vector3d<float> const&) const
+  0.01     93.25     0.01                             irr::scene::ISceneNode::getRelativeTransformation() const
+  0.01     93.26     0.01                             irr::scene::CMeshBuffer<irr::video::S3DVertex>::getIndexType() const
+  0.01     93.27     0.01                             irr::scene::CMeshBuffer<irr::video::S3DVertex>::getVertexCount() const
+  0.01     93.28     0.01                             irr::scene::SViewFrustum::getFarLeftUp() const
+  0.01     93.29     0.01                             irr::scene::SViewFrustum::getFarRightUp() const
+  0.01     93.30     0.01                             irr::scene::CSceneManager::DefaultNodeEntry::operator<(irr::scene::CSceneManager::DefaultNodeEntry const&) const
+  0.01     93.31     0.01                             irr::scene::CLightSceneNode::getCastShadow() const
+  0.01     93.32     0.01                             irr::scene::SMesh::getBoundingBox() const
+  0.01     93.33     0.01                             irr::video::CNullDriver::getColorFormat() const
+  0.01     93.34     0.01                             irr::video::CNullDriver::checkPrimitiveCount(unsigned int) const
+  0.01     93.35     0.01                             irr::video::CNullDriver::getMaximalPrimitiveCount() const
+  0.01     93.36     0.01                             irr::video::COpenGLDriver::getTransform(irr::video::E_TRANSFORMATION_STATE) const
+  0.01     93.37     0.01                             irr::video::COpenGLDriver::queryFeature(irr::video::E_VIDEO_DRIVER_FEATURE) const
+  0.01     93.38     0.01                             irr::video::COpenGLTexture::hasMipMaps() const
+  0.01     93.39     0.01                             irr::video::SColor::operator==(irr::video::SColor const&) const
+  0.01     93.40     0.01                             irr::video::S3DVertex::operator==(irr::video::S3DVertex const&) const
+  0.01     93.41     0.01                             irr::video::S3DVertex::operator<(irr::video::S3DVertex const&) const
+  0.01     93.42     0.01                             std::__cxx11::_List_base<std::tuple<int, int, int>, std::allocator<std::tuple<int, int, int> > >::_M_node_count() const
+  0.01     93.43     0.01                             std::__cxx11::list<std::tuple<int, int, int>, std::allocator<std::tuple<int, int, int> > >::size() const
+  0.01     93.44     0.01                             std::type_info::operator==(std::type_info const&) const
+  0.01     93.45     0.01                             std::vector<int, std::allocator<int> >* std::__uninitialized_fill_n<false>::__uninit_fill_n<std::vector<int, std::allocator<int> >*, unsigned long, std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*, unsigned long, std::vector<int, std::allocator<int> > const&)
+  0.01     93.46     0.01                             std::__cxx11::_List_base<std::tuple<int, int, int>, std::allocator<std::tuple<int, int, int> > >::_M_inc_size(unsigned long)
+  0.01     93.47     0.01                             non-virtual thunk to irr::scene::CSceneManager::getBoundingBox() const
+  0.01     93.48     0.01                             fons__getQuad
+  0.01     93.49     0.01                             jpeg_huff_decode
+  0.01     93.50     0.01                             stbi__idct_block
+  0.01     93.50     0.01                             __static_initialization_and_destruction_0(int, int)
+  0.01     93.51     0.01                             irr::io::CAttributes::setAttribute(char const*, int)
+  0.01     93.51     0.01                             irr::io::CAttributes::getAttributeAsBool(char const*)
+  0.01     93.52     0.01                             irr::os::Timer::getRealTime()
+  0.01     93.52     0.01                             irr::os::Timer::getSpeed()
+  0.01     93.53     0.01                             irr::os::Timer::initTimer(bool)
+  0.01     93.53     0.01                             irr::os::Timer::isStopped()
+  0.01     93.54     0.01                             irr::core::dimension2d<unsigned int>::dimension2d(unsigned int const&, unsigned int const&)
+  0.01     93.54     0.01                             irr::core::irrAllocator<irr::core::CMatrix4<float> >::internal_delete(void*)
+  0.01     93.55     0.01                             irr::core::irrAllocator<irr::scene::ISceneNode*>::construct(irr::scene::ISceneNode**, irr::scene::ISceneNode* const&)
+  0.01     93.55     0.01                             irr::core::irrAllocator<char>::internal_delete(void*)
+  0.01     93.56     0.01                             irr::core::array<irr::CIrrDeviceLinux::CCursorControl::CursorX11, irr::core::irrAllocator<irr::CIrrDeviceLinux::CCursorControl::CursorX11> >::~array()
+  0.01     93.56     0.01                             irr::core::array<irr::video::CNullDriver::SOccQuery, irr::core::irrAllocator<irr::video::CNullDriver::SOccQuery> >::erase(unsigned int)
+  0.01     93.57     0.01                             irr::core::array<irr::io::IAttribute*, irr::core::irrAllocator<irr::io::IAttribute*> >::~array()
+  0.01     93.57     0.01                             irr::core::array<unsigned short, irr::core::irrAllocator<unsigned short> >::operator[](unsigned int)
+  0.01     93.58     0.01                             irr::core::vector3d<float>::operator*=(float)
+  0.01     93.58     0.01                             irr::scene::SAnimatedMesh::setAnimationSpeed(float)
+  0.01     93.59     0.01                             irr::video::CNullDriver::getMaterialRenderer(unsigned int)
+  0.01     93.59     0.01                             irr::video::CNullDriver::deleteMaterialRenders()
+  0.01     93.60     0.01                             irr::video::COpenGLDriver::getColorBuffer(void const*, unsigned int, irr::video::E_VERTEX_TYPE)
+  0.01     93.60     0.01                             irr::core::array<irr::CIrrDeviceLinux::CCursorControl::CursorX11, irr::core::irrAllocator<irr::CIrrDeviceLinux::CCursorControl::CursorX11> >::size() const
+  0.01     93.61     0.01                             irr::core::array<irr::video::CNullDriver::SOccQuery, irr::core::irrAllocator<irr::video::CNullDriver::SOccQuery> >::size() const
+  0.01     93.61     0.01                             irr::core::aabbox3d<float>::getExtent() const
+  0.01     93.62     0.01                             irr::core::vector3d<float>::operator/(float) const
+  0.01     93.62     0.01                             irr::scene::CMeshBuffer<irr::video::S3DVertex>::getMaterial() const
+  0.01     93.63     0.01                             irr::scene::CMeshBuffer<irr::video::S3DVertex>::getVertexType() const
+  0.01     93.63     0.01                             irr::video::SColor::getRed() const
+  0.01     93.64     0.01                             __gnu_cxx::new_allocator<std::_List_node<std::tuple<int, int, int> > >::max_size() const
+  0.01     93.64     0.01                             std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_get_Tp_allocator() const
+  0.01     93.65     0.01                             std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<char*, void>(char*, char*, std::allocator<char> const&)
+  0.01     93.65     0.01                             __gnu_cxx::__enable_if<std::__is_scalar<int>::__value, int*>::__type std::__fill_n_a<int*, unsigned long, int>(int*, unsigned long, int const&)
+  0.01     93.66     0.01                             std::iterator_traits<char*>::iterator_category std::__iterator_category<char*>(char* const&)
+  0.01     93.66     0.01                             std::vector<int, std::allocator<int> >* std::__uninitialized_fill_n_a<std::vector<int, std::allocator<int> >*, unsigned long, std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*, unsigned long, std::vector<int, std::allocator<int> > const&, std::allocator<std::vector<int, std::allocator<int> > >&)
+  0.01     93.67     0.01                             int* std::fill_n<int*, unsigned long, int>(int*, unsigned long, int const&)
+  0.01     93.67     0.01                             virtual thunk to irr::scene::IBillboardTextSceneNode::~IBillboardTextSceneNode()
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2015 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.

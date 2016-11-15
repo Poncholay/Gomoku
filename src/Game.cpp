@@ -53,8 +53,8 @@ int           Game::play(int param) {
   Sounds::get().playMusic("game");
   goban.setReferee(&referee);
 
-  players.push_back(_players != 3 ? (IPlayer *)(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y)) : (IPlayer *)(new AI(goban, 1, 1)));
-  players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 1)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
+  players.push_back(_players != 3 ? (IPlayer *)(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y)) : (IPlayer *)(new AI(goban, 1, 2)));
+  players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 2)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
 
   while (displayer.isRunning() && !displayer.getReceiver().checkEnd() && playValue == CONTINUE) {
     displayer.setScore(score(referee, players));
@@ -74,9 +74,12 @@ int           Game::play(int param) {
     }
   }
   if (playValue == WIN || playValue == WIN_INVERSE)
+  {
+    displayer.setTime(5);
     while (displayer.isRunning() && displayer.isAnimating())
       if ((ret = displayer.display(playValue == WIN ? turn + 1 : turn ? 1 : 2)) != 0 || displayer.getReceiver().checkEnd())
         break;
+  }
   if (t) {t->join(); delete t;}
   Sounds::get().stopMusic();
   Sounds::get().stopSounds();
