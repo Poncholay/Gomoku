@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 16:30:25 2016 wilmot_g
-** Last update Wed Nov 23 21:34:15 2016 wilmot_g
+** Last update Wed Nov 23 21:59:11 2016 wilmot_g
 */
 
 #include "Sounds.hpp"
@@ -21,13 +21,14 @@ int         main(int ac, char **av) {
     return -1;
   }
 
-  Menu      menu;
   Game      game;
   int       value = 0;
 
-  if (!menu.isInit())
-    return (-1);
   while (value != -1) {
+    Menu      menu;
+
+    if (!menu.isInit())
+      return (-1);
     menu.resetValues();
     if ((value = menu.play()) == -1) {
       menu.endMenu();
@@ -43,6 +44,5 @@ int         main(int ac, char **av) {
     game.setPlayers(value);
     game.play(0);
   }
-  menu.endMenu();
   return (0);
 }

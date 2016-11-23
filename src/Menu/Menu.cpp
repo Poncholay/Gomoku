@@ -5,7 +5,7 @@
 ** Login   <saurs_f@epitech.net>
 **
 ** Started on  Mon Nov 07 22:35:02 2016 saurs_f
-** Last update Mon Nov 07 22:52:44 2016 wilmot_g
+** Last update Wed Nov 23 21:57:14 2016 wilmot_g
 */
 
 #include "Menu.hh"
@@ -21,13 +21,10 @@ int blowup = 0;
 int screenshot = 0;
 int premult = 0;
 
-void printErrorFunc(int error, const char *desc)
-{
-	cerr << "GLFW error " << error << ": " << desc << endl;
-}
+void printErrorFunc(int error, const char *desc) {cerr << "GLFW error " << error << ": " << desc << endl;}
+int createParticles(GLFWwindow *window, int width, int height);
 
-static char* cpToUTF8(int cp, char* str)
-{
+static char* cpToUTF8(int cp, char* str) {
 	int n = 0;
 	if (cp < 0x80) n = 1;
 	else if (cp < 0x800) n = 2;
@@ -47,16 +44,17 @@ static char* cpToUTF8(int cp, char* str)
 	return str;
 }
 
-static void key(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
+static void key(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	NVG_NOTUSED(scancode);
 	NVG_NOTUSED(mods);
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
-Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA\n\nIA vs IA\n\nEXIT"), _settingsText("EXIT")
-{
+Menu::~Menu() {}
+bool Menu::isInit() {return (_init);}
+
+Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA\n\nIA vs IA\n\nEXIT"), _settingsText("EXIT") {
   _init = true;
   _vg = NULL;
 	_typeOfGameValue = 1;
@@ -109,13 +107,11 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
     return ;
   }
 
-  if (loadMenuData(_vg, &_data) == -1)
-    {
+  if (loadMenuData(_vg, &_data) == -1) {
       _init = false;
       return ;
     }
-  if ((_backgroundImage = nvgCreateImage(_vg, "./assets/Menu/images/gomoku.jpg", 0)) == 0)
-    {
+  if ((_backgroundImage = nvgCreateImage(_vg, "./assets/Menu/images/gomoku.jpg", 0)) == 0) {
       cerr << "Cannot load background." << endl;
       _init = false;
       return ;
@@ -141,20 +137,14 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
 	_volume = 0.5f;
 }
 
-Menu::~Menu() {}
-
-void 			Menu::endMenu()
-{
+void 			Menu::endMenu() {
 	nvgDeleteImage(_vg, _backgroundImage);
   freeMenuData(_vg, &_data);
   nvgDeleteGL2(_vg);
   glfwTerminate();
 }
 
-int createParticles(GLFWwindow *window, int width, int height);
-
-int 			Menu::resetValues()
-{
+int 			Menu::resetValues() {
 	_play = false;
   _settings = false;
   _quit = false;
@@ -167,8 +157,7 @@ int 			Menu::resetValues()
 	_validate = false;
 }
 
-int        Menu::play()
-{
+int        Menu::play() {
 	createParticles(_window, _windowWidth, _windowHeight);
   _previousTime = glfwGetTime();
   while (!glfwWindowShouldClose(_window))
@@ -261,9 +250,4 @@ int        Menu::play()
       glfwPollEvents();
     }
   return (-1);
-}
-
-bool        Menu::isInit()
-{
-  return (_init);
 }

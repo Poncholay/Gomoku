@@ -18,8 +18,8 @@ AI::~AI() {}
 
 int     AI::play(Referee &referee) {
   int res = 0;
-  std::vector<std::vector<int> > goban = _goban.getBoard();
-  std::pair<int, int> result = _algo.loop(goban, _nbPlayer, referee);
+  vector<vector<int> > goban = _goban.getBoard();
+  pair<int, int> result = _algo.loop(goban, _nbPlayer, referee);
 
   if (result.first != -1 && result.second != -1) {
     res = referee.checkPlay(result.first, result.second, _nbPlayer);
