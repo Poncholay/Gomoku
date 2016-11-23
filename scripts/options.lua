@@ -28,7 +28,7 @@ function options()
 				      "-pthread",
 				      "-std=c++11",
               "-DNANOVG_GLEW",
-              "-Wl,-rpath,../../../lib/Linux"
+              "-O3"
         		}
   end
 end

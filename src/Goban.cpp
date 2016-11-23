@@ -72,9 +72,9 @@ void Goban::printBoard() const {
 
 bool Goban::full() const {for (auto i : _board) for(auto j : i) if (j == 0) return false; return true;}
 void Goban::setReferee(Referee *r)   {_r = r;}
-int Goban::getXBoard() const {return _xBoard;}
-int Goban::getYBoard() const {return _yBoard;}
+int Goban::getXBoard()    const {return _xBoard;}
+int Goban::getYBoard()    const {return _yBoard;}
 int Goban::getXMaxCheck() const {return _xMaxCheck;}
 int Goban::getYMaxCheck() const {return _yMaxCheck;}
-std::vector<std::vector<int> >  Goban::getBoard() const {return _board;}
-Displayer                       &Goban::getDisplayer() {return _displayer;}
+std::vector<std::vector<int> >  &Goban::getBoard()      {return _board;}
+Displayer                       &Goban::getDisplayer()  {return _displayer;}

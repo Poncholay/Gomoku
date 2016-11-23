@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 16:30:25 2016 wilmot_g
-** Last update Tue Nov 08 19:45:23 2016 wilmot_g
+** Last update Wed Nov 23 21:34:15 2016 wilmot_g
 */
 
 #include "Sounds.hpp"
@@ -33,6 +33,7 @@ int         main(int ac, char **av) {
       menu.endMenu();
       return (0);
     }
+    menu.endMenu();
     if (value > 3) {
       game.setAdvancedRules(true);
       value -= 3;

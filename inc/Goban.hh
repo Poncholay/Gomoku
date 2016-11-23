@@ -36,15 +36,15 @@ public:
   Goban(Goban &);
   ~Goban();
 
-  Goban &operator=(Goban &);
   std::vector<int>   &operator[](int);
+  Goban &operator=(Goban &);
   void setReferee(Referee *r);
   int getXBoard() const;
   int getYBoard() const;
   int getXMaxCheck() const;
   int getYMaxCheck() const;
   bool full() const;
-  std::vector<std::vector<int> >  getBoard() const;
+  std::vector<std::vector<int> >  &getBoard();
 
   void addDraught(int, int, int, bool = false);
   void removeDraught(int, int, bool = false);

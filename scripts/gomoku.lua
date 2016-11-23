@@ -21,7 +21,7 @@ function gomoku_project(_kind)
 		}
 
 		linkoptions {
-			"-pg -Wl,-rpath,../../../lib/Linux"
+			"-O3 -pg -Wl,-rpath,../../../lib/Linux"
 		}
 
 		links {
