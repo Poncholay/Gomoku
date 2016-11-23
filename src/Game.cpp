@@ -53,8 +53,8 @@ int           Game::play(int param) {
   Sounds::get().playMusic("game");
   goban.setReferee(&referee);
 
-  players.push_back(_players != 3 ? (IPlayer *)(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y)) : (IPlayer *)(new AI(goban, 1, 2)));
-  players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 2)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
+  players.push_back(_players != 3 ? (IPlayer *)(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y)) : (IPlayer *)(new AI(goban, 1, 3)));
+  players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 3)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
 
   while (displayer.isRunning() && !displayer.getReceiver().checkEnd() && playValue == CONTINUE) {
     displayer.setScore(score(referee, players));

@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 15:27:04 2016 Adrien Milcent
-// Last update Tue Nov 15 17:41:27 2016 Adrien Milcent
+// Last update Tue Nov 22 18:31:11 2016 Adrien Milcent
 //
 
 #include "Goban.hh"
@@ -15,8 +15,8 @@ Goban::Goban(Displayer &d, int xBoard, int yBoard) : _displayer(d) {
   _yBoard = yBoard;
   std::vector<int> a = std::vector<int>   (xBoard, 0);
   _board = std::vector<std::vector<int> > (yBoard, a);
-  _xMaxCheck = 2;
-  _yMaxCheck = 2;
+  _xMaxCheck = 3;
+  _yMaxCheck = 3;
 }
 
 Goban::~Goban() {}
