@@ -33,8 +33,8 @@ pair<int, int> Minmax::loop(vector<vector<int> > &goban, int nbPlayer, Referee r
   int tmp = 0, maxi = -1, maxj = -1, nbOpponent = 0;
 
   nbOpponent = nbPlayer == 1 ? 2 : 1;
-  for (int i = 0; i < maxY; ++i) {
-    for (int j = 0; j < maxX; ++j) {
+  for (int i = 0; i < maxY; ++i)
+    for (int j = 0; j < maxX; ++j)
       if (goban[i][j] == 0) {
         goban[i][j] = nbPlayer;
         res = referee.checkPlay(j, i, nbPlayer);
@@ -54,8 +54,6 @@ pair<int, int> Minmax::loop(vector<vector<int> > &goban, int nbPlayer, Referee r
         goban[i][j] = 0;
         ++cnt;
       }
-    }
-  }
   pair<int, int> result = pair<int, int> (maxj, maxi);
   return result;
 }
@@ -64,8 +62,8 @@ int Minmax::min(vector<vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpp
   int min_nb = 100000;
   int tmp = 100000;
 
-  for (int i = 0; i < maxY; ++i) {
-    for (int j = 0; j < maxX; ++j) {
+  for (int i = 0; i < maxY; ++i)
+    for (int j = 0; j < maxX; ++j)
       if (goban[i][j] == 0) {
         goban[i][j] = nbOpponent;
         if (referee.checkPlay(j, i, nbOpponent) == WIN)
@@ -74,13 +72,10 @@ int Minmax::min(vector<vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpp
           tmp = eval(goban, nbPlayer, nbOpponent, false, nbOpponent, maxY, maxX);
         else
           tmp = max(goban, nbTurn - 1, nbPlayer, nbOpponent, referee, maxY, maxX);
-        if (tmp < min_nb) {
+        if (tmp < min_nb)
           min_nb = tmp;
-        }
         goban[i][j] = 0;
       }
-    }
-  }
   return min_nb;
 }
 
@@ -88,8 +83,8 @@ int Minmax::max(vector<vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpp
   int max_nb = -100000;
   int tmp = -100000;
 
-  for (int i = 0; i < maxY; ++i) {
-    for (int j = 0; j < maxX; ++j) {
+  for (int i = 0; i < maxY; ++i)
+    for (int j = 0; j < maxX; ++j)
       if (goban[i][j] == 0) {
         goban[i][j] = nbPlayer;
         if (referee.checkPlay(j, i, nbPlayer) == WIN)
@@ -104,8 +99,6 @@ int Minmax::max(vector<vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpp
         }
         goban[i][j] = 0;
       }
-    }
-  }
   return max_nb;
 }
 

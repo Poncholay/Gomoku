@@ -52,6 +52,8 @@ void Goban::addDraught(int x, int y, int player, bool move) {
     if (_r) _r->updatePair(x, y, player);
     if (x > _xMaxCheck - 2) _xMaxCheck = x + 2;
     if (y > _yMaxCheck - 2) _yMaxCheck = y + 2;
+    _xMaxCheck = _xMaxCheck > _xBoard ? _xBoard : _xMaxCheck;
+    _yMaxCheck = _yMaxCheck > _yBoard ? _yBoard : _yMaxCheck;
   }
   _board[y].at(x) = player;
 }
@@ -63,10 +65,10 @@ void Goban::removeDraught(int x, int y, bool move) {
 }
 
 void Goban::printBoard() const {
-  for (std::vector<std::vector<int> >::const_iterator it = _board.begin(); it != _board.end(); it++) {
-    for (std::vector<int>::const_iterator it2 = it->begin(); it2 != it->end(); it2++)
-      std::cout << *it2 << " ";
-    std::cout << std::endl;
+  for (int y = 0; y < _yMaxCheck; y++) {
+    for (int x = 0; x < _xMaxCheck; x++)
+      cout << _board[y][x] << " ";
+    cout << endl;
   }
 }
 

@@ -18,10 +18,12 @@
 # include "IPlayer.hh"
 # include "Goban.hh"
 # include "Minmax.hh"
+# include "AlphaBetaMinimax.hh"
 
 class AI : public IPlayer {
 private:
-  Minmax _algo;
+  // Minmax _algo;
+  AlphaBetaMinimax _algo;
   Goban &_goban;
   int _nbPlayer;
 
