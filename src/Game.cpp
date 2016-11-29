@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Tue Nov 29 18:19:29 2016 wilmot_g
+** Last update Tue Nov 29 23:23:51 2016 wilmot_g
 */
 
 #include <iostream>
@@ -65,8 +65,10 @@ int           Game::play(int param) {
         done = false;
         t = new thread(doPlay, players[(turn = turn ? 0 : 1)], ref(referee), ref(done), ref(playValue));
       } else {
-        t->join();
-        delete t;
+        if (t) {
+          t->join();
+          delete t;
+        }
         t = NULL;
         if (displayer.getReceiver().checkEnd()) break;
         displayer.animate();
@@ -74,6 +76,10 @@ int           Game::play(int param) {
     }
   }
   if (playValue == WIN || playValue == WIN_INVERSE) {
+    while (displayer.isRunning() && displayer.isAnimating())
+      if ((ret = displayer.display()) != 0 || displayer.getReceiver().checkEnd())
+        break;
+    displayer.setAnimate(0, 0, -1);
     displayer.setTime(5);
     while (displayer.isRunning() && displayer.isAnimating())
       if ((ret = displayer.display(playValue == WIN ? turn + 1 : turn ? 1 : 2)) != 0 || displayer.getReceiver().checkEnd())

@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Tue Nov 29 20:58:05 2016 wilmot_g
+** Last update Tue Nov 29 23:25:16 2016 wilmot_g
 */
 
 #include <functional>
@@ -24,31 +24,28 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
   int v = -MAX;
   int alpha = -MAX;
   Goban &g = r.getGoban();
-  vector<vector<char> > heuristics = r.getGoban().getHeuristics();
+  vector<vector<char> > heuristics = g.getHeuristics();
 
   _player = player;
   _opponent = player == 1 ? 2 : 1;
   _win = Coord(-1, -1);
-
-  g.printBoard();
-
   for (int y = 0; y < g.getYMaxCheck(); y++)
     for (int x = 0; x < g.getXMaxCheck(); x++)
-      if (!r.getGoban()(y)[x]) {
+      if (!heuristics[y][x]) {
         int res = r.checkPlay(x, y, player);
         if (res == WIN) {
           cout << "Winning : [" << y << "][" << x << "]" << endl;
           return Coord(x, y);
         }
         if (res != REPLAY && res != -1) {
-          r.getGoban().addDraught(x, y, player);
+          g.addDraught(x, y, player);
           int changes = r.getGoban().updateWeights(x, y, heuristics);
-          int e = evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics);
-          cout << _player << " [" << y << "][" << x << "] " << e << endl;
-          v = max(v, e);
-          // v = max(v, evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics));
-          r.getGoban().removeDraught(x, y, 0);
-          r.getGoban().revertWeights(x, y, changes, heuristics);
+          // int e = evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics);
+          // cout << _player << " [" << y << "][" << x << "] " << e << endl;
+          // v = max(v, e);
+          v = max(v, evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics));
+          g.removeDraught(x, y);
+          g.revertWeights(x, y, changes, heuristics);
           if (v > alpha)
             _win = Coord(x, y);
           alpha = max(v, alpha);
@@ -56,6 +53,8 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
       }
   cout << "Alpha  : " << alpha << endl;
   cout << "Result : [" << get<1>(_win) << "][" << get<0>(_win) << "]" << endl;
+  g.printHeuristic(heuristics);
+  g.printBoard(get<0>(_win), get<1>(_win));
   return _win;
 }
 
@@ -84,7 +83,7 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
             v = min(v, evaluate(r, depth - 1, !maxing, alpha, beta, heuristics));
             beta = min(beta, v);
           }
-          g.removeDraught(x, y, 0);
+          g.removeDraught(x, y);
           g.revertWeights(x, y, changes, heuristics);
           if (beta <= alpha)
             return v;
@@ -176,9 +175,10 @@ int     AlphaBetaMinimax::countSeries(Goban &g, int player) const {
   int   score = 0;
   int   res = 0;
   int   opponent = player == 1 ? 2 : 1;
-  bool  openBefore = false;
+  bool  openBefore;
 
-  for (int y = 0; y < g.getYMaxCheck(); y++)
+  for (int y = 0; y < g.getYMaxCheck(); y++) {
+    openBefore = false;
     for (int x = 0; x < g.getXMaxCheck(); x++) {
       int tmp = 0;
       if (g[y][x] == player) {
@@ -190,9 +190,11 @@ int     AlphaBetaMinimax::countSeries(Goban &g, int player) const {
           x++;
         }
       } else
-        openBefore = g[y][x] == opponent;
+        openBefore = g[y][x] != opponent;
     }
-  for (int x = 0; x < g.getXMaxCheck(); x++)
+  }
+  for (int x = 0; x < g.getXMaxCheck(); x++) {
+    openBefore = false;
     for (int y = 0; y < g.getYMaxCheck(); y++) {
       int tmp = 0;
       if (g[y][x] == player) {
@@ -204,12 +206,19 @@ int     AlphaBetaMinimax::countSeries(Goban &g, int player) const {
           y++;
         }
       } else
-        openBefore = g[y][x] == opponent;
+        openBefore = g[y][x] != opponent;
     }
+  }
   return score;
 }
 
 int     AlphaBetaMinimax::addScore(int &score, int val, bool openBefore, bool openAfter) const {
+
+  // cout << val << " " << (openBefore ? "true" : "false") << " " << (openAfter ? "true" : "false") << endl;
+
+  // if (val == 4 && (openAfter || openBefore))
+  //   sleep(1);
+
   if ((val == 3 && openAfter && openBefore) || (val == 4 && (openAfter || openBefore)))
     return true;
   if ((val == 4 && !openAfter && !openBefore) || (val == 3 && (openAfter || openBefore)))
