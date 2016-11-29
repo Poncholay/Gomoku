@@ -21,11 +21,14 @@
 class Displayer;
 class Referee;
 
+using namespace std;
+
 class Goban {
 private:
-  std::vector<std::vector<int> >      _board;
-  Displayer                           &_displayer;
-  Referee                             *_r;
+  vector<vector<char> >      _board;
+  vector<vector<char> >      _heuristics;
+  Displayer                  &_displayer;
+  Referee                    *_r;
   int _xBoard;
   int _yBoard;
   int _xMaxCheck;
@@ -36,7 +39,9 @@ public:
   Goban(Goban &);
   ~Goban();
 
-  std::vector<int>   &operator[](int);
+  vector<char>   &operator[](int);
+  vector<char>   &operator()(int);
+
   Goban &operator=(Goban &);
   void setReferee(Referee *r);
   int getXBoard() const;
@@ -44,13 +49,19 @@ public:
   int getXMaxCheck() const;
   int getYMaxCheck() const;
   bool full() const;
-  std::vector<std::vector<int> >  &getBoard();
+
+  vector<vector<char> >  &getBoard();
+  vector<vector<char> >  &getHeuristics();
 
   void addDraught(int, int, int, bool = false);
   void removeDraught(int, int, bool = false);
+  int  updateWeights(int, int, vector<vector<char> > &) const;
+  void revertWeights(int, int, int, vector<vector<char> > &) const;
+  bool setHeuristicXY(int, int, int, bool, vector<vector<char> > &) const;
 
   Displayer &getDisplayer();
-  void printBoard() const;
+  void printBoard(int = -1, int = -1) const;
+  void printHeuristic(vector<vector<char> > &) const;
 };
 
 #endif /* !GOBAN_HH_*/

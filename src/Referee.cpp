@@ -129,8 +129,8 @@ bool Referee::checkVertical(int x, int y, int player, int max) {
 
 bool Referee::checkDiagoDown(int x, int y, int player, int max) {
   int p2 = player == 1 ? 2 : 1;
-  for (int i = y + 4; i < goban.getYBoard() && goban[i][x] == player && x < goban.getXBoard(); i++)
-    goban[i][x++] == player && i != y + 4 ? max++ : 0;
+  for (int i = y + 4; i < goban.getYBoard() && goban[i][x] == player && x < goban.getXBoard(); i++) {
+    goban[i][x++] == player && i != y + 4 ? max++ : 0;}
   int begin = 5 - (10 - max);
   x += begin;
   for (int i = y + begin; i < y + 5; ++i ){
@@ -161,8 +161,8 @@ bool Referee::checkDiagoDown(int x, int y, int player, int max) {
 
 bool Referee::checkDiagoUp(int x, int y, int player, int max) {
   int p2 = player == 1 ? 2 : 1;
-  for (int i = y - 4; i >= 0 && goban[i][x] == player && x < goban.getXBoard(); i--)
-    goban[i][x++] == player && i != y - 4 ? max++ : 0;
+  for (int i = y - 4; i >= 0 && goban[i][x] == player && x < goban.getXBoard(); i--) {
+    goban[i][x++] == player && i != y - 4 ? max++ : 0;}
   int begin = 5 - (10 - max);
   x += begin;
   for (int i = y - begin; i > y - 5; --i ){
@@ -251,7 +251,7 @@ bool  Referee::checkRules(int x, int y, int player, int check) {
   int beginx = x - 3 < 0 ? 0 : x - 3;
   int beginy = y - 3 < 0 ? 0 : y - 3;
 
-  std::vector<std::vector<int> > board = goban.getBoard();
+  vector<vector<char> > board = goban.getBoard();
 
   goban.addDraught(x, y, player);
 

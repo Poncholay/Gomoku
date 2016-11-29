@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 14:14:53 2016 wilmot_g
-** Last update Tue Nov 29 11:09:02 2016 wilmot_g
+** Last update Tue Nov 29 20:46:56 2016 wilmot_g
 */
 
 #ifndef ALPHABETAMINIMAX_HH_
@@ -30,19 +30,20 @@ private:
   int _opponent;
   Coord _win;
 
-  int   score(Referee &, int, bool, int);
-  int   evaluate(Referee &, int, bool, bool, int, int);
-  bool  calculate(Goban &, int, int);
-  int   countSeries(Goban &, int);
-  int   countDiags(Goban &, int);
-  int   diagsBottomToTop(Goban &, int);
-  int   diagsTopToBottom(Goban &, int);
+  int   score(Referee &, int) const;
+  int   scoreWin(Referee &, int, int) const;
+  int   addScore(int &, int, bool, bool) const;
+  int   evaluate(Referee &, int, bool, int, int, vector<vector<char> >) const;
+  int   countSeries(Goban &, int) const;
+  int   countDiags(Goban &, int) const;
+  int   diagsBottomToTop(Goban &, int) const;
+  int   diagsTopToBottom(Goban &, int) const;
 
 public:
   AlphaBetaMinimax(int);
   ~AlphaBetaMinimax();
 
-  Coord loop(vector<vector<int> > &, int, Referee &);
+  Coord loop(int, Referee &);
 };
 
 #endif /* !ALPHABETAMINIMAX_HH_ */
