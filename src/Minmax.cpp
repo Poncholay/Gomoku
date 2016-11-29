@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 13:59:50 2016 Adrien Milcent
-// Last update Tue Nov 22 18:51:44 2016 Adrien Milcent
+// Last update Mon Nov 28 18:59:40 2016 Adrien Milcent
 //
 
 #include <functional>
@@ -44,7 +44,8 @@ pair<int, int> Minmax::loop(vector<vector<int> > &goban, int nbPlayer, Referee r
           if (nbTurn == 0)
             tmp = eval(goban, nbPlayer, nbOpponent, false, nbPlayer, maxY, maxX);
           else
-            tmp = min(goban, nbTurn - 1, nbPlayer, nbOpponent, referee, maxY, maxX);
+            tmp = min(goban, size, nbTurn - 1, nbPlayer, nbOpponent, referee, maxY, maxX);
+          tmp += (checkPair(goban, size, i, j, nbOpponent) * 100);
           if (tmp > max_nb) {
             max_nb = tmp;
             maxi = i;
@@ -60,7 +61,7 @@ pair<int, int> Minmax::loop(vector<vector<int> > &goban, int nbPlayer, Referee r
   return result;
 }
 
-int Minmax::min(vector<vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpponent, Referee referee, int maxY, int maxX) {
+int Minmax::min(vector<vector<int> > &goban, int size, int nbTurn, int nbPlayer, int nbOpponent, Referee referee, int maxY, int maxX) {
   int min_nb = 100000;
   int tmp = 100000;
 
@@ -73,7 +74,8 @@ int Minmax::min(vector<vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpp
         else if (nbTurn == 0)
           tmp = eval(goban, nbPlayer, nbOpponent, false, nbOpponent, maxY, maxX);
         else
-          tmp = max(goban, nbTurn - 1, nbPlayer, nbOpponent, referee, maxY, maxX);
+          tmp = max(goban, size, nbTurn - 1, nbPlayer, nbOpponent, referee, maxY, maxX);
+        tmp -= (checkPair(goban, size, i, j, nbOpponent) * 100);
         if (tmp < min_nb) {
           min_nb = tmp;
         }
@@ -84,7 +86,7 @@ int Minmax::min(vector<vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpp
   return min_nb;
 }
 
-int Minmax::max(vector<vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpponent, Referee referee, int maxY, int maxX) {
+int Minmax::max(vector<vector<int> > &goban, int size, int nbTurn, int nbPlayer, int nbOpponent, Referee referee, int maxY, int maxX) {
   int max_nb = -100000;
   int tmp = -100000;
 
@@ -97,8 +99,8 @@ int Minmax::max(vector<vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpp
         else if (nbTurn == 0)
           tmp = eval(goban, nbPlayer, nbOpponent, false, nbPlayer, maxY, maxX);
         else
-          tmp = min(goban, nbTurn - 1, nbPlayer, nbOpponent, referee, maxY, maxX);
-
+          tmp = min(goban, size, nbTurn - 1, nbPlayer, nbOpponent, referee, maxY, maxX);
+        tmp += (checkPair(goban, size, i, j, nbOpponent) * 100);
         if (tmp > max_nb) {
           max_nb = tmp;
         }
@@ -107,6 +109,23 @@ int Minmax::max(vector<vector<int> > &goban, int nbTurn, int nbPlayer, int nbOpp
     }
   }
   return max_nb;
+}
+
+int Minmax::checkPair(vector<vector<int> > &goban, int gobanLength, int x, int y, int p) {
+  int p2 = p == 1 ? 2 : 1;
+  int result = 0;
+
+  x - 3 >= 0 && goban[y][x - 3] == p && goban[y][x - 2] == p2 && goban[y][x - 1] == p2 ? result += 1 : result += 0;
+  x + 3 < gobanLength && goban[y][x + 3] == p && goban[y][x + 2] == p2 && goban[y][x + 1] == p2 ? result += 1 : result += 0;
+  y - 3 >= 0 && goban[y - 3][x] == p && goban[y - 2][x] == p2 && goban[y - 1][x] == p2 ? result += 1 : result += 0;
+  y + 3 < gobanLength && goban[y + 3][x] == p && goban[y + 2][x] == p2 && goban[y + 1][x] == p2 ? result += 1 : result += 0;
+  x - 3 >= 0 && y - 3 >= 0 && goban[y - 3][x - 3] == p && goban[y - 2][x - 2] == p2 && goban[y - 1][x - 1] == p2 ? result += 1 : result += 0;
+  x + 3 < gobanLength && y - 3 >= 0 && goban[y - 3][x + 3] == p && goban[y - 2][x + 2] == p2 && goban[y - 1][x + 1] == p2 ? result += 1 : result += 0;
+  x - 3 >= 0 && y + 3 < gobanLength && goban[y + 3][x - 3] == p && goban[y + 2][x - 2] == p2 && goban[y + 1][x - 1] == p2 ? result += 1 : result += 0;
+  x + 3 < gobanLength && y + 3 < gobanLength && goban[y + 3][x + 3] == p && goban[y + 2][x + 2] == p2 && goban[y + 1][x + 1] == p2 ?
+  result += 1 : result += 0;
+
+  return result;
 }
 
 void Minmax::addScore(int nb, int &total, int divider) {
