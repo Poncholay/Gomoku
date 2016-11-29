@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 13:59:50 2016 Adrien Milcent
-// Last update Mon Nov 28 18:59:40 2016 Adrien Milcent
+// Last update Tue Nov 29 12:15:54 2016 Adrien Milcent
 //
 
 #include <functional>
@@ -33,8 +33,8 @@ pair<int, int> Minmax::loop(vector<vector<int> > &goban, int nbPlayer, Referee r
   int tmp = 0, maxi = -1, maxj = -1, nbOpponent = 0;
 
   nbOpponent = nbPlayer == 1 ? 2 : 1;
-  for (int i = 0; i < maxY; ++i) {
-    for (int j = 0; j < maxX; ++j) {
+  for (int i = 0; i < maxY; ++i)
+    for (int j = 0; j < maxX; ++j)
       if (goban[i][j] == 0) {
         goban[i][j] = nbPlayer;
         res = referee.checkPlay(j, i, nbPlayer);
@@ -55,8 +55,6 @@ pair<int, int> Minmax::loop(vector<vector<int> > &goban, int nbPlayer, Referee r
         goban[i][j] = 0;
         ++cnt;
       }
-    }
-  }
   pair<int, int> result = pair<int, int> (maxj, maxi);
   return result;
 }
@@ -65,8 +63,8 @@ int Minmax::min(vector<vector<int> > &goban, int size, int nbTurn, int nbPlayer,
   int min_nb = 100000;
   int tmp = 100000;
 
-  for (int i = 0; i < maxY; ++i) {
-    for (int j = 0; j < maxX; ++j) {
+  for (int i = 0; i < maxY; ++i)
+    for (int j = 0; j < maxX; ++j)
       if (goban[i][j] == 0) {
         goban[i][j] = nbOpponent;
         if (referee.checkPlay(j, i, nbOpponent) == WIN)
@@ -76,13 +74,10 @@ int Minmax::min(vector<vector<int> > &goban, int size, int nbTurn, int nbPlayer,
         else
           tmp = max(goban, size, nbTurn - 1, nbPlayer, nbOpponent, referee, maxY, maxX);
         tmp -= (checkPair(goban, size, i, j, nbOpponent) * 100);
-        if (tmp < min_nb) {
+        if (tmp < min_nb)
           min_nb = tmp;
-        }
         goban[i][j] = 0;
       }
-    }
-  }
   return min_nb;
 }
 
@@ -90,8 +85,8 @@ int Minmax::max(vector<vector<int> > &goban, int size, int nbTurn, int nbPlayer,
   int max_nb = -100000;
   int tmp = -100000;
 
-  for (int i = 0; i < maxY; ++i) {
-    for (int j = 0; j < maxX; ++j) {
+  for (int i = 0; i < maxY; ++i)
+    for (int j = 0; j < maxX; ++j)
       if (goban[i][j] == 0) {
         goban[i][j] = nbPlayer;
         if (referee.checkPlay(j, i, nbPlayer) == WIN)
@@ -106,8 +101,6 @@ int Minmax::max(vector<vector<int> > &goban, int size, int nbTurn, int nbPlayer,
         }
         goban[i][j] = 0;
       }
-    }
-  }
   return max_nb;
 }
 

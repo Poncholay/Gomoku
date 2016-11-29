@@ -10,7 +10,11 @@
 
 #include "AI.hh"
 
-AI::AI(Goban &goban, int nbPlayer, int nbTurn): _algo(Minmax(nbTurn)), _goban(goban) {
+// AI::AI(Goban &goban, int nbPlayer, int nbTurn): _algo(Minmax(nbTurn)), _goban(goban) {
+//   _nbPlayer = nbPlayer;
+// }
+
+AI::AI(Goban &goban, int nbPlayer, int nbTurn) : _algo(AlphaBetaMinimax(nbTurn)), _goban(goban) {
   _nbPlayer = nbPlayer;
 }
 

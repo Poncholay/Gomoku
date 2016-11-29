@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Wed Nov 23 22:10:09 2016 wilmot_g
+** Last update Mon Nov 28 22:19:49 2016 wilmot_g
 */
 
 #include <iostream>
@@ -53,8 +53,8 @@ int           Game::play(int param) {
   Sounds::get().playMusic("game");
   goban.setReferee(&referee);
 
-  players.push_back(_players != 3 ? (IPlayer *)(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y)) : (IPlayer *)(new AI(goban, 1, 3)));
-  players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 3)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
+  players.push_back(_players != 3 ? (IPlayer *)(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y)) : (IPlayer *)(new AI(goban, 1, 5)));
+  players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 5)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
 
   while (displayer.isRunning() && !displayer.getReceiver().checkEnd() && playValue == CONTINUE) {
     displayer.setScore(score(referee, players));
@@ -73,8 +73,7 @@ int           Game::play(int param) {
       }
     }
   }
-  if (playValue == WIN || playValue == WIN_INVERSE)
-  {
+  if (playValue == WIN || playValue == WIN_INVERSE) {
     displayer.setTime(5);
     while (displayer.isRunning() && displayer.isAnimating())
       if ((ret = displayer.display(playValue == WIN ? turn + 1 : turn ? 1 : 2)) != 0 || displayer.getReceiver().checkEnd())
