@@ -21,16 +21,13 @@ AI::AI(Goban &goban, int nbPlayer, int nbTurn) : _algo(AlphaBetaMinimax(nbTurn))
 AI::~AI() {}
 
 int     AI::play(Referee &referee) {
-  int res = 0;
-  vector<vector<int> > goban = _goban.getBoard();
-  pair<int, int> result = _algo.loop(goban, _nbPlayer, referee);
+  pair<int, int> result = _algo.loop(_nbPlayer, referee);
 
-  if (result.first != -1 && result.second != -1) {
-    res = referee.checkPlay(result.first, result.second, _nbPlayer);
-    _goban.addDraught(result.first, result.second, _nbPlayer, true);
-    return res;
-  }
-  return -1;
+  if (result.first == -1 || result.second == -1)
+    return -1;
+  int res = referee.checkPlay(result.first, result.second, _nbPlayer);
+  _goban.addDraught(result.first, result.second, _nbPlayer, true);
+  return res;
 }
 
 string  AI::getType() const {
