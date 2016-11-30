@@ -22,27 +22,6 @@ int screenshot = 0;
 int premult = 0;
 
 void printErrorFunc(int error, const char *desc) {cerr << "GLFW error " << error << ": " << desc << endl;}
-int createParticles(GLFWwindow *window, int width, int height);
-
-static char* cpToUTF8(int cp, char* str) {
-	int n = 0;
-	if (cp < 0x80) n = 1;
-	else if (cp < 0x800) n = 2;
-	else if (cp < 0x10000) n = 3;
-	else if (cp < 0x200000) n = 4;
-	else if (cp < 0x4000000) n = 5;
-	else if (cp <= 0x7fffffff) n = 6;
-	str[n] = '\0';
-	switch (n) {
-	case 6: str[5] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0x4000000;
-	case 5: str[4] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0x200000;
-	case 4: str[3] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0x10000;
-	case 3: str[2] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0x800;
-	case 2: str[1] = 0x80 | (cp & 0x3f); cp = cp >> 6; cp |= 0xc0;
-	case 1: str[0] = cp;
-	}
-	return str;
-}
 
 static void key(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	NVG_NOTUSED(scancode);
@@ -51,32 +30,23 @@ static void key(GLFWwindow* window, int key, int scancode, int action, int mods)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 }
 
-Menu::~Menu() {}
-bool Menu::isInit() {return (_init);}
-
-Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA\n\nIA vs IA\n\nEXIT"), _settingsText("EXIT") {
+Menu::Menu() {
   _init = true;
   _vg = NULL;
-	_typeOfGameValue = 1;
-  if (!glfwInit()) {
+	if (!glfwInit()) {
     cerr << "Failed to init GLFW." << endl;
     _init = false;
     return ;
   }
-  // initGraph(&_fps, GRAPH_RENDER_FPS, "Frame Time");
-
   //set the callback function for all errors
   glfwSetErrorCallback(printErrorFunc);
-
   //Ask version of OpenGL supported max and min for the API
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-
   //If multi-samples compiled then we can use it
   #ifdef DEMO_MSAA
     glfwWindowHint(GLFW_SAMPLES, 4);
   #endif
-
   _window = glfwCreateWindow(1000, 600, "Gomoku", NULL, NULL);
   if (!_window) {
     glfwTerminate();
@@ -85,7 +55,6 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
   }
   glfwSetKeyCallback(_window, key);
   glfwMakeContextCurrent(_window);
-
   //init graph lib for menu
   #ifdef NANOVG_GLEW
     if(glewInit() != GLEW_OK) {
@@ -94,7 +63,6 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
       return ;
     }
   #endif
-
   //depends on multi-samples activated or not
   #ifdef DEMO_MSAA
     _vg = nvgCreateGL2(NVG_STENCIL_STROKES | NVG_DEBUG);
@@ -106,7 +74,6 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
     _init = false;
     return ;
   }
-
   if (loadMenuData(_vg, &_data) == -1) {
       _init = false;
       return ;
@@ -116,135 +83,182 @@ Menu::Menu() : _menu("PLAY\n\nSETTINGS\n\nQUIT"), _typeOfGame("1 VS 1\n\n1 VS IA
       _init = false;
       return ;
     }
-
   // putinterval to refresh
   glfwSwapInterval(0);
   //set timer to 0
   glfwSetTime(0);
-
-  _play = false;
-  _settings = false;
-  _quit = false;
-
 	Sounds::get().playMusic("menu");
 	_click = false;
-	_options = true;
-
+	_quit = false;
 	_vectorOfGame.push_back("1 vs 1");
 	_vectorOfGame.push_back("1 vs IA");
 	_vectorOfGame.push_back("IA vs IA");
 	_validate = false;
-	_volume = 0.5f;
+	_testOfTextBox.push_back("RULES");
+	_testOfTextBox.push_back("BENCHMARK");
+	_testOfTextBox.push_back("MAP SIZE ADAPTATION");
+	_testOfTextBox.push_back("ONLY ACTIVE SPOTS");
+	_testOfTextBox.push_back("ROWS");
+	_testOfTextBox.push_back("DIAGONALS");
 }
 
-void 			Menu::endMenu() {
+Menu::~Menu() {
 	nvgDeleteImage(_vg, _backgroundImage);
-  freeMenuData(_vg, &_data);
-  nvgDeleteGL2(_vg);
-  glfwTerminate();
+	freeMenuData(_vg, &_data);
+	nvgDeleteGL2(_vg);
+	glfwTerminate();
 }
 
-int 			Menu::resetValues() {
-	_play = false;
-  _settings = false;
-  _quit = false;
-	Sounds::get().playMusic("menu");
-	_click = true;
-	_options = true;
-	_typeOfGameValue = 1;
+bool	*Menu::getRules() const {
+	return _choices;
+}
+
+float Menu::getVolume() const {
+	return _volume;
+}
+
+bool Menu::isInit() {return (_init);}
+
+void 			Menu::setValues(int typeOfGameValue, float volume, bool *choices) {
+	_volume = volume;
+	_typeOfGameValue = typeOfGameValue;
+	_choices = choices;
+	_selected = false;
+}
+
+void 			Menu::drawBackGround() {
+	drawImg(_vg, 0, 0, _windowWidth, _windowHeight, _backgroundImage);
+	_tmpX = ((_windowWidth / 2) - 250) < 0 ? 0 : (_windowWidth / 2) - 250;
+	_tmpY = ((_windowHeight / 2) - 250) < 0 ? 0 : (_windowHeight / 2) - 250;
+	drawWindow(_vg, "GOMOKU", _tmpX, _tmpY, ((_windowWidth) / 2), _windowHeight - (_windowHeight / 3));
+}
+
+void 		Menu::setWindowAndVar() {
 	_mouseClickPosX = -1;
 	_mouseClickPosY = -1;
-	_validate = false;
+	//get the fps and set value
+	_timer = glfwGetTime();
+	_duration = _timer - _previousTime;
+	_previousTime = _timer;
+	// get info about window and environment
+	glfwGetCursorPos(_window, &_mousePosX, &_mousePosY);
+	glfwGetWindowSize(_window, &_windowWidth, &_windowHeight);
+	glfwGetFramebufferSize(_window, &_frameBufferWidth, &_frameBufferHeight);
+	// Calculate pixel ration for hi-dpi devices.
+	_pxRatio = (float)_frameBufferWidth / (float)_windowWidth;
+	// Update and render
+	glViewport(0, 0, _frameBufferWidth, _frameBufferHeight);
+	if (premult)
+		glClearColor(0,0,0,0);
+	else
+		glClearColor(0.3f, 0.3f, 0.32f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
+}
+
+void 			Menu::detectClick() {
+	int state = glfwGetMouseButton(_window, GLFW_MOUSE_BUTTON_LEFT);
+	if (state == GLFW_PRESS && !_click) {
+		_mouseClickPosX = _mousePosX;
+		_mouseClickPosY = _mousePosY;
+		_click = true;
+	} else if (state == GLFW_RELEASE) {
+		_click = false;
+	}
+}
+
+void 			Menu::detectInput() {
+	// int state = glfwGetKey(_window, GLFW_MOUSE_BUTTON_LEFT);
+	// if (state == GLFW_PRESS && !_click) {
+	// } else if (state == GLFW_RELEASE) {
+	// }
+}
+void 				Menu::checkTypeOfGame() {
+	drawDropDown(_vg, strdup(_vectorOfGame[_typeOfGameValue - 1].c_str()), _tmpX + 20, _tmpY + 50, _windowWidth / 3, 28);
+	_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) && _mouseClickPosY >= _tmpY + 50 && _mouseClickPosY < (_tmpY + 78);
+	if (_clicked)
+		++_typeOfGameValue;
+	if (_typeOfGameValue > 3)
+		_typeOfGameValue = 1;
+}
+
+void Menu::drawAllCheckBox() {
+	_pos = -25;
+	int index = 0;
+	for (auto it : _testOfTextBox) {
+		drawCheckBoxWithText(it, index++);
+		_pos += 25;
+	}
+	_pos -= 50;
+}
+
+void 			Menu::drawCheckBoxWithText(string text, int index) {
+	drawCheckBox(_vg, text.c_str(), _tmpX + 20, _tmpY + _pos, _windowWidth / 3, _windowWidth / 4, _choices[index]);
+	_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) &&
+						_mouseClickPosY >= _tmpY + _pos+ (int)(_windowWidth/4*0.5f)-8 && _mouseClickPosY < _tmpY + _pos+ (int)(_windowWidth/4*0.5f)+12;
+	if (_clicked)
+		_choices[index] = !_choices[index];
+}
+
+void 			Menu::checkControlSound() {
+	drawSlider(_vg, _volume, _tmpX + 20, _tmpY + _pos+ (int)(_windowWidth/4*0.5f)-8 + 40, _windowWidth / 3, 48);
+	_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) &&
+						_mouseClickPosY >= _tmpY + _pos+ (int)(_windowWidth/4*0.5f)-8 + 50 && _mouseClickPosY < _tmpY + _pos+ (int)(_windowWidth/4*0.5f)+62;
+	if (_clicked) {
+		_volume = 0.0f;
+		int cmpt = 0;
+		int tmp = ((_windowWidth / 3) / 10) * 1;
+		while (_mouseClickPosX - _tmpX + 10 > tmp && cmpt != 10) {
+			++cmpt;
+			tmp = ((_windowWidth / 3) / 10) * (cmpt + 1);
+		}
+		_volume = 0.1f * cmpt;
+		Mix_VolumeMusic(MIX_MAX_VOLUME * _volume);
+	}
+}
+
+void 				Menu::checkButtons() {
+	drawButton(_vg, "PLAY", _tmpX + 20, _tmpY + _pos + (int)(_windowWidth/4*0.5f)-8 + 80, _windowWidth / 3, 28, nvgRGBA(0,96,128,255));
+	_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) &&
+						_mouseClickPosY >= _tmpY + _pos+ (int)(_windowWidth/4*0.5f)-8 + 80 && _mouseClickPosY < _tmpY + _pos + (int)(_windowWidth/4*0.5f)-8 + 80 + 28;
+	if (_clicked)
+		_validate = true;
+	drawButton(_vg, "QUIT", _tmpX + 20, _tmpY + _pos + (int)(_windowWidth/4*0.5f)-8 + 120, _windowWidth / 3, 28, nvgRGBA(0,96,128,255));
+	_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) &&
+						_mouseClickPosY >= _tmpY + _pos+ (int)(_windowWidth/4*0.5f)-8 + 120 && _mouseClickPosY < _tmpY + _pos + (int)(_windowWidth/4*0.5f)-8 + 120 + 28;
+	if (_clicked)
+		_quit = true;
 }
 
 int        Menu::play() {
-	createParticles(_window, _windowWidth, _windowHeight);
   _previousTime = glfwGetTime();
   while (!glfwWindowShouldClose(_window))
     {
 			if (_validate)
-				return (_options ? _typeOfGameValue + 3 : _typeOfGameValue);
+				return (_typeOfGameValue);
 			if (_quit)
 				return (-1);
-      _mouseClickPosX = -1;
-      _mouseClickPosY = -1;
 
-      //get the fps and set value
-      _timer = glfwGetTime();
-      _duration = _timer - _previousTime;
-      _previousTime = _timer;
-      // updateGraph(&_fps, _duration);
+			setWindowAndVar();
+			detectClick();
+			detectInput();
 
-      // get info about window and environment
-      glfwGetCursorPos(_window, &_mousePosX, &_mousePosY);
-      glfwGetWindowSize(_window, &_windowWidth, &_windowHeight);
-      glfwGetFramebufferSize(_window, &_frameBufferWidth, &_frameBufferHeight);
+      nvgBeginFrame(_vg, _windowWidth, _windowHeight, _pxRatio);
 
-      float pxRatio;
-      // Calculate pixel ration for hi-dpi devices.
-      pxRatio = (float)_frameBufferWidth / (float)_windowWidth;
+			drawBackGround();
 
-      // Update and render
-      glViewport(0, 0, _frameBufferWidth, _frameBufferHeight);
-      if (premult)
-        glClearColor(0,0,0,0);
-      else
-        glClearColor(0.3f, 0.3f, 0.32f, 1.0f);
-      glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
+			checkTypeOfGame();
 
-      //begin update window
-			int state = glfwGetMouseButton(_window, GLFW_MOUSE_BUTTON_LEFT);
-			if (state == GLFW_PRESS && !_click) {
-      	_mouseClickPosX = _mousePosX;
-      	_mouseClickPosY = _mousePosY;
-				_click = true;
-			} else if (state == GLFW_RELEASE) {
-				_click = false;
-			}
-      nvgBeginFrame(_vg, _windowWidth, _windowHeight, pxRatio);
+			drawAllCheckBox();
 
-      //print background
-      drawImg(_vg, 0, 0, _windowWidth, _windowHeight, _backgroundImage);
-      // drawParagraph(_windowWidth / 2 - 50, _windowHeight / 2 - 50, 200, _play ? _typeOfGame : _settings ? _settingsText : _menu);
-			int tmpX = ((_windowWidth / 2) - 250) < 0 ? 0 : (_windowWidth / 2) - 250;
-			int tmpY = ((_windowHeight / 2) - 250) < 0 ? 0 : (_windowHeight / 2) - 250;
-			drawWindow(_vg, "GOMOKU", tmpX, tmpY, ((_windowWidth) / 2), _windowHeight - (_windowHeight / 3));
-			drawDropDown(_vg, strdup(_vectorOfGame[_typeOfGameValue - 1].c_str()), tmpX + 20, tmpY + 50, _windowWidth / 3, 28);
-			int clicked = _mouseClickPosX > tmpX + 20 && _mouseClickPosX < (tmpX + 20 + _windowWidth / 3) && _mouseClickPosY >= tmpY + 50 && _mouseClickPosY < (tmpY + 78);
-			if (clicked)
-				++_typeOfGameValue;
-			if (_typeOfGameValue > 3)
-				_typeOfGameValue = 1;
-			drawCheckBox(_vg, "RULES", tmpX + 20, tmpY, _windowWidth / 3, _windowWidth / 4, _options);
-			clicked = _mouseClickPosX > tmpX + 20 && _mouseClickPosX < (tmpX + 20 + _windowWidth / 3) &&
-								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)+12;
-			if (clicked)
-				_options = !_options;
-			drawSlider(_vg, _volume, tmpX + 20, tmpY + (int)(_windowWidth/4*0.5f)-8 + 40, _windowWidth / 3, 48);
-			clicked = _mouseClickPosX > tmpX + 20 && _mouseClickPosX < (tmpX + 20 + _windowWidth / 3) &&
-								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 + 50 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)+62;
-			if (clicked) {
-				_volume = 0.0f;
-				int cmpt = 0;
-				int tmp = ((_windowWidth / 3) / 10) * 1;
-				while (_mouseClickPosX - tmpX + 10 > tmp && cmpt != 10) {
-					++cmpt;
-					tmp = ((_windowWidth / 3) / 10) * (cmpt + 1);
-				}
-				_volume = 0.1f * cmpt;
-				Mix_VolumeMusic(MIX_MAX_VOLUME * _volume);
-			}
-			drawButton(_vg, "PLAY", tmpX + 20, tmpY + (int)(_windowWidth/4*0.5f)-8 + 80, _windowWidth / 3, 28, nvgRGBA(0,96,128,255));
-			clicked = _mouseClickPosX > tmpX + 20 && _mouseClickPosX < (tmpX + 20 + _windowWidth / 3) &&
-								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 + 80 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)-8 + 80 + 28;
-			if (clicked)
-				_validate = true;
-			drawButton(_vg, "QUIT", tmpX + 20, tmpY + (int)(_windowWidth/4*0.5f)-8 + 120, _windowWidth / 3, 28, nvgRGBA(0,96,128,255));
-			clicked = _mouseClickPosX > tmpX + 20 && _mouseClickPosX < (tmpX + 20 + _windowWidth / 3) &&
-								_mouseClickPosY >= tmpY + (int)(_windowWidth/4*0.5f)-8 + 120 && _mouseClickPosY < tmpY + (int)(_windowWidth/4*0.5f)-8 + 120 + 28;
-			if (clicked)
-				_quit = true;
-      //end update window
+			checkControlSound();
+			checkButtons();
+
+			drawEditBox(_vg, "3", _tmpX + 20, _tmpY + _pos + 50 + (int)(_windowWidth/4*0.5f)-8 + 120,  _windowWidth / 3, 28);
+			_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) &&
+								_mouseClickPosY >= _tmpY + _pos + 50 + (int)(_windowWidth/4*0.5f)-8 + 120 && _mouseClickPosY < _tmpY + _pos + 50 + (int)(_windowWidth/4*0.5f)-8 + 120 + 28;
+			if (_clicked)
+				_selected = true;
+
       nvgEndFrame(_vg);
       glfwSwapBuffers(_window);
       glfwPollEvents();

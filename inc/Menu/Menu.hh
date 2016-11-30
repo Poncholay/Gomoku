@@ -28,6 +28,7 @@ void drawButton(NVGcontext*, const char*, float, float, float, float, NVGcolor);
 void drawCheckBox(NVGcontext*, const char*, float, float, float, float, bool);
 int  drawImg(NVGcontext *, int, int, int, int, int);
 void drawSlider(NVGcontext*, float, float, float, float, float);
+void drawEditBox(NVGcontext*, const char *, float, float, float, float);
 
 class         Menu {
   GLFWwindow* _window;
@@ -47,27 +48,39 @@ class         Menu {
   double      _mouseClickPosY;
   int         _frameBufferWidth;
   int         _frameBufferHeight;
-  bool        _play;
-  bool        _settings;
   bool        _quit;
-  const char  *_menu;
-  const char  *_typeOfGame;
-  const char  *_settingsText;
   int         _typeOfGameValue;
   bool        _click;
-  bool        _options;
   bool        _validate;
   float       _volume;
+  float       _pxRatio;
+  int         _tmpX;
+  int         _tmpY;
+  int         _clicked;
+  int         _pos;
+  bool        *_choices;
+  bool        _selected;
   std::vector<std::string>  _vectorOfGame;
+  std::vector<std::string>  _testOfTextBox;
 
 public:
   Menu();
   ~Menu();
 
   int   play();
-  void  endMenu();
   bool  isInit();
-  int   resetValues();
+  void 	drawBackGround();
+  void  setWindowAndVar();
+  void  detectClick();
+  void  detectInput();
+  void  checkTypeOfGame();
+  void  drawAllCheckBox();
+  void  drawCheckBoxWithText(std::string, int);
+  void  checkControlSound();
+  void  checkButtons();
+  void  setValues(int, float, bool *);
+  bool  *getRules() const;
+  float getVolume() const;
 };
 
 #endif /* !MENU_HH_ */

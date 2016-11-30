@@ -24,25 +24,25 @@ int         main(int ac, char **av) {
   srand(time(0));
 
   Game      game;
-  int       value = 0;
+  int       value = 1;
+  float     volume = 0.5f;
+  bool      *choices = new bool[6];
+
+  for (int i = 0; i < 6; ++i)
+    choices[i] = true;
 
   while (value != -1) {
-    Menu      menu;
+    Menu menu;
 
+    menu.setValues(value, volume, choices);
     if (!menu.isInit())
       return (-1);
-    menu.resetValues();
     if ((value = menu.play()) == -1) {
-      menu.endMenu();
       return (0);
     }
-    menu.endMenu();
-    if (value > 3) {
-      game.setAdvancedRules(true);
-      value -= 3;
-    }
-    else
-      game.setAdvancedRules(false);
+    volume = menu.getVolume();
+    choices = menu.getRules();
+    game.setAdvancedRules(choices[0]);
     game.setPlayers(value);
     game.play(0);
   }
