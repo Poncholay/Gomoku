@@ -63,8 +63,7 @@ void Referee::updatePair(int x, int y, int p) {
   x - 3 >= 0 && y - 3 >= 0 && goban[y - 3][x - 3] == p && goban[y - 2][x - 2] == p2 && goban[y - 1][x - 1] == p2 ? removePair(x - 2, y - 2, x - 1, y - 1, p) : (void)0;
   x + 3 < goban.getXBoard() && y - 3 >= 0 && goban[y - 3][x + 3] == p && goban[y - 2][x + 2] == p2 && goban[y - 1][x + 1] == p2 ? removePair(x + 2, y - 2, x + 1, y - 1, p) : (void)0;
   x - 3 >= 0 && y + 3 < goban.getYBoard() && goban[y + 3][x - 3] == p && goban[y + 2][x - 2] == p2 && goban[y + 1][x - 1] == p2 ? removePair(x - 2, y + 2, x - 1, y + 1, p) : (void)0;
-  x + 3 < goban.getXBoard() && y + 3 < goban.getYBoard() && goban[y + 3][x + 3] == p && goban[y + 2][x + 2] == p2 && goban[y + 1][x + 1] == p2 ?
-  removePair(x + 2, y + 2, x + 1, y + 1, p) : (void)0;
+  x + 3 < goban.getXBoard() && y + 3 < goban.getYBoard() && goban[y + 3][x + 3] == p && goban[y + 2][x + 2] == p2 && goban[y + 1][x + 1] == p2 ? removePair(x + 2, y + 2, x + 1, y + 1, p) : (void)0;
 }
 
 bool Referee::checkHorizon(int x, int y, int player, int max) {

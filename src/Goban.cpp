@@ -59,8 +59,10 @@ void Goban::addDraught(int x, int y, int player, bool move) {
 
 void Goban::removeDraught(int x, int y, bool move) {
   _board[y].at(x) = 0;
-  if (move)
+  if (move) {
     _displayer.setAnimate(x, y, 0);
+    setHeuristicXY(x, y, 0, false, _heuristics);
+  }
 }
 
 void Goban::printBoard(int x1, int y1) const {
@@ -90,20 +92,19 @@ void Goban::printHeuristic(vector<vector<char> > &heuristics) const {
 
 bool Goban::setHeuristicXY(int x, int y, int bit, bool set, vector<vector<char> > &heuristics) const {
   if (x >= 0 && y >= 0 && x < _xBoard - 1 && y < _yBoard - 1) {
-      bool back = (heuristics[y][x] >> bit) & 1;
-      if (set && _board[y][x] == 0)
-        heuristics[y][x] |= 1 << bit;
-      else if (!set)
-        heuristics[y][x] &= ~(1 << bit);
-      return back;
+    bool back = (heuristics[y][x] >> bit) & 1;
+    if (_board[y][x] != 0)
+      set = true;
+    if (set)
+      heuristics[y][x] |= 1 << bit;
+    else
+      heuristics[y][x] &= ~(1 << bit);
+    return back;
   }
   return false;
 }
 
 int Goban::updateWeights(int x, int y, vector<vector<char> > &heuristics) const {
-  // cout << "Before" << endl;
-  // printBoard();
-  // printHeuristic(heuristics);
   int ret = 0;
   ret = setHeuristicXY(x - 1, y - 1, 0, false, heuristics) ? ret | 1 << 0 : ret & ~(1 << 0);
   ret = setHeuristicXY(x    , y - 1, 0, false, heuristics) ? ret | 1 << 1 : ret & ~(1 << 1);
@@ -114,9 +115,6 @@ int Goban::updateWeights(int x, int y, vector<vector<char> > &heuristics) const 
   ret = setHeuristicXY(x - 1, y + 1, 0, false, heuristics) ? ret | 1 << 6 : ret & ~(1 << 6);
   ret = setHeuristicXY(x    , y + 1, 0, false, heuristics) ? ret | 1 << 7 : ret & ~(1 << 7);
   ret = setHeuristicXY(x + 1, y + 1, 0, false, heuristics) ? ret | 1 << 8 : ret & ~(1 << 8);
-  // cout << "After" << endl;
-  // printBoard();
-  // printHeuristic(heuristics);
   return ret;
 }
 

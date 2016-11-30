@@ -135,7 +135,7 @@ void                  Displayer::updateAnim(bool force) {
 }
 
 bool                  Displayer::isAnimating() {
-  if (!_isAnimating) return false;
+  if (!_isAnimating) return animate();
   if (chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now().time_since_epoch()).count() <
       chrono::duration_cast<chrono::microseconds>(_animateTime.time_since_epoch()).count() + static_cast<long>(_time * 1000000))
     return true;
@@ -157,6 +157,11 @@ void                  Displayer::setAnimate(int x, int y, int p) {
 bool                  Displayer::animate() {
   if (_anim.size() == 0)
     return false;
+  if (get<2>(_anim.front()) == -1) {
+    _isAnimating = true;
+    _animateTime = chrono::high_resolution_clock::now();
+    return true;
+  }
   return get<2>(_anim.front()) != 0 ? placeDraught(get<0>(_anim.front()), get<1>(_anim.front()), get<2>(_anim.front())) : removeDraught(get<0>(_anim.front()), get<1>(_anim.front()));
 }
 
