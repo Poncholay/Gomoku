@@ -8,21 +8,14 @@
 ## Last update Sun Oct 16 15:32:23 2016 wilmot_g
 ##
 
-UNAME := $(shell uname)
-ifeq ($(UNAME), $(filter $(UNAME), Linux))
-	OS=linux
-else
-	OS=windows
-endif
-
-GENIE=lib/bx/tools/bin/$(OS)/genie
+GENIE=	./lib/genie
 
 all:
 	@make --no-print-directory linux
 
 linux:
 	$(GENIE) --file=scripts/genie.lua gmake
-	make -R -C build/projects/linux config=release64
+	make -R -C build/projects/linux config=release64 verbose=y
 
 .PHONY: clean fclean re
 

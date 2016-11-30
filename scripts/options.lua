@@ -5,32 +5,30 @@
 -- Login   <wilmot_g@epitech.net>
 --
 -- Started on  Sun Oct 16 18:14:01 2016 wilmot_g
--- Last update Sun Oct 16 18:14:01 2016 wilmot_g
+-- Last update Mon Nov 14 17:39:31 2016 Adrien Milcent
 --
 
-function options(build_dir)
+function options()
 
   if (_ACTION == nil) then return end
 
 	if _ACTION == "gmake" then
 
-    location(build_dir .. "projects/" .. "linux")
+    location(GOMOKU_BUILD_DIR .. "projects/" .. "linux")
 
-    configuration { "x64", "linux-*" }
-    		targetdir (build_dir .. "linux64" .. "/bin")
-    		objdir (build_dir .. "linux64" .. "/obj")
-    		libdirs (build_dir .. "../.build/linux64/bin")
+    configuration { "x64" }
+        flags { "Symbols" }
+    		targetdir (GOMOKU_DIR)
+    		objdir (GOMOKU_BUILD_DIR .. "linux64" .. "/obj")
+    		libdirs (GOMOKU_BUILD_DIR .. "../",
+        GOMOKU_BUILD_DIR .. "../lib/Linux")
         buildoptions {
-        			"-Wall",
         			"-Wextra",
         			"-Werror",
+				      "-pthread",
+				      "-std=c++11",
+              "-DNANOVG_GLEW",
+              "-O3"
         		}
-        		buildoptions_cpp {
-        			"-std=c++11",
-        		}
-        		-- linkoptions {
-        		-- 	"-Wl,-rpath=\\$$ORIGIN",
-        		-- 	"-Wl,--no-as-needed",
-        		-- }
   end
 end
