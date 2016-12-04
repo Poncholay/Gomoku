@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Sun Dec  4 14:17:30 2016 Adrien Milcent
+** Last update Sun Dec  4 16:55:20 2016 Adrien Milcent
 */
 
 #include <functional>
@@ -34,8 +34,8 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
       if (!heuristics[y][x]) {
         int res = r.checkPlay(x, y, player);
         if (res == WIN) {
-          cout << "Winning : [" << y << "][" << x << "]" << endl;
-          r.getGoban().printBoard();
+          // cout << "Winning : [" << y << "][" << x << "]" << endl;
+          // r.getGoban().printBoard();
           return Coord(x, y);
         }
         if (res != REPLAY && res != -1) {
@@ -97,9 +97,9 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
   Goban &g = r.getGoban();
 
   if (!depth) {
-    int myscore = score(r, !maxing ? _player : _opponent);
-    std::cout << "Score for player " << (!maxing ? _player : _opponent) << ": " << myscore << std::endl;
-    g.printBoard();
+    int myscore = score(r, _player);
+    // std::cout << "Score for player " << (maxing ? _player : _opponent) << ": " << myscore << std::endl;
+    // g.printBoard();
     return myscore;
   }
   turn = maxing ? _player : _opponent;
@@ -129,6 +129,8 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
             return v;
         }
       }
+  if (!maxing)
+    cout << v << endl;
   return v;
 }
 

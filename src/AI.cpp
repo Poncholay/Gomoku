@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Tue Oct 18 14:20:06 2016 Adrien Milcent
-// Last update Tue Nov 15 17:31:08 2016 Adrien Milcent
+// Last update Sun Dec  4 16:55:51 2016 Adrien Milcent
 //
 
 #include "AI.hh"
@@ -27,6 +27,9 @@ int     AI::play(Referee &referee) {
     return -1;
   int res = referee.checkPlay(result.first, result.second, _nbPlayer);
   _goban.addDraught(result.first, result.second, _nbPlayer, true);
+  // cout << "--- 1 ---" <<  endl;
+  // _goban.printBoard();
+  // cout << "--- 2 ---" <<  endl;
   return res;
 }
 
