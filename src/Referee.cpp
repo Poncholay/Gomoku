@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Wed Nov  9 13:45:25 2016 Combaud Alban
+// Last update Wed Nov 30 16:11:14 2016 Adrien Milcent
 //
 
 #include "Referee.hh"
@@ -47,7 +47,7 @@ int Referee::checkWinByPair(int x, int y, int p) {
   return (p == 1 ? count + nbPairplayer1 : count + nbPairplayer2);
 }
 
-void Referee::removePair(int x, int y, int x2, int y2, int player) {
+void Referee::removePair(int x, int y, int x2, int y2, int player, bool move) {
   goban.removeDraught(x, y, true);
   goban.removeDraught(x2, y2, true);
   player == 1 ? nbPairplayer1++ : nbPairplayer2++;

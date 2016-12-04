@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 15:27:04 2016 Adrien Milcent
-// Last update Tue Nov 29 23:11:06 2016 Adrien Milcent
+// Last update Wed Nov 30 10:55:39 2016 Adrien Milcent
 //
 
 #include <bitset>
@@ -46,9 +46,9 @@ Goban &Goban::operator=(Goban &other) {
 
 void Goban::addDraught(int x, int y, int player, bool move) {
   _board[y].at(x) = player;
-  if (_r) _r->updatePair(x, y, player);
   if (move) {
     _displayer.setAnimate(x, y, player);
+    if (_r) _r->updatePair(x, y, player);
     if (x > _xMaxCheck - 2) _xMaxCheck = x + 2;
     if (y > _yMaxCheck - 2) _yMaxCheck = y + 2;
     _xMaxCheck = _xMaxCheck > _xBoard ? _xBoard : _xMaxCheck;

@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 14:14:53 2016 wilmot_g
-** Last update Wed Nov 30 10:52:57 2016 Adrien Milcent
+** Last update Wed Nov 30 14:25:41 2016 Adrien Milcent
 */
 
 #ifndef ALPHABETAMINIMAX_HH_
@@ -38,6 +38,10 @@ private:
   int   countDiags(Goban &, int) const;
   int   diagsBottomToTop(Goban &, int) const;
   int   diagsTopToBottom(Goban &, int) const;
+
+  void  updatePair(Referee &, vector<pair<int, int> > &, int, int, int) const;
+  void  restorePair(Referee &, vector<pair<int, int> >, int) const;
+  void  saveChanges(Referee &, vector<pair<int, int> > &, int, int, int, int, int) const;
 
 public:
   AlphaBetaMinimax(int);
