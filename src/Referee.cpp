@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Wed Nov 30 16:11:14 2016 Adrien Milcent
+// Last update Sun Dec  4 12:04:31 2016 Adrien Milcent
 //
 
 #include "Referee.hh"
@@ -48,22 +48,26 @@ int Referee::checkWinByPair(int x, int y, int p) {
 }
 
 void Referee::removePair(int x, int y, int x2, int y2, int player, bool move) {
-  goban.removeDraught(x, y, true);
-  goban.removeDraught(x2, y2, true);
+  goban.removeDraught(x, y, move);
+  goban.removeDraught(x2, y2, move);
   player == 1 ? nbPairplayer1++ : nbPairplayer2++;
+}
+
+void Referee::undoNbPair(int player) {
+  player == 1 ? nbPairplayer1-- : nbPairplayer2--;
 }
 
 void Referee::updatePair(int x, int y, int p) {
   int p2 = p == 1 ? 2 : 1;
 
-  x - 3 >= 0 && goban[y][x - 3] == p && goban[y][x - 2] == p2 && goban[y][x - 1] == p2 ? removePair(x - 2, y, x - 1, y, p) : (void)0;
-  x + 3 < goban.getXBoard() && goban[y][x + 3] == p && goban[y][x + 2] == p2 && goban[y][x + 1] == p2 ? removePair(x + 2, y, x + 1, y, p) : (void)0;
-  y - 3 >= 0 && goban[y - 3][x] == p && goban[y - 2][x] == p2 && goban[y - 1][x] == p2 ? removePair(x, y - 2, x, y - 1, p) : (void)0;
-  y + 3 < goban.getYBoard() && goban[y + 3][x] == p && goban[y + 2][x] == p2 && goban[y + 1][x] == p2 ? removePair(x, y + 2, x, y + 1, p) : (void)0;
-  x - 3 >= 0 && y - 3 >= 0 && goban[y - 3][x - 3] == p && goban[y - 2][x - 2] == p2 && goban[y - 1][x - 1] == p2 ? removePair(x - 2, y - 2, x - 1, y - 1, p) : (void)0;
-  x + 3 < goban.getXBoard() && y - 3 >= 0 && goban[y - 3][x + 3] == p && goban[y - 2][x + 2] == p2 && goban[y - 1][x + 1] == p2 ? removePair(x + 2, y - 2, x + 1, y - 1, p) : (void)0;
-  x - 3 >= 0 && y + 3 < goban.getYBoard() && goban[y + 3][x - 3] == p && goban[y + 2][x - 2] == p2 && goban[y + 1][x - 1] == p2 ? removePair(x - 2, y + 2, x - 1, y + 1, p) : (void)0;
-  x + 3 < goban.getXBoard() && y + 3 < goban.getYBoard() && goban[y + 3][x + 3] == p && goban[y + 2][x + 2] == p2 && goban[y + 1][x + 1] == p2 ? removePair(x + 2, y + 2, x + 1, y + 1, p) : (void)0;
+  x - 3 >= 0 && goban[y][x - 3] == p && goban[y][x - 2] == p2 && goban[y][x - 1] == p2 ? removePair(x - 2, y, x - 1, y, p, true) : (void)0;
+  x + 3 < goban.getXBoard() && goban[y][x + 3] == p && goban[y][x + 2] == p2 && goban[y][x + 1] == p2 ? removePair(x + 2, y, x + 1, y, p, true) : (void)0;
+  y - 3 >= 0 && goban[y - 3][x] == p && goban[y - 2][x] == p2 && goban[y - 1][x] == p2 ? removePair(x, y - 2, x, y - 1, p, true) : (void)0;
+  y + 3 < goban.getYBoard() && goban[y + 3][x] == p && goban[y + 2][x] == p2 && goban[y + 1][x] == p2 ? removePair(x, y + 2, x, y + 1, p, true) : (void)0;
+  x - 3 >= 0 && y - 3 >= 0 && goban[y - 3][x - 3] == p && goban[y - 2][x - 2] == p2 && goban[y - 1][x - 1] == p2 ? removePair(x - 2, y - 2, x - 1, y - 1, p, true) : (void)0;
+  x + 3 < goban.getXBoard() && y - 3 >= 0 && goban[y - 3][x + 3] == p && goban[y - 2][x + 2] == p2 && goban[y - 1][x + 1] == p2 ? removePair(x + 2, y - 2, x + 1, y - 1, p, true) : (void)0;
+  x - 3 >= 0 && y + 3 < goban.getYBoard() && goban[y + 3][x - 3] == p && goban[y + 2][x - 2] == p2 && goban[y + 1][x - 1] == p2 ? removePair(x - 2, y + 2, x - 1, y + 1, p, true) : (void)0;
+  x + 3 < goban.getXBoard() && y + 3 < goban.getYBoard() && goban[y + 3][x + 3] == p && goban[y + 2][x + 2] == p2 && goban[y + 1][x + 1] == p2 ? removePair(x + 2, y + 2, x + 1, y + 1, p, true) : (void)0;
 }
 
 bool Referee::checkHorizon(int x, int y, int player, int max) {

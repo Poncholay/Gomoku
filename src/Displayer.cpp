@@ -5,7 +5,7 @@
 // Login   <wilmot_g@epitech.net>
 //
 // Started on  Wed Apr 27 10:47:57 2016 guillaume wilmot
-// Last update Tue Nov 15 15:26:59 2016 Adrien Milcent
+// Last update Sun Dec  4 11:15:04 2016 Adrien Milcent
 //
 
 #include <stdexcept>
@@ -125,6 +125,10 @@ void                  Displayer::updateAnim(bool force) {
 
   if (get<2>(_anim.front()) == 0)
     return;
+  // cout << "bf condition" << endl;
+  // if (_map[get<1>(_anim.front())][get<0>(_anim.front())] == NULL)
+  //   cout << "c'est null aussi " << get<1>(_anim.front()) << " " << get<0>(_anim.front()) << endl;
+  // cout << "af condition" << endl;
   irr::core::vector3df pos = _map[get<1>(_anim.front())][get<0>(_anim.front())]->getBlock()->getPosition();
   irr::core::vector3df extent = _map[get<1>(_anim.front())][get<0>(_anim.front())]->getExtent();
   pos.Y -= frameDeltaTime * MOVEMENT_SPEED;

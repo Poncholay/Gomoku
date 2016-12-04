@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Wed Nov 30 15:32:16 2016 Adrien Milcent
+** Last update Sun Dec  4 14:17:30 2016 Adrien Milcent
 */
 
 #include <functional>
@@ -34,19 +34,20 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
       if (!heuristics[y][x]) {
         int res = r.checkPlay(x, y, player);
         if (res == WIN) {
-          // cout << "Winning : [" << y << "][" << x << "]" << endl;
+          cout << "Winning : [" << y << "][" << x << "]" << endl;
+          r.getGoban().printBoard();
           return Coord(x, y);
         }
         if (res != REPLAY && res != -1) {
           vector<pair<int, int> > pairs;
           g.addDraught(x, y, player);
           updatePair(r, pairs, x, y, _player);
-          restorePair(r, pairs, _player);
           int changes = r.getGoban().updateWeights(x, y, heuristics);
           // int e = evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics);
           // cout << _player << " [" << y << "][" << x << "] " << e << endl;
           // v = max(v, e);
           v = max(v, evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics));
+          restorePair(r, pairs, _opponent);
           g.removeDraught(x, y);
           g.revertWeights(x, y, changes, heuristics);
           if (v > alpha)
@@ -56,24 +57,24 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
       }
   // cout << "Alpha  : " << alpha << endl;
   // cout << "Result : [" << get<1>(_win) << "][" << get<0>(_win) << "]" << endl;
-  g.printHeuristic(heuristics);
-  g.printBoard(get<0>(_win), get<1>(_win));
+  // g.printHeuristic(heuristics);
+  // g.printBoard(get<0>(_win), get<1>(_win));
   return _win;
 }
 
 void    AlphaBetaMinimax::saveChanges(Referee &r, vector<pair<int, int> > &changes, int x1, int y1, int x2, int y2, int p) const {
-  r.removePair(x1, y1, x2, y2, p);
+  r.removePair(x1, y1, x2, y2, p, false);
   changes.push_back(make_pair(x1, y1));
   changes.push_back(make_pair(x2, y2));
 }
 
 void    AlphaBetaMinimax::restorePair(Referee &r, vector<pair<int, int> > changes, int player) const {
-  cout << "-------- Begin ----------" << endl;
+  int check = 0;
   for (vector<pair<int, int> >::iterator it = changes.begin(); it != changes.end(); it++) {
+    check = 1;
     r.getGoban().addDraught((*it).first, (*it).second, player);
-    cout << (*it).first << " " << (*it).second << endl;
   }
-  cout << "-------- End ----------" << endl;
+  check == 1 ? r.undoNbPair(player == 1 ? 2 : 1) : (void)0;
 }
 
 void    AlphaBetaMinimax::updatePair(Referee &r, vector<pair<int, int> > &changes, int x, int y, int p) const {
@@ -97,8 +98,8 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
 
   if (!depth) {
     int myscore = score(r, !maxing ? _player : _opponent);
-    // std::cout << "Score for player " << (!maxing ? _player : _opponent) << ": " << myscore << std::endl;
-    // g.printBoard();
+    std::cout << "Score for player " << (!maxing ? _player : _opponent) << ": " << myscore << std::endl;
+    g.printBoard();
     return myscore;
   }
   turn = maxing ? _player : _opponent;
@@ -112,8 +113,7 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
         if (res != REPLAY && res != -1) {
           vector<pair<int, int> > pairs;
           g.addDraught(x, y, turn);
-          updatePair(r, pairs, x, y, _player);
-          restorePair(r, pairs, maxing ? _player : _opponent);
+          updatePair(r, pairs, x, y, maxing ? _player : _opponent);
           int changes = g.updateWeights(x, y, heuristics);
           if (maxing) {
             v = max(v, evaluate(r, depth - 1, !maxing, alpha, beta, heuristics));
@@ -122,6 +122,7 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
             v = min(v, evaluate(r, depth - 1, !maxing, alpha, beta, heuristics));
             beta = min(beta, v);
           }
+          restorePair(r, pairs, maxing ? _opponent : _player);
           g.removeDraught(x, y);
           g.revertWeights(x, y, changes, heuristics);
           if (beta <= alpha)
@@ -262,10 +263,12 @@ int     AlphaBetaMinimax::addScore(int &score, int val, bool openBefore, bool op
   // if (val == 4 && (openAfter || openBefore))
   //   sleep(1);
 
-  if ((val == 3 && openAfter && openBefore) || (val == 4 && (openAfter || openBefore)))
+  if (val == 4 && openAfter && openBefore)
     return true;
-  if ((val == 4 && !openAfter && !openBefore) || (val == 3 && (openAfter || openBefore)))
-    score += 10000;
+  if ((val == 3 && openAfter && openBefore) || (val == 4 && (openAfter || openBefore)))
+    score += 20000;
+  else if ((val == 4 && !openAfter && !openBefore) || (val == 3 && (openAfter || openBefore)))
+    score += 8000;
   else if (val == 3)
     score += 500;
   else

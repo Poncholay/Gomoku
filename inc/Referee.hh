@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:15:51 2016 Combaud Alban
-// Last update Tue Nov  8 17:19:35 2016 Combaud Alban
+// Last update Sun Dec  4 12:04:37 2016 Adrien Milcent
 //
 
 #ifndef REFEREE_HH_
@@ -42,11 +42,12 @@ public:
   int  checkWinByPair(int, int, int);
   void  setPair(int, int);
   void updatePair(int, int, int);
-  void removePair(int, int, int, int, int);
-  bool checkHorizon(int x, int y, int player, int max);
-  bool checkVertical(int x, int y, int player, int max);
-  bool checkDiagoDown(int x, int y, int player, int max);
-  bool checkDiagoUp(int x, int y, int player, int max);
+  void removePair(int, int, int, int, int, bool);
+  void undoNbPair(int);
+  bool checkHorizon(int, int, int, int);
+  bool checkVertical(int, int, int, int);
+  bool checkDiagoDown(int, int, int, int);
+  bool checkDiagoUp(int, int, int, int);
   string getPairs(int) const;
   Goban &getGoban();
 
