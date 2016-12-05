@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Sun Dec  4 16:55:20 2016 Adrien Milcent
+** Last update Sun Dec  4 18:26:13 2016 Adrien Milcent
 */
 
 #include <functional>
@@ -125,12 +125,16 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
           restorePair(r, pairs, maxing ? _opponent : _player);
           g.removeDraught(x, y);
           g.revertWeights(x, y, changes, heuristics);
-          if (beta <= alpha)
-            return v;
+          if (beta <= alpha) {
+            if (maxing)
+              return MAX;
+            else
+              return -MAX;
+          }
         }
       }
   if (!maxing)
-    cout << v << endl;
+    cout << "Min return: " << v << endl;
   return v;
 }
 
@@ -138,15 +142,18 @@ int     AlphaBetaMinimax::diagsTopToBottom(Goban &g, int player) const {
   int   score = 0;
   int   opponent = player == 1 ? 2 : 1;
   int   x = 0, y = 0, tmp = 0;
+  bool  openBefore;
 
   for (int x1 = 0; x1 < g.getXMaxCheck(); x1++) {
     x = x1;
     y = 0;
+    openBefore = false;
     while (x < g.getXMaxCheck() && y < g.getYMaxCheck()) {
       if (g[y][x] == player) {
         tmp++;
-        addScore(score, tmp, false, false);
+        addScore(score, tmp, openBefore, x + 1 == g.getXMaxCheck() || y + 1 == g.getYMaxCheck() ? false : g[y + 1][x + 1] == 0);
       } else {
+        openBefore = g[y][x] != opponent;
         tmp = 0;
       }
       x++;
@@ -156,11 +163,13 @@ int     AlphaBetaMinimax::diagsTopToBottom(Goban &g, int player) const {
   for (int y1 = 1; y1 < g.getYMaxCheck(); y1++) {
     y = y1;
     x = 0;
+    openBefore = false;
     while (x < g.getXMaxCheck() && y < g.getYMaxCheck()) {
       if (g[y][x] == player) {
         tmp++;
-        addScore(score, tmp, false, false);
+        addScore(score, tmp, openBefore, x + 1 == g.getXMaxCheck() || y + 1 == g.getYMaxCheck() ? false : g[y + 1][x + 1] == 0);
       } else {
+        openBefore = g[y][x] != opponent;
         tmp = 0;
       }
       x++;
@@ -174,15 +183,18 @@ int   AlphaBetaMinimax::diagsBottomToTop(Goban &g, int player) const {
   int   score = 0;
   int   opponent = player == 1 ? 2 : 1;
   int   x = 0, y = 0, tmp = 0;
+  bool openBefore;
 
   for (int x1 = 0; x1 < g.getXMaxCheck(); x1++) {
     x = x1;
     y = g.getYMaxCheck() - 1;
+    openBefore = false;
     while (x < g.getXMaxCheck() && y >= 0) {
       if (g[y][x] == player) {
         tmp++;
-        addScore(score, tmp, false, false);
+        addScore(score, tmp, openBefore, x + 1 == g.getXMaxCheck() || y - 1 == -1 ? false : g[y - 1][x + 1] == 0);
       } else {
+        openBefore = g[y][x] != opponent;
         tmp = 0;
       }
       x++;
@@ -192,11 +204,13 @@ int   AlphaBetaMinimax::diagsBottomToTop(Goban &g, int player) const {
   for (int y1 = g.getYMaxCheck() - 2; y1 >= 0; y1--) {
     y = y1;
     x = 0;
+    openBefore = false;
     while (x < g.getXMaxCheck() && y >= 0) {
       if (g[y][x] == player) {
         tmp++;
-        addScore(score, tmp, false, false);
+        addScore(score, tmp, openBefore, x + 1 == g.getXMaxCheck() || y - 1 == -1 ? false : g[y - 1][x + 1] == 0);
       } else {
+        openBefore = g[y][x] != opponent;
         tmp = 0;
       }
       x++;
@@ -265,8 +279,10 @@ int     AlphaBetaMinimax::addScore(int &score, int val, bool openBefore, bool op
   // if (val == 4 && (openAfter || openBefore))
   //   sleep(1);
 
-  if (val == 4 && openAfter && openBefore)
+  if (val == 4 && openAfter && openBefore) {
+    cout << "coucou" << endl;
     return true;
+  }
   if ((val == 3 && openAfter && openBefore) || (val == 4 && (openAfter || openBefore)))
     score += 20000;
   else if ((val == 4 && !openAfter && !openBefore) || (val == 3 && (openAfter || openBefore)))
