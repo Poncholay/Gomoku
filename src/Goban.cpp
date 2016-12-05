@@ -83,8 +83,6 @@ void Goban::printHeuristic(vector<vector<char> > &heuristics) const {
   for (int y = 0; y < _yMaxCheck; y++) {
     for (int x = 0; x < _xMaxCheck; x++)
       cout << static_cast<int>(heuristics[y][x]) << " ";
-      // cout << bitset<8>(_heuristics[y][x]) << " ";
-      // cout << ((_heuristics[y][x] >> 0) & 1) << " ";
     cout << endl;
   }
   cout << endl;

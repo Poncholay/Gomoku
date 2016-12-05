@@ -100,6 +100,7 @@ private:
   int                           _x;
   int                           _y;
   float                         _time;
+	float													_timeBase;
 	irr::gui::IGUIFont						*_font;
 	string 												_score;
 };

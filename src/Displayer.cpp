@@ -16,7 +16,8 @@
 Displayer::Displayer(int x, int y) : _receiver() {
   _x = x;
   _y = y;
-  _time = 0.5;
+  _timeBase = 1;
+  _time = _timeBase;
   _isAnimating = false;
   _error = false;
   _lastFPS = -1;
@@ -98,7 +99,7 @@ bool                  Displayer::placeDraught(int x, int y, int p) {
   _isAnimating = true;
   _animateTime = chrono::high_resolution_clock::now();
   _then = _device->getTimer()->getTime();
-  _time = 0.5;
+  _time = _timeBase;
   return true;
 }
 
@@ -125,10 +126,6 @@ void                  Displayer::updateAnim(bool force) {
 
   if (get<2>(_anim.front()) == 0)
     return;
-  // cout << "bf condition" << endl;
-  // if (_map[get<1>(_anim.front())][get<0>(_anim.front())] == NULL)
-  //   cout << "c'est null aussi " << get<1>(_anim.front()) << " " << get<0>(_anim.front()) << endl;
-  // cout << "af condition" << endl;
   irr::core::vector3df pos = _map[get<1>(_anim.front())][get<0>(_anim.front())]->getBlock()->getPosition();
   irr::core::vector3df extent = _map[get<1>(_anim.front())][get<0>(_anim.front())]->getExtent();
   pos.Y -= frameDeltaTime * MOVEMENT_SPEED;
