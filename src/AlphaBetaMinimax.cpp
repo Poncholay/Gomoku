@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Mon Dec 05 13:54:27 2016 wilmot_g
+** Last update Mon Dec 05 18:34:15 2016 wilmot_g
 */
 
 #include <functional>
@@ -243,15 +243,17 @@ int     AlphaBetaMinimax::countSeries(Goban &g, int player) const {
   int   res = 0;
   int   opponent = player == 1 ? 2 : 1;
   bool  openBefore;
+  int   maxY = g.getYMaxCheck();
+  int   maxX = g.getXMaxCheck();
 
-  for (int y = 0; y < g.getYMaxCheck(); y++) {
+  for (int y = 0; y < maxY; y++) {
     openBefore = false;
-    for (int x = 0; x < g.getXMaxCheck(); x++) {
+    for (int x = 0; x < maxX; x++) {
       int tmp = 0;
       if (g[y][x] == player) {
-        while (x < g.getXMaxCheck() && g[y][x] == player) {
+        while (x < maxX && g[y][x] == player) {
           tmp++;
-          res = addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : g[y][x + 1] == 0);
+          res = addScore(score, tmp, openBefore, x + 1 >= maxX ? false : g[y][x + 1] == 0);
           if (res)
             return MAX;
           x++;
@@ -260,14 +262,14 @@ int     AlphaBetaMinimax::countSeries(Goban &g, int player) const {
         openBefore = g[y][x] != opponent;
     }
   }
-  for (int x = 0; x < g.getXMaxCheck(); x++) {
+  for (int x = 0; x < maxX; x++) {
     openBefore = false;
-    for (int y = 0; y < g.getYMaxCheck(); y++) {
+    for (int y = 0; y < maxY; y++) {
       int tmp = 0;
       if (g[y][x] == player) {
-        while (y < g.getYMaxCheck() && g[y][x] == player) {
+        while (y < maxY && g[y][x] == player) {
           tmp++;
-          res = addScore(score, tmp, openBefore, y + 1 >= g.getYMaxCheck() ? false : g[y + 1][x] == 0);
+          res = addScore(score, tmp, openBefore, y + 1 >= maxY ? false : g[y + 1][x] == 0);
           if (res)
             return MAX;
           y++;

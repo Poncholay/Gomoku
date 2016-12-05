@@ -89,9 +89,9 @@ void Goban::printHeuristic(vector<vector<char> > &heuristics) const {
 }
 
 bool Goban::setHeuristicXY(int x, int y, int bit, bool set, vector<vector<char> > &heuristics) const {
-  if (x >= 0 && y >= 0 && x < _xBoard - 1 && y < _yBoard - 1) {
+  if (x >= 0 && y >= 0 && x < _xBoard && y < _yBoard) {
     bool back = (heuristics[y][x] >> bit) & 1;
-    if (_board[y][x] != 0)
+    if (_board[y][x] != 0 && bit == 0)
       set = true;
     if (set)
       heuristics[y][x] |= 1 << bit;

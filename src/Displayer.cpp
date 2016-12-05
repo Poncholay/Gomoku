@@ -16,7 +16,7 @@
 Displayer::Displayer(int x, int y) : _receiver() {
   _x = x;
   _y = y;
-  _timeBase = 1;
+  _timeBase = 0.5;
   _time = _timeBase;
   _isAnimating = false;
   _error = false;
@@ -124,7 +124,8 @@ void                  Displayer::updateAnim(bool force) {
   const irr::u32		  now = _device->getTimer()->getTime();
   const irr::f32		  frameDeltaTime = (irr::f32)(now - _then) / 1000.f;
 
-  if (get<2>(_anim.front()) == 0)
+  if (!_anim.size() || !get<2>(_anim.front()) || get<1>(_anim.front()) < 0 || get<0>(_anim.front()) < 0 ||
+      !_map[get<1>(_anim.front())][get<0>(_anim.front())])
     return;
   irr::core::vector3df pos = _map[get<1>(_anim.front())][get<0>(_anim.front())]->getBlock()->getPosition();
   irr::core::vector3df extent = _map[get<1>(_anim.front())][get<0>(_anim.front())]->getExtent();
