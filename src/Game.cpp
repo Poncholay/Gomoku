@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Tue Dec 06 13:22:16 2016 wilmot_g
+** Last update Tue Dec 06 13:29:06 2016 wilmot_g
 */
 
 #include <iostream>
@@ -58,7 +58,7 @@ int           Game::play(int param) {
   players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 3)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
 
   while (displayer.isRunning() && !displayer.getReceiver().checkEnd() && playValue == CONTINUE) {
-    displayer.setScore(score(referee, players, turn ? 0 : 1));
+    displayer.setScore(score(referee, players, turn));
     if ((ret = displayer.display()) != 0)
       break;
     if (!displayer.isAnimating() && done) {
