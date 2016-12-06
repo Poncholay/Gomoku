@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Tue Dec 06 10:41:37 2016 wilmot_g
+** Last update Tue Dec 06 17:14:25 2016 wilmot_g
 */
 
 #include <functional>
@@ -43,9 +43,23 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
           res == REPLAY;
         if (res != REPLAY && res != -1) {
           vector<pair<char, char> > pairs;
+          //
+          // cout << "____________________________" << endl;
+          // cout << "[" << y << "][" << x << "]" << endl;
+          // g.printHeuristic(heuristics);
+          //
           g.addDraught(x, y, player);
+          //
+          // g.printBoard(x, y);
+          // cout << "____________________________" << endl;
+          //
           updatePair(r, pairs, x, y, _player);
           int changes = r.getGoban().updateWeights(x, y, heuristics);
+          //
+          // int e = evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics);
+          // cout << "Valeur : " << e << endl;
+          // v = max(v, e);
+          //
           v = max(v, evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics));
           restorePair(r, pairs, _opponent);
           g.removeDraught(x, y);
@@ -55,9 +69,8 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
           alpha = max(v, alpha);
         }
       }
-  //
-  // cout << "Alpha  : " << alpha << endl;
-  // cout << "Result : [" << get<1>(_win) << "][" << get<0>(_win) << "]" << endl << endl << endl;
+  cout << "Alpha  : " << alpha << endl;
+  cout << "Result : [" << get<1>(_win) << "][" << get<0>(_win) << "]" << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
   //
   return _win;
 }
@@ -148,6 +161,7 @@ int     AlphaBetaMinimax::diagsTopToBottom(Goban &g, int player) const {
   int   opponent = player == 1 ? 2 : 1;
   int   x = 0, y = 0, tmp = 0;
   bool  openBefore = false;
+  int   res;
 
   for (int x1 = 0; x1 < g.getXMaxCheck(); x1++) {
     x = x1;
@@ -157,7 +171,9 @@ int     AlphaBetaMinimax::diagsTopToBottom(Goban &g, int player) const {
     while (x < g.getXMaxCheck() && y < g.getYMaxCheck()) {
       if (g[y][x] == player) {
         tmp++;
-        addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y + 1 >= g.getYMaxCheck() ? false : g[y + 1][x + 1] == 0);
+        res = addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y + 1 >= g.getYMaxCheck() ? false : g[y + 1][x + 1] == 0);
+        if (res)
+          return MAX;
       } else {
         tmp = 0;
         openBefore = g[y][x] != opponent;
@@ -175,7 +191,9 @@ int     AlphaBetaMinimax::diagsTopToBottom(Goban &g, int player) const {
     while (x < g.getXMaxCheck() && y < g.getYMaxCheck()) {
       if (g[y][x] == player) {
         tmp++;
-        addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y + 1 >= g.getYMaxCheck() ? false : g[y + 1][x + 1] == 0);
+        res = addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y + 1 >= g.getYMaxCheck() ? false : g[y + 1][x + 1] == 0);
+        if (res)
+          return MAX;
       } else {
         tmp = 0;
         openBefore = g[y][x] != opponent;
@@ -192,6 +210,7 @@ int   AlphaBetaMinimax::diagsBottomToTop(Goban &g, int player) const {
   int   opponent = player == 1 ? 2 : 1;
   int   x = 0, y = 0, tmp = 0;
   bool  openBefore = false;
+  int   res;
 
   for (int x1 = 0; x1 < g.getXMaxCheck(); x1++) {
     x = x1;
@@ -201,7 +220,9 @@ int   AlphaBetaMinimax::diagsBottomToTop(Goban &g, int player) const {
     while (x < g.getXMaxCheck() && y >= 0) {
       if (g[y][x] == player) {
         tmp++;
-        addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y - 1 < 0 ? false : g[y - 1][x + 1] == 0);
+        res = addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y - 1 < 0 ? false : g[y - 1][x + 1] == 0);
+        if (res)
+          return MAX;
       } else {
         tmp = 0;
         openBefore = g[y][x] != opponent;
@@ -218,7 +239,9 @@ int   AlphaBetaMinimax::diagsBottomToTop(Goban &g, int player) const {
     while (x < g.getXMaxCheck() && y >= 0) {
       if (g[y][x] == player) {
         tmp++;
-        addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y - 1 < 0 ? false : g[y - 1][x + 1] == 0);
+        res = addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y - 1 < 0 ? false : g[y - 1][x + 1] == 0);
+        if (res)
+          return MAX;
       } else {
         tmp = 0;
         openBefore = g[y][x] != opponent;
@@ -227,6 +250,7 @@ int   AlphaBetaMinimax::diagsBottomToTop(Goban &g, int player) const {
       y--;
     }
   }
+  return score;
 }
 
 int     AlphaBetaMinimax::countDiags(Goban &g, int player) const {
@@ -283,12 +307,14 @@ int     AlphaBetaMinimax::countSeries(Goban &g, int player) const {
 int     AlphaBetaMinimax::addScore(int &score, int val, bool openBefore, bool openAfter) const {
   if (val >= 5 || (val == 4 && openAfter && openBefore))
     return true;
-  if ((val == 3 && openAfter && openBefore) || (val == 4 && (openAfter || openBefore)))
+  if ((val == 3 && openAfter && openBefore))
+    score += 30000;
+  else if (val == 4 && (openAfter || openBefore))
     score += 20000;
   else if (val == 3 && (openAfter || openBefore))
-    score += 8000;
+    score += 10000;
   else if (val == 3)
-    score += 500;
+    score += 1000;
   else
     score += pow(val, val);
   return false;
@@ -322,7 +348,7 @@ int     AlphaBetaMinimax::score(Referee &r, int player) const {
   // cout << "Player " << player << " Score : " << scorePlayer << " | " << scoreOpponent << endl << endl;
   //
 
-  return scorePlayer - scoreOpponent * 2;
+  return scorePlayer - scoreOpponent * 2.0;
 }
 
 int     AlphaBetaMinimax::scoreWin(Referee &r, int player, int depth) const {

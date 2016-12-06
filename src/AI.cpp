@@ -34,6 +34,7 @@ int     AI::play(Referee &referee) {
     return -1;
   int res = referee.checkPlay(result.first, result.second, _nbPlayer);
   _goban.addDraught(result.first, result.second, _nbPlayer, true);
+  // _goban.printBoard();
   return res;
 }
 
