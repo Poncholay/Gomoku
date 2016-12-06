@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 18:07:17 2016 wilmot_g
-** Last update Wed Nov  9 13:33:08 2016 Combaud Alban
+** Last update Tue Dec 06 13:19:23 2016 wilmot_g
 */
 
 #ifndef PLAYER_HH_
@@ -19,6 +19,7 @@ class IPlayer {
 public:
   virtual ~IPlayer() {}
   virtual string getType() const = 0;
+  virtual string getReflexionTime() const = 0;
   virtual int play(Referee &) = 0;
 };
 

@@ -16,9 +16,10 @@ Goban::Goban(Displayer &d, int xBoard, int yBoard) : _displayer(d) {
   _yBoard = yBoard;
   _board = vector<vector<char> > (yBoard, vector<char>(xBoard, 0));
   _heuristics = vector<vector<char> > (yBoard, vector<char>(xBoard, 1));
-  _heuristics[1][1] = 0;
   _xMaxCheck = 3;
   _yMaxCheck = 3;
+  srand(time(0));
+  _heuristics[rand() % _yMaxCheck][rand() % _xMaxCheck] = 0;
 }
 
 Goban::~Goban() {}

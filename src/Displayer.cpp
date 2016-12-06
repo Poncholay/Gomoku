@@ -16,7 +16,7 @@
 Displayer::Displayer(int x, int y) : _receiver() {
   _x = x;
   _y = y;
-  _timeBase = 0.5;
+  _timeBase = 1;
   _time = _timeBase;
   _isAnimating = false;
   _error = false;

@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:20:43 2016 wilmot_g
-** Last update Wed Nov  9 13:31:51 2016 Combaud Alban
+** Last update Tue Dec 06 13:19:43 2016 wilmot_g
 */
 
 #ifndef HUMAN_HH_
@@ -21,6 +21,7 @@ public:
   ~Human();
 
   string getType() const;
+  string getReflexionTime() const;
   int play(Referee &);
 
 private:

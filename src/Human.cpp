@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:23:37 2016 wilmot_g
-** Last update Mon Dec 05 13:41:57 2016 wilmot_g
+** Last update Tue Dec 06 13:20:08 2016 wilmot_g
 */
 
 #include "Human.hh"
@@ -66,6 +66,10 @@ int        Human::play(Referee &r) {
   delete placeholder;
   _displayer.mutex.unlock();
   return _goban.full() ? -1 : ret;
+}
+
+string  Human::getReflexionTime() const {
+  return "";
 }
 
 string  Human::getType() const {

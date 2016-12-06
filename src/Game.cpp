@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Tue Nov 29 23:23:51 2016 wilmot_g
+** Last update Tue Dec 06 13:22:16 2016 wilmot_g
 */
 
 #include <iostream>
@@ -28,11 +28,12 @@ void          Game::doPlay(IPlayer *player, Referee &referee, atomic<bool> &done
   done = true;
 }
 
-string        Game::score(const Referee &r, const vector<IPlayer *> &p) {
+string        Game::score(const Referee &r, const vector<IPlayer *> &p, int turn) {
   string      score;
 
-  score += "Player 1 (" + p[0]->getType() + ") : " + r.getPairs(1) + "\n";
-  score += "Player 2 (" + p[1]->getType() + ") : " + r.getPairs(2) + "\n";
+  score += "Player 1 pairs (" + p[0]->getType() + ")\t: " + r.getPairs(1) + "\n";
+  score += "Player 2 pairs (" + p[1]->getType() + ")\t: " + r.getPairs(2) + "\n";
+  score += p[turn]->getReflexionTime();
   return score;
 }
 
@@ -57,7 +58,7 @@ int           Game::play(int param) {
   players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 3)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
 
   while (displayer.isRunning() && !displayer.getReceiver().checkEnd() && playValue == CONTINUE) {
-    displayer.setScore(score(referee, players));
+    displayer.setScore(score(referee, players, turn ? 0 : 1));
     if ((ret = displayer.display()) != 0)
       break;
     if (!displayer.isAnimating() && done) {

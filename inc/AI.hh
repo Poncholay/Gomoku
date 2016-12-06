@@ -22,16 +22,21 @@
 
 class AI : public IPlayer {
 private:
-  // Minmax _algo;
   AlphaBetaMinimax _algo;
   Goban &_goban;
   int _nbPlayer;
+  bool _benchmark;
+  bool _thinking;
+  chrono::high_resolution_clock::time_point _end;
+  chrono::high_resolution_clock::time_point _start;
 
 public:
   AI(Goban &, int, int);
   ~AI();
 
+  void setBenchmark(bool);
   string getType() const;
+  string getReflexionTime() const;
   int play(Referee &);
 };
 

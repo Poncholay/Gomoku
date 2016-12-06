@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Mon Dec 05 18:34:15 2016 wilmot_g
+** Last update Tue Dec 06 10:41:37 2016 wilmot_g
 */
 
 #include <functional>
@@ -42,7 +42,7 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
         if (res == WIN_INVERSE)
           res == REPLAY;
         if (res != REPLAY && res != -1) {
-          vector<pair<int, int> > pairs;
+          vector<pair<char, char> > pairs;
           g.addDraught(x, y, player);
           updatePair(r, pairs, x, y, _player);
           int changes = r.getGoban().updateWeights(x, y, heuristics);
@@ -62,22 +62,21 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
   return _win;
 }
 
-void    AlphaBetaMinimax::saveChanges(Referee &r, vector<pair<int, int> > &changes, int x1, int y1, int x2, int y2, int p) const {
+void    AlphaBetaMinimax::saveChanges(Referee &r, vector<pair<char, char> > &changes, int x1, int y1, int x2, int y2, int p) const {
   r.removePair(x1, y1, x2, y2, p, false);
   changes.push_back(make_pair(x1, y1));
   changes.push_back(make_pair(x2, y2));
 }
 
-void    AlphaBetaMinimax::restorePair(Referee &r, vector<pair<int, int> > changes, int player) const {
-  int check = 0;
-  for (vector<pair<int, int> >::iterator it = changes.begin(); it != changes.end(); it++) {
-    check = 1;
+void    AlphaBetaMinimax::restorePair(Referee &r, vector<pair<char, char> > changes, int player) const {
+  for (auto it = changes.begin(); it != changes.end(); it++) {
     r.getGoban().addDraught((*it).first, (*it).second, player);
   }
-  check == 1 ? r.undoNbPair(player == 1 ? 2 : 1) : (void)0;
+  for (unsigned int i = 0; i < (changes.size() / 2); i++)
+    r.undoNbPair(player == 1 ? 2 : 1);
 }
 
-void    AlphaBetaMinimax::updatePair(Referee &r, vector<pair<int, int> > &changes, int x, int y, int p) const {
+void    AlphaBetaMinimax::updatePair(Referee &r, vector<pair<char, char> > &changes, int x, int y, int p) const {
   int p2 = p == 1 ? 2 : 1;
   Goban goban = r.getGoban();
 
@@ -119,7 +118,7 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
         if (res == WIN_INVERSE)
           return scoreWin(r, turn == 1 ? 2 : 1, depth);
         if (res != REPLAY && res != -1) {
-          vector<pair<int, int> > pairs;
+          vector<pair<char, char> > pairs;
           g.addDraught(x, y, turn);
           //
           // cacaX = x;
