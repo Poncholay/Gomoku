@@ -13,7 +13,7 @@
 
 # include <vector>
 # include <iostream>
-# include "Goban.hh"
+# include "Goban.hpp"
 # include "Displayer.hpp"
 
 class Goban;

@@ -35,8 +35,10 @@ public:
   Displayer(int = GOBAN_X, int = GOBAN_Y);
   ~Displayer();
 
+	void 				setTurn(int);
 	void 				setScore(const string &score);
 	void 				drawScore();
+	void 				drawTurn();
 	void 				drawWin(int);
   void        setUpdate(int, int, int);
   bool        isAnimating();
@@ -101,6 +103,8 @@ private:
   int                           _y;
   float                         _time;
 	float													_timeBase;
+
+	int 													_turn;
 	irr::gui::IGUIFont						*_font;
 	string 												_score;
 };

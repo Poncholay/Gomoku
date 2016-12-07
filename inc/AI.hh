@@ -16,8 +16,7 @@
 # include <vector>
 
 # include "IPlayer.hh"
-# include "Goban.hh"
-# include "Minmax.hh"
+# include "Goban.hpp"
 # include "AlphaBetaMinimax.hh"
 
 class AI : public IPlayer {

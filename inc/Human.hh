@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:20:43 2016 wilmot_g
-** Last update Tue Dec 06 13:19:43 2016 wilmot_g
+** Last update Wed Dec 07 15:21:43 2016 wilmot_g
 */
 
 #ifndef HUMAN_HH_
@@ -13,7 +13,7 @@
 
 # include "IPlayer.hh"
 # include "Displayer.hpp"
-# include "Goban.hh"
+# include "Goban.hpp"
 
 class Human : public IPlayer {
 public:

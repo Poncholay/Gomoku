@@ -21,8 +21,9 @@ function gomoku_project(_kind)
 		}
 
 		linkoptions {
-			"-O3 -pg -Wl,-rpath,../../../lib/Linux"
+			"-O3 -Wl,-rpath,../../../lib/Linux"
 		}
+ 		-- -pg
 
 		links {
 			GOMOKU_LIB_DIR .. "Linux/Irrlicht",

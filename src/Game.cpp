@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Tue Dec 06 13:29:06 2016 wilmot_g
+** Last update Wed Dec 07 18:14:51 2016 wilmot_g
 */
 
 #include <iostream>
@@ -64,7 +64,8 @@ int           Game::play(int param) {
     if (!displayer.isAnimating() && done) {
       if (!t && playValue == CONTINUE) {
         done = false;
-        t = new thread(doPlay, players[(turn = turn ? 0 : 1)], ref(referee), ref(done), ref(playValue));
+        displayer.setTurn((turn = turn ? 0 : 1));
+        t = new thread(doPlay, players[turn], ref(referee), ref(done), ref(playValue));
       } else {
         if (t) {
           t->join();

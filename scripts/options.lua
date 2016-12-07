@@ -17,7 +17,7 @@ function options()
     location(GOMOKU_BUILD_DIR .. "projects/" .. "linux")
 
     configuration { "x64" }
-        flags { "Symbols" }
+        --flags { "Symbols" }
     		targetdir (GOMOKU_DIR)
     		objdir (GOMOKU_BUILD_DIR .. "linux64" .. "/obj")
     		libdirs (GOMOKU_BUILD_DIR .. "../",

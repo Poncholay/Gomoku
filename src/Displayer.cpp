@@ -16,11 +16,12 @@
 Displayer::Displayer(int x, int y) : _receiver() {
   _x = x;
   _y = y;
-  _timeBase = 1;
+  _timeBase = 0.5;
   _time = _timeBase;
   _isAnimating = false;
   _error = false;
   _lastFPS = -1;
+  _turn = -1;
   EventHandler::get(&_receiver);
   irr::SIrrlichtCreationParameters params = irr::SIrrlichtCreationParameters();
   params.AntiAlias = 32;
@@ -59,6 +60,14 @@ void                  Displayer::drawScore() {
   if (_font && _receiver.isKeyDown(irr::KEY_TAB)) {
     irr::core::stringw s(_score.c_str());
     _font->draw(s, irr::core::rect<irr::s32>(0, 0, 200, 50), irr::video::SColor(255, 255, 255, 255));
+  }
+}
+
+void                  Displayer::drawTurn() {
+  if (_font && _turn != -1) {
+    string str = "Player " + to_string(_turn) + "'s' Turn " + (!_turn ? "(White)" : "(Black)");
+    irr::core::stringw s(str.c_str());
+    _font->draw(s, irr::core::rect<irr::s32>(0, 1080 - 150, 500, 1080), irr::video::SColor(255, 255, 255, 255), true, true);
   }
 }
 
@@ -172,6 +181,8 @@ bool                  Displayer::instanciate() {
 }
 
 bool                  Displayer::instanciateScene() {
+  _smgr->getMesh("./assets/redgo.obj");
+  _smgr->getMesh("./assets/greengo.obj");
   Block room(0, 0, 0, _smgr->getMesh("./assets/room.obj"), _smgr);
   Block goban(0, 0, 0, _smgr->getMesh("./assets/goban.obj"), _smgr, IDFlag_IsPickable);
   if (room.create(0.04) == -1 || goban.create(0.04) == -1) return false;
@@ -221,12 +232,13 @@ int				            Displayer::display(int win) {
   _guienv->drawAll();
   mutex.unlock();
   drawScore();
-  if (win != 0) drawWin(win);
+  win ? drawWin(win) : drawTurn();
   _driver->endScene();
   updateFPS();
   return _receiver.checkEnd();
 }
 
+void                  Displayer::setTurn(int t) {_turn = t;}
 void                  Displayer::setScore(const string &score) {_score = score;}
 void                  Displayer::setTime(float newTime) {_time = newTime;}
 bool                  Displayer::isRunning() const {return _device->run();}

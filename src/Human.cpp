@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:23:37 2016 wilmot_g
-** Last update Tue Dec 06 13:20:08 2016 wilmot_g
+** Last update Wed Dec 07 18:06:53 2016 wilmot_g
 */
 
 #include "Human.hh"
@@ -26,12 +26,13 @@ int        Human::play(Referee &r) {
   Block                       *placeholder;
   bool                        outside;
   int                         ret = 0;
+  int                         tmp = REPLAY;
 
   _displayer.mutex.lock();
-  placeholder = new Block(0, 0, 0, Displayer::getSmgr()->getMesh(string(string("./assets/") + (_nb == 1 ? "white" : "black") + "go.obj").c_str()), Displayer::getSmgr());
+  placeholder = new Block(0, 0, 0, Displayer::getSmgr()->getMesh("./assets/redgo.obj"), Displayer::getSmgr());
   _displayer.mutex.unlock();
   if (placeholder->create(0.008) == -1)
-    return 0;
+    return -1;
   do {
     _i = 0;
     _j = 0;
@@ -50,8 +51,19 @@ int        Human::play(Referee &r) {
         for (_j = 0; _j < _y; _j++)
           if (posZ - ((_j + 1) * size / (_y - 1)) * extent.Z < intersection.Z) break;
         intersection.X = posX - (_i * size / (_x - 1)) * extent.X;
-        intersection.Y = 0.690 * extent.Y;
+        intersection.Y = 0.692 * extent.Y;
         intersection.Z = posZ - (_j * size / (_y - 1)) * extent.Z;
+        int tmp = r.checkPlay(_j, _i, _nb);
+        if (ret != tmp) {
+          ret = tmp;
+          _displayer.mutex.lock();
+          placeholder->destroy();
+          delete placeholder;
+          placeholder = new Block(0, 0, 0, Displayer::getSmgr()->getMesh(string(string("./assets/") + (ret != REPLAY && ret != -1 ? "green" : "red") + "go.obj").c_str()), Displayer::getSmgr());
+          _displayer.mutex.unlock();
+          if (placeholder->create(0.008) == -1)
+            return -1;
+        }
         placeholder->getBlock()->setPosition(intersection);
       } else {
         outside = true;
