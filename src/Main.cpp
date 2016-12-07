@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 16:30:25 2016 wilmot_g
-** Last update Wed Nov 23 21:59:11 2016 wilmot_g
+** Last update Wed Dec 07 10:19:11 2016 wilmot_g
 */
 
 #include "Sounds.hpp"
@@ -20,6 +20,8 @@ int         main(int ac, char **av) {
     cerr << e.what() << endl;
     return -1;
   }
+
+  srand(time(0));
 
   Game      game;
   int       value = 0;

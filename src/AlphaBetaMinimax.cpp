@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Tue Dec 06 17:14:25 2016 wilmot_g
+** Last update Wed Dec 07 10:34:17 2016 wilmot_g
 */
 
 #include <functional>
@@ -16,6 +16,9 @@
 
 AlphaBetaMinimax::AlphaBetaMinimax(int nbTurn) {
   _nbTurn = nbTurn;
+  _multiplier = vector<float>(5, 0);
+  for (float &m : _multiplier)
+    m = (1000 + rand() % 4000) / 1000.0;
 }
 
 AlphaBetaMinimax::~AlphaBetaMinimax() {}
@@ -162,42 +165,51 @@ int     AlphaBetaMinimax::diagsTopToBottom(Goban &g, int player) const {
   int   x = 0, y = 0, tmp = 0;
   bool  openBefore = false;
   int   res;
+  int   maxY = g.getYBoard();
+  int   maxX = g.getXBoard();
+  int   broken;
 
-  for (int x1 = 0; x1 < g.getXMaxCheck(); x1++) {
+  for (int x1 = 0; x1 < maxX; x1++) {
     x = x1;
     y = 0;
+    broken = 1;
     openBefore = false;
     tmp = 0;
-    while (x < g.getXMaxCheck() && y < g.getYMaxCheck()) {
+    while (x < maxX && y < maxY) {
       if (g[y][x] == player) {
         tmp++;
-        res = addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y + 1 >= g.getYMaxCheck() ? false : g[y + 1][x + 1] == 0);
+        res = addScore(score, tmp, openBefore, x + 1 >= maxX ? false : y + 1 >= maxY ? false : g[y + 1][x + 1] == 0, broken);
         if (res)
           return MAX;
-      } else {
+      } else if (g[y][x] == opponent || x + 1 >= maxX || y + 1 >= maxY || g[y + 1][x + 1] != player) {
         tmp = 0;
         openBefore = g[y][x] != opponent;
-      }
+        broken = 1;
+      } else if (tmp)
+        broken = 2;
       x++;
       y++;
     }
   }
   tmp = 0;
-  for (int y1 = 1; y1 < g.getYMaxCheck(); y1++) {
+  for (int y1 = 1; y1 < maxY; y1++) {
     y = y1;
     x = 0;
     openBefore = false;
+    broken = 1;
     tmp = 0;
-    while (x < g.getXMaxCheck() && y < g.getYMaxCheck()) {
+    while (x < maxX && y < maxY) {
       if (g[y][x] == player) {
         tmp++;
-        res = addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y + 1 >= g.getYMaxCheck() ? false : g[y + 1][x + 1] == 0);
+        res = addScore(score, tmp, openBefore, x + 1 >= maxX ? false : y + 1 >= maxY ? false : g[y + 1][x + 1] == 0, broken);
         if (res)
           return MAX;
-      } else {
+      } else if (g[y][x] == opponent || x + 1 >= maxX || y + 1 >= maxY || g[y + 1][x + 1] != player) {
         tmp = 0;
         openBefore = g[y][x] != opponent;
-      }
+        broken = 1;
+      } else if (tmp)
+        broken = 2;
       x++;
       y++;
     }
@@ -211,41 +223,50 @@ int   AlphaBetaMinimax::diagsBottomToTop(Goban &g, int player) const {
   int   x = 0, y = 0, tmp = 0;
   bool  openBefore = false;
   int   res;
+  int   maxY = g.getYBoard();
+  int   maxX = g.getXBoard();
+  int   broken;
 
-  for (int x1 = 0; x1 < g.getXMaxCheck(); x1++) {
+  for (int x1 = 0; x1 < maxX; x1++) {
     x = x1;
-    y = g.getYMaxCheck() - 1;
+    y = maxY - 1;
     openBefore = false;
+    broken = 1;
     tmp = 0;
-    while (x < g.getXMaxCheck() && y >= 0) {
+    while (x < maxX && y >= 0) {
       if (g[y][x] == player) {
         tmp++;
-        res = addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y - 1 < 0 ? false : g[y - 1][x + 1] == 0);
+        res = addScore(score, tmp, openBefore, x + 1 >= maxX ? false : y - 1 < 0 ? false : g[y - 1][x + 1] == 0, broken);
         if (res)
           return MAX;
-      } else {
+      } else if (g[y][x] == opponent || y - 1 < 0 || x + 1 >= maxX || g[y - 1][x + 1] != player) {
+        broken = 1;
         tmp = 0;
         openBefore = g[y][x] != opponent;
-      }
+      } else if (tmp)
+        broken = 2;
       x++;
       y--;
     }
   }
-  for (int y1 = g.getYMaxCheck() - 2; y1 >= 0; y1--) {
+  for (int y1 = maxY - 2; y1 >= 0; y1--) {
     y = y1;
     x = 0;
     openBefore = false;
+    broken = 1;
     tmp = 0;
-    while (x < g.getXMaxCheck() && y >= 0) {
+    while (x < maxX && y >= 0) {
       if (g[y][x] == player) {
         tmp++;
-        res = addScore(score, tmp, openBefore, x + 1 >= g.getXMaxCheck() ? false : y - 1 < 0 ? false : g[y - 1][x + 1] == 0);
+        res = addScore(score, tmp, openBefore, x + 1 >= maxX ? false : y - 1 < 0 ? false : g[y - 1][x + 1] == 0, broken);
         if (res)
           return MAX;
-      } else {
+      } else if (g[y][x] == opponent || y - 1 < 0 || x + 1 >= maxX || g[y - 1][x + 1] != player) {
+        broken = 1;
         tmp = 0;
         openBefore = g[y][x] != opponent;
-      }
+      } else if (tmp)
+        broken = 2;
       x++;
       y--;
     }
@@ -266,57 +287,63 @@ int     AlphaBetaMinimax::countSeries(Goban &g, int player) const {
   int   res = 0;
   int   opponent = player == 1 ? 2 : 1;
   bool  openBefore;
-  int   maxY = g.getYMaxCheck();
-  int   maxX = g.getXMaxCheck();
+  int  broken;
+  int   maxY = g.getYBoard();
+  int   maxX = g.getXBoard();
+  int   tmp = 0;
 
   for (int y = 0; y < maxY; y++) {
     openBefore = false;
+    broken = 1;
+    tmp = 0;
     for (int x = 0; x < maxX; x++) {
-      int tmp = 0;
       if (g[y][x] == player) {
-        while (x < maxX && g[y][x] == player) {
-          tmp++;
-          res = addScore(score, tmp, openBefore, x + 1 >= maxX ? false : g[y][x + 1] == 0);
-          if (res)
-            return MAX;
-          x++;
-        }
-      } else
+        tmp++;
+        res = addScore(score, tmp, openBefore, x + 1 >= maxX ? false : g[y][x + 1] == 0, broken);
+        if (res)
+          return MAX;
+      } else if (g[y][x] == opponent || x + 1 >= maxX || g[y][x + 1] != player) {
+        broken = 1;
+        tmp = 0;
         openBefore = g[y][x] != opponent;
+      } else if (tmp)
+        broken = 2;
     }
   }
   for (int x = 0; x < maxX; x++) {
     openBefore = false;
+    broken = 1;
+    tmp = 0;
     for (int y = 0; y < maxY; y++) {
-      int tmp = 0;
       if (g[y][x] == player) {
-        while (y < maxY && g[y][x] == player) {
           tmp++;
-          res = addScore(score, tmp, openBefore, y + 1 >= maxY ? false : g[y + 1][x] == 0);
+          res = addScore(score, tmp, openBefore, y + 1 >= maxY ? false : g[y + 1][x] == 0, broken);
           if (res)
             return MAX;
-          y++;
-        }
-      } else
+      } else if (g[y][x] == opponent || y + 1 >= maxY || g[y + 1][x] != player) {
+        broken = 1;
+        tmp = 0;
         openBefore = g[y][x] != opponent;
+      } else if (tmp)
+        broken = 2;
     }
   }
   return score;
 }
 
-int     AlphaBetaMinimax::addScore(int &score, int val, bool openBefore, bool openAfter) const {
-  if (val >= 5 || (val == 4 && openAfter && openBefore))
+int     AlphaBetaMinimax::addScore(int &score, int val, bool openBefore, bool openAfter, int broken) const {
+  if (!broken && (val >= 5 || (val == 4 && openAfter && openBefore)))
     return true;
-  if ((val == 3 && openAfter && openBefore))
-    score += 30000;
+  else if ((val == 3 && openAfter && openBefore))
+    score += 10000 / broken * _multiplier[0];
   else if (val == 4 && (openAfter || openBefore))
-    score += 20000;
+    score += 5000  / broken * _multiplier[1];
   else if (val == 3 && (openAfter || openBefore))
-    score += 10000;
+    score += 1000 / broken * _multiplier[2];
   else if (val == 3)
-    score += 1000;
+    score += 100 / broken * _multiplier[3];
   else
-    score += pow(val, val);
+    score += pow(val, val) / broken * _multiplier[4];
   return false;
 }
 
@@ -348,7 +375,7 @@ int     AlphaBetaMinimax::score(Referee &r, int player) const {
   // cout << "Player " << player << " Score : " << scorePlayer << " | " << scoreOpponent << endl << endl;
   //
 
-  return scorePlayer - scoreOpponent * 2.0;
+  return scorePlayer - scoreOpponent * 3.0;
 }
 
 int     AlphaBetaMinimax::scoreWin(Referee &r, int player, int depth) const {
