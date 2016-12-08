@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 14:14:53 2016 wilmot_g
-** Last update Wed Dec 07 15:07:14 2016 wilmot_g
+** Last update Thu Dec 08 21:04:54 2016 wilmot_g
 */
 
 #ifndef ALPHABETAMINIMAX_HH_
@@ -28,6 +28,10 @@ private:
   int _nbTurn;
   int _player;
   int _opponent;
+  bool _alphaBeta;
+  bool _opti;
+  bool _rows;
+  bool _diago;
   Coord _win;
   vector<float> _multiplier;
 
@@ -45,7 +49,7 @@ private:
   void  saveChanges(Referee &, vector<pair<char, char> > &, int, int, int, int, int) const;
 
 public:
-  AlphaBetaMinimax(int);
+  AlphaBetaMinimax(int, bool, bool, bool, bool);
   ~AlphaBetaMinimax();
 
   Coord loop(int, Referee &);

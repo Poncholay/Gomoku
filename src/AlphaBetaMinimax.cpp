@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Wed Dec 07 18:23:26 2016 wilmot_g
+** Last update Thu Dec 08 21:10:21 2016 wilmot_g
 */
 
 #include <functional>
@@ -14,7 +14,11 @@
 #include "Referee.hh"
 #include "unistd.h"
 
-AlphaBetaMinimax::AlphaBetaMinimax(int nbTurn) {
+AlphaBetaMinimax::AlphaBetaMinimax(int nbTurn, bool opti, bool rows, bool diago, bool alpha) {
+  _opti = opti;
+  _rows = rows;
+  _diago = diago;
+  _alphaBeta = alpha;
   _nbTurn = nbTurn;
   _multiplier = vector<float>(5, 0);
   for (float &m : _multiplier)
@@ -34,35 +38,17 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
   _win = Coord(-1, -1);
   for (int y = 0; y < g.getYBoard(); y++)
     for (int x = 0; x < g.getXBoard(); x++)
-      if (!heuristics[y * g.getXBoard() + x]) {
+      if (!_opti || (_opti && !heuristics[y * g.getXBoard() + x])) {
         int res = r.checkPlay(x, y, player);
-        if (res == WIN) {
-          //
-          // cout << "Winning : (" << y << ", " << x << ")" << endl << endl << endl << endl;
-          //
+        if (res == WIN)
           return Coord(x, y);
-        }
         if (res == WIN_INVERSE)
           res == REPLAY;
         if (res != REPLAY && res != -1) {
           vector<pair<char, char> > pairs;
-          //
-          // cout << "____________________________" << endl;
-          // cout << "(" << y << ", " << x << ")" << endl;
-          // g.printHeuristic(heuristics);
-          //
           g.addDraught(x, y, player);
-          //
-          // g.printBoard(x, y);
-          // cout << "____________________________" << endl;
-          //
           updatePair(r, pairs, x, y, _player);
           int changes = r.getGoban().updateWeights(x, y, heuristics);
-          //
-          // int e = evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics);
-          // cout << "Valeur : " << e << endl;
-          // v = max(v, e);
-          //
           v = max(v, evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics));
           restorePair(r, pairs, _opponent);
           g.removeDraught(x, y);
@@ -72,9 +58,6 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
           alpha = max(v, alpha);
         }
       }
-  // cout << "Alpha  : " << alpha << endl;
-  // cout << "Result : (" << get<1>(_win) << ", " << get<0>(_win) << ")" << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
-  //
   return _win;
 }
 
@@ -111,23 +94,13 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
   int   turn;
   Goban &g = r.getGoban();
 
-  //
-  // static int cacaX = -1;
-  // static int pipiY = -1;
-  //
-
-  if (!depth) {
-    //
-    // cout << "(" << pipiY << ", " << cacaX << ")" << endl;
-    // g.printBoard(cacaX, pipiY);
-    //
+  if (!depth)
     return score(r, !maxing ? _player : _opponent);
-  }
   turn = maxing ? _player : _opponent;
   v = maxing ? -MAX : MAX;
   for (int y = 0; y < g.getYBoard(); y++)
     for (int x = 0; x < g.getXBoard(); x++)
-      if (!heuristics[y * g.getXBoard() + x]) {
+      if (!_opti || (_opti && !heuristics[y * g.getXBoard() + x])) {
         int res = r.checkPlay(x, y, turn);
         if (res == WIN)
           return scoreWin(r, turn, depth);
@@ -136,10 +109,6 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
         if (res != REPLAY && res != -1) {
           vector<pair<char, char> > pairs;
           g.addDraught(x, y, turn);
-          //
-          // cacaX = x;
-          // pipiY = y;
-          //
           updatePair(r, pairs, x, y, maxing ? _player : _opponent);
           int changes = g.updateWeights(x, y, heuristics);
           if (maxing) {
@@ -152,7 +121,7 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
           restorePair(r, pairs, maxing ? _opponent : _player);
           g.removeDraught(x, y);
           g.revertWeights(x, y, changes, heuristics);
-          if (beta <= alpha)
+          if (beta <= alpha && _alphaBeta)
             return v;
         }
       }
@@ -353,34 +322,32 @@ int     AlphaBetaMinimax::score(Referee &r, int player) const {
   int scorePlayer = 0;
   int scoreOpponent = 0;
 
-  tmp = countSeries(r.getGoban(), player);
-  if (tmp == MAX)
-    return scoreWin(r, player, 0);
-  scorePlayer += tmp;
-  tmp = countDiags(r.getGoban(), player);
-  if (tmp == MAX)
-    return scoreWin(r, player, 0);
-  scorePlayer += tmp;
+  if (_rows) {
+    tmp = countSeries(r.getGoban(), player);
+    if (tmp == MAX)
+      return scoreWin(r, player, 0);
+    scorePlayer += tmp;
 
-  tmp = countSeries(r.getGoban(), opponent);
-  if (tmp == MAX)
-    return scoreWin(r, opponent, 0);
-  scoreOpponent += tmp;
-  tmp = countDiags(r.getGoban(), opponent);
-  if (tmp == MAX)
-    return scoreWin(r, opponent, 0);
-  scoreOpponent += tmp;
+    tmp = countSeries(r.getGoban(), opponent);
+    if (tmp == MAX)
+      return scoreWin(r, opponent, 0);
+    scoreOpponent += tmp;
+  }
+  if (_diago) {
+    tmp = countDiags(r.getGoban(), player);
+    if (tmp == MAX)
+      return scoreWin(r, player, 0);
+    scorePlayer += tmp;
 
-  //
-  // cout << "Player " << player << " Score : " << scorePlayer << " | " << scoreOpponent << endl << endl;
-  //
+    tmp = countDiags(r.getGoban(), opponent);
+    if (tmp == MAX)
+      return scoreWin(r, opponent, 0);
+    scoreOpponent += tmp;
+  }
 
   return scorePlayer - scoreOpponent;
 }
 
 int     AlphaBetaMinimax::scoreWin(Referee &r, int player, int depth) const {
-  //
-  // cout << "Player " << player << " ScoreWin : " << (player == _player ? MAX - (_nbTurn - depth) : -MAX + (_nbTurn - depth)) << endl << endl;
-  //
   return player == _player ? MAX - (_nbTurn - depth) : -MAX + (_nbTurn - depth);
 }

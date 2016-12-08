@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Wed Dec 07 18:14:51 2016 wilmot_g
+** Last update Thu Dec 08 21:03:33 2016 wilmot_g
 */
 
 #include <iostream>
@@ -17,11 +17,20 @@
 #include "Human.hh"
 #include "Sounds.hpp"
 
-Game::Game()  {_players = 1;}
 Game::~Game() {}
+Game::Game()  {
+  _players = 1;
+  _aiDepth = 3;
+}
 
-void          Game::setPlayers(int p)         {_players = p;}
-void          Game::setAdvancedRules(bool r)  {_rules = r;}
+void          Game::setAiDepth(int d)             {_aiDepth = d;}
+void          Game::setPlayers(int p)             {_players = p;}
+void          Game::setAdvancedRules(bool r)      {_rules = r;}
+void          Game::setBenchmark(bool b)          {_bench = b;}
+void          Game::setOptimisation(bool o)       {_optimise = o;}
+void          Game::setAlphaBeta(bool a)          {_alphaBeta = a;}
+void          Game::setCalculateRows(bool r)      {_rows = r;}
+void          Game::setCalculateDiagonals(bool d) {_diago = d;}
 
 void          Game::doPlay(IPlayer *player, Referee &referee, atomic<bool> &done, atomic<int> &playValue) {
   playValue = player->play(referee);
@@ -37,7 +46,7 @@ string        Game::score(const Referee &r, const vector<IPlayer *> &p, int turn
   return score;
 }
 
-int           Game::play(int param) {
+int           Game::play() {
   Displayer   displayer;
   Goban       goban(displayer);
   Referee     referee(goban, _rules);
@@ -54,8 +63,8 @@ int           Game::play(int param) {
   Sounds::get().playMusic("game");
   goban.setReferee(&referee);
 
-  players.push_back(_players != 3 ? (IPlayer *)(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y)) : (IPlayer *)(new AI(goban, 1, 3)));
-  players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, 3)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
+  players.push_back(_players != 3 ? (IPlayer *)(new Human(goban, displayer, 1, GOBAN_X, GOBAN_Y)) : (IPlayer *)(new AI(goban, 1, _aiDepth, _optimise, _rows, _diago, _bench, _alphaBeta)));
+  players.push_back(_players != 1 ? (IPlayer *)(new AI(goban, 2, _aiDepth, _optimise, _rows, _diago, _bench, _alphaBeta)) : (IPlayer *)(new Human(goban, displayer, 2, GOBAN_X, GOBAN_Y)));
 
   while (displayer.isRunning() && !displayer.getReceiver().checkEnd() && playValue == CONTINUE) {
     displayer.setScore(score(referee, players, turn));

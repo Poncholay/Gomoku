@@ -24,13 +24,16 @@ private:
   AlphaBetaMinimax _algo;
   Goban &_goban;
   int _nbPlayer;
-  bool _benchmark;
+  bool  _benchmark;
+  bool  _opti;
+  bool  _rows;
+  bool  _diago;
   bool _thinking;
   chrono::high_resolution_clock::time_point _end;
   chrono::high_resolution_clock::time_point _start;
 
 public:
-  AI(Goban &, int, int);
+  AI(Goban &, int, int, bool = true, bool = true, bool = true, bool = true, bool = true);
   ~AI();
 
   void setBenchmark(bool);

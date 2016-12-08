@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 16:30:25 2016 wilmot_g
-** Last update Wed Dec 07 10:19:11 2016 wilmot_g
+** Last update Thu Dec 08 21:13:03 2016 wilmot_g
 */
 
 #include "Sounds.hpp"
@@ -33,20 +33,25 @@ int         main(int ac, char **av) {
     choices[i] = true;
 
   while (value != -1) {
-    Menu menu;
+    Menu *menu = new Menu;
 
-    menu.setValues(value, volume, choices);
-    if (!menu.isInit())
+    menu->setValues(value, volume, choices);
+    if (!menu->isInit())
       return (-1);
-    if ((value = menu.play()) == -1) {
+    if ((value = menu->play()) == -1)
       return (0);
-    }
-    depth = menu.getDepth();
-    volume = menu.getVolume();
-    choices = menu.getRules();
-    game.setAdvancedRules(choices[0]);
+    choices = menu->getRules();
     game.setPlayers(value);
-    game.play(0);
+    Sounds::get().setVolume(menu->getVolume());
+    game.setAiDepth(menu->getDepth());
+    game.setAdvancedRules(choices[0]);
+    game.setBenchmark(choices[1]);
+    game.setOptimisation(choices[2]);
+    game.setAlphaBeta(choices[3]);
+    game.setCalculateRows(choices[4]);
+    game.setCalculateDiagonals(choices[5]);
+    delete menu;
+    game.play();
   }
   return (0);
 }

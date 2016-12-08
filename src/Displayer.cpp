@@ -65,7 +65,7 @@ void                  Displayer::drawScore() {
 
 void                  Displayer::drawTurn() {
   if (_font && _turn != -1) {
-    string str = "Player " + to_string(_turn) + "'s' Turn " + (!_turn ? "(White)" : "(Black)");
+    string str = "Player " + to_string(_turn + 1) + "'s' Turn " + (!_turn ? "(White)" : "(Black)");
     irr::core::stringw s(str.c_str());
     _font->draw(s, irr::core::rect<irr::s32>(0, 1080 - 150, 500, 1080), irr::video::SColor(255, 255, 255, 255), true, true);
   }

@@ -5,7 +5,7 @@
 ** Login   <saurs_f@epitech.net>
 **
 ** Started on  Mon Nov 07 22:35:02 2016 saurs_f
-** Last update Wed Nov 23 21:57:14 2016 wilmot_g
+** Last update Thu Dec 08 21:01:32 2016 wilmot_g
 */
 
 #include "Menu.hh"
@@ -72,12 +72,9 @@ Menu::Menu() {
     _init = false;
     return ;
   }
-  //set the callback function for all errors
   glfwSetErrorCallback(printErrorFunc);
-  //Ask version of OpenGL supported max and min for the API
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-  //If multi-samples compiled then we can use it
   #ifdef DEMO_MSAA
     glfwWindowHint(GLFW_SAMPLES, 4);
   #endif
@@ -89,7 +86,7 @@ Menu::Menu() {
   }
   glfwSetKeyCallback(_window, key);
   glfwMakeContextCurrent(_window);
-  //init graph lib for menu
+
   #ifdef NANOVG_GLEW
     if(glewInit() != GLEW_OK) {
       cerr << "Could not init glew." << endl;
@@ -97,7 +94,7 @@ Menu::Menu() {
       return ;
     }
   #endif
-  //depends on multi-samples activated or not
+
   #ifdef DEMO_MSAA
     _vg = nvgCreateGL2(NVG_STENCIL_STROKES | NVG_DEBUG);
   #else
@@ -117,9 +114,7 @@ Menu::Menu() {
       _init = false;
       return ;
     }
-  // putinterval to refresh
   glfwSwapInterval(0);
-  //set timer to 0
   glfwSetTime(0);
 	Sounds::get().playMusic("menu");
 	_click = false;
@@ -128,12 +123,12 @@ Menu::Menu() {
 	_vectorOfGame.push_back("1 vs IA");
 	_vectorOfGame.push_back("IA vs IA");
 	_validate = false;
-	_testOfTextBox.push_back("RULES");
+	_testOfTextBox.push_back("ADVANCED RULES");
 	_testOfTextBox.push_back("BENCHMARK");
-	_testOfTextBox.push_back("MAP SIZE ADAPTATION");
-	_testOfTextBox.push_back("ONLY ACTIVE SPOTS");
-	_testOfTextBox.push_back("ROWS");
-	_testOfTextBox.push_back("DIAGONALS");
+	_testOfTextBox.push_back("OPTIMISE (SPOTS CHECKED)");
+	_testOfTextBox.push_back("OPTIMISE (ALPHA BETA PRUNING)");
+	_testOfTextBox.push_back("EMPHASIZE ROWS");
+	_testOfTextBox.push_back("EMPHASIZE DIAGONALS");
 }
 
 Menu::~Menu() {
@@ -170,17 +165,13 @@ void 			Menu::drawBackGround() {
 void 		Menu::setWindowAndVar() {
 	_mouseClickPosX = -1;
 	_mouseClickPosY = -1;
-	//get the fps and set value
 	_timer = glfwGetTime();
 	_duration = _timer - _previousTime;
 	_previousTime = _timer;
-	// get info about window and environment
 	glfwGetCursorPos(_window, &_mousePosX, &_mousePosY);
 	glfwGetWindowSize(_window, &_windowWidth, &_windowHeight);
 	glfwGetFramebufferSize(_window, &_frameBufferWidth, &_frameBufferHeight);
-	// Calculate pixel ration for hi-dpi devices.
 	_pxRatio = (float)_frameBufferWidth / (float)_windowWidth;
-	// Update and render
 	glViewport(0, 0, _frameBufferWidth, _frameBufferHeight);
 	if (premult)
 		glClearColor(0,0,0,0);

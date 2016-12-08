@@ -10,9 +10,9 @@
 
 #include "AI.hh"
 
-AI::AI(Goban &goban, int nbPlayer, int nbTurn) : _algo(AlphaBetaMinimax(nbTurn)), _goban(goban) {
+AI::AI(Goban &goban, int nbPlayer, int nbTurn, bool opti, bool rows, bool diago, bool bench, bool alpha) : _algo(AlphaBetaMinimax(nbTurn, opti, rows, diago, alpha)), _goban(goban) {
   _nbPlayer = nbPlayer;
-  _benchmark = true;
+  _benchmark = bench;
   _thinking = false;
   _start = chrono::high_resolution_clock::now();
 }

@@ -28,13 +28,10 @@ int Referee::checkWinByPair(int x, int y, int p) {
   int count = 0;
   int p2 = p == 1 ? 2 : 1;
 
-  /////////////////////// check draught ///////////////////
   if (goban(y, x))
     return (p == 1 ? nbPairplayer1 : nbPairplayer2);
-  ////////////////////////////////////////////////////////
 
   goban.addDraught(x, y, p);
-
   x - 3 >= 0 && goban(y, x - 3) == p && goban(y, x - 2) == p2 && goban(y, x - 1) == p2 ? count++ : 0;
   x + 3 < goban.getXBoard() && goban(y, x + 3) == p && goban(y, x + 2) == p2 && goban(y, x + 1) == p2 ? count++ : 0;
   y - 3 >= 0 && goban(y - 3, x) == p && goban(y - 2, x) == p2 && goban(y - 1, x) == p2 ? count++ : 0;
