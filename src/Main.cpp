@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 16:30:25 2016 wilmot_g
-** Last update Thu Dec 08 21:13:03 2016 wilmot_g
+** Last update Thu Dec 08 21:23:48 2016 wilmot_g
 */
 
 #include "Sounds.hpp"
@@ -29,8 +29,7 @@ int         main(int ac, char **av) {
   int       depth = 3;
   bool      *choices = new bool[6];
 
-  for (int i = 0; i < 6; ++i)
-    choices[i] = true;
+  for (int i = 0; i < 6; ++i) choices[i] = true;
 
   while (value != -1) {
     Menu *menu = new Menu;
@@ -41,8 +40,9 @@ int         main(int ac, char **av) {
     if ((value = menu->play()) == -1)
       return (0);
     choices = menu->getRules();
+    volume = menu->getVolume();
+    Sounds::get().setVolume(volume * 100);
     game.setPlayers(value);
-    Sounds::get().setVolume(menu->getVolume());
     game.setAiDepth(menu->getDepth());
     game.setAdvancedRules(choices[0]);
     game.setBenchmark(choices[1]);
