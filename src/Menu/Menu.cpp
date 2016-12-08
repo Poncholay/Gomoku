@@ -23,11 +23,45 @@ int premult = 0;
 
 void printErrorFunc(int error, const char *desc) {cerr << "GLFW error " << error << ": " << desc << endl;}
 
+static int isNumberInput(int key) {
+	if (key >= '0' && key <= '9')
+		return key;
+	return 0;
+}
+
+static string addInputToString(int key) {
+	static string save = "Al depth";
+
+	if (key == -1 && save.size() != 0 && save[0] != 'A')
+		save = save.substr(0, save.size() - 1);
+	else if (key != 0) {
+		if (save[0] == 'A')
+			save = "";
+		if (save.size() < 9)
+			save += key;
+	}
+	return save;
+}
+
+static bool getSelectedVar(bool selected, int opt) {
+	static bool save = false;
+
+	if (opt)
+		save = selected;
+	return save;
+}
+
 static void key(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	NVG_NOTUSED(scancode);
 	NVG_NOTUSED(mods);
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
+	if (action == GLFW_PRESS) {
+		if (key == GLFW_KEY_ESCAPE)
+			glfwSetWindowShouldClose(window, GL_TRUE);
+		else if (isNumberInput(key) != 0 && getSelectedVar(false, 0))
+			addInputToString(key);
+		else if (key == GLFW_KEY_BACKSPACE)
+			addInputToString(-1);
+	}
 }
 
 Menu::Menu() {
@@ -166,23 +200,19 @@ void 			Menu::detectClick() {
 	}
 }
 
-void 			Menu::detectInput() {
-	// int state = glfwGetKey(_window, GLFW_MOUSE_BUTTON_LEFT);
-	// if (state == GLFW_PRESS && !_click) {
-	// } else if (state == GLFW_RELEASE) {
-	// }
-}
 void 				Menu::checkTypeOfGame() {
 	drawDropDown(_vg, strdup(_vectorOfGame[_typeOfGameValue - 1].c_str()), _tmpX + 20, _tmpY + 50, _windowWidth / 3, 28);
 	_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) && _mouseClickPosY >= _tmpY + 50 && _mouseClickPosY < (_tmpY + 78);
-	if (_clicked)
+	if (_clicked) {
 		++_typeOfGameValue;
+		getSelectedVar(false, 1);
+	}
 	if (_typeOfGameValue > 3)
 		_typeOfGameValue = 1;
 }
 
 void Menu::drawAllCheckBox() {
-	_pos = -25;
+	_pos = 0;
 	int index = 0;
 	for (auto it : _testOfTextBox) {
 		drawCheckBoxWithText(it, index++);
@@ -195,8 +225,10 @@ void 			Menu::drawCheckBoxWithText(string text, int index) {
 	drawCheckBox(_vg, text.c_str(), _tmpX + 20, _tmpY + _pos, _windowWidth / 3, _windowWidth / 4, _choices[index]);
 	_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) &&
 						_mouseClickPosY >= _tmpY + _pos+ (int)(_windowWidth/4*0.5f)-8 && _mouseClickPosY < _tmpY + _pos+ (int)(_windowWidth/4*0.5f)+12;
-	if (_clicked)
+	if (_clicked) {
 		_choices[index] = !_choices[index];
+		getSelectedVar(false, 1);
+	}
 }
 
 void 			Menu::checkControlSound() {
@@ -204,6 +236,7 @@ void 			Menu::checkControlSound() {
 	_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) &&
 						_mouseClickPosY >= _tmpY + _pos+ (int)(_windowWidth/4*0.5f)-8 + 50 && _mouseClickPosY < _tmpY + _pos+ (int)(_windowWidth/4*0.5f)+62;
 	if (_clicked) {
+		getSelectedVar(false, 1);
 		_volume = 0.0f;
 		int cmpt = 0;
 		int tmp = ((_windowWidth / 3) / 10) * 1;
@@ -220,13 +253,32 @@ void 				Menu::checkButtons() {
 	drawButton(_vg, "PLAY", _tmpX + 20, _tmpY + _pos + (int)(_windowWidth/4*0.5f)-8 + 80, _windowWidth / 3, 28, nvgRGBA(0,96,128,255));
 	_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) &&
 						_mouseClickPosY >= _tmpY + _pos+ (int)(_windowWidth/4*0.5f)-8 + 80 && _mouseClickPosY < _tmpY + _pos + (int)(_windowWidth/4*0.5f)-8 + 80 + 28;
-	if (_clicked)
+	if (_clicked) {
 		_validate = true;
+		getSelectedVar(false, 1);
+	}
 	drawButton(_vg, "QUIT", _tmpX + 20, _tmpY + _pos + (int)(_windowWidth/4*0.5f)-8 + 120, _windowWidth / 3, 28, nvgRGBA(0,96,128,255));
 	_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) &&
 						_mouseClickPosY >= _tmpY + _pos+ (int)(_windowWidth/4*0.5f)-8 + 120 && _mouseClickPosY < _tmpY + _pos + (int)(_windowWidth/4*0.5f)-8 + 120 + 28;
-	if (_clicked)
+	if (_clicked) {
+		getSelectedVar(false, 1);
 		_quit = true;
+	}
+}
+
+void Menu::drawEditBoxDepth() {
+	drawEditBox(_vg, addInputToString(0).c_str(), _tmpX + 20, _tmpY - 155 + (int)(_windowWidth/4*0.5f)-8 + 120,  _windowWidth / 3, 28);
+	_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) &&
+						_mouseClickPosY >= _tmpY - 155 + (int)(_windowWidth/4*0.5f)-8 + 120 && _mouseClickPosY < _tmpY - 155 + (int)(_windowWidth/4*0.5f)-8 + 120 + 28;
+	if (_clicked)
+		getSelectedVar(true, 1);
+}
+
+int Menu::getDepth() const {
+	string tmp = addInputToString(0);
+	if (tmp.size() == 0 || tmp[0] == 'A')
+		return 3;
+	return stoi(addInputToString(0));
 }
 
 int        Menu::play() {
@@ -240,24 +292,18 @@ int        Menu::play() {
 
 			setWindowAndVar();
 			detectClick();
-			detectInput();
 
       nvgBeginFrame(_vg, _windowWidth, _windowHeight, _pxRatio);
 
 			drawBackGround();
 
 			checkTypeOfGame();
+			drawEditBoxDepth();
 
 			drawAllCheckBox();
 
 			checkControlSound();
 			checkButtons();
-
-			drawEditBox(_vg, "3", _tmpX + 20, _tmpY + _pos + 50 + (int)(_windowWidth/4*0.5f)-8 + 120,  _windowWidth / 3, 28);
-			_clicked = _mouseClickPosX > _tmpX + 20 && _mouseClickPosX < (_tmpX + 20 + _windowWidth / 3) &&
-								_mouseClickPosY >= _tmpY + _pos + 50 + (int)(_windowWidth/4*0.5f)-8 + 120 && _mouseClickPosY < _tmpY + _pos + 50 + (int)(_windowWidth/4*0.5f)-8 + 120 + 28;
-			if (_clicked)
-				_selected = true;
 
       nvgEndFrame(_vg);
       glfwSwapBuffers(_window);

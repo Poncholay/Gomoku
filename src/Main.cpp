@@ -26,6 +26,7 @@ int         main(int ac, char **av) {
   Game      game;
   int       value = 1;
   float     volume = 0.5f;
+  int       depth = 3;
   bool      *choices = new bool[6];
 
   for (int i = 0; i < 6; ++i)
@@ -40,6 +41,7 @@ int         main(int ac, char **av) {
     if ((value = menu.play()) == -1) {
       return (0);
     }
+    depth = menu.getDepth();
     volume = menu.getVolume();
     choices = menu.getRules();
     game.setAdvancedRules(choices[0]);

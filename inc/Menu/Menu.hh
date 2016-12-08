@@ -72,15 +72,16 @@ public:
   void 	drawBackGround();
   void  setWindowAndVar();
   void  detectClick();
-  void  detectInput();
   void  checkTypeOfGame();
   void  drawAllCheckBox();
   void  drawCheckBoxWithText(std::string, int);
+  void  drawEditBoxDepth();
   void  checkControlSound();
   void  checkButtons();
   void  setValues(int, float, bool *);
   bool  *getRules() const;
   float getVolume() const;
+  int   getDepth() const;
 };
 
 #endif /* !MENU_HH_ */
