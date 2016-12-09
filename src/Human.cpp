@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:23:37 2016 wilmot_g
-** Last update Wed Dec 07 18:06:53 2016 wilmot_g
+** Last update Fri Dec 09 16:32:16 2016 wilmot_g
 */
 
 #include "Human.hh"
@@ -47,11 +47,11 @@ int        Human::play(Referee &r) {
         float posX = 0.0130 * extent.X;
         float posZ = 0.1595 * extent.Z;
         for (_i = 0; _i < _x; _i++)
-          if (posX - ((_i + 1) * size / (_x - 1)) * extent.X < intersection.X) break;
+          if (posX - ((_i + 0.5) * size / (_x - 1)) * extent.X < intersection.X) break;
         for (_j = 0; _j < _y; _j++)
-          if (posZ - ((_j + 1) * size / (_y - 1)) * extent.Z < intersection.Z) break;
+          if (posZ - ((_j + 0.5) * size / (_y - 1)) * extent.Z < intersection.Z) break;
         intersection.X = posX - (_i * size / (_x - 1)) * extent.X;
-        intersection.Y = 0.692 * extent.Y;
+        intersection.Y = 0.691 * extent.Y;
         intersection.Z = posZ - (_j * size / (_y - 1)) * extent.Z;
         int tmp = r.checkPlay(_j, _i, _nb);
         if (ret != tmp) {
