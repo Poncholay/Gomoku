@@ -74,7 +74,7 @@ void Goban::printHeuristic(vector<char> &heuristics) const {
   cout << "Heuristics :" << endl;
   for (int y = 0; y < _yBoard; y++) {
     for (int x = 0; x < _xBoard; x++)
-      cout << static_cast<int>(heuristics[y + _xBoard + x]) << " ";
+      cout << static_cast<int>(heuristics[y * _xBoard + x]) << " ";
     cout << endl;
   }
   cout << endl;

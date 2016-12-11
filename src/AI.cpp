@@ -32,9 +32,8 @@ int     AI::play(Referee &referee) {
 
   if (result.first == -1 || result.second == -1)
     return -1;
-  int res = referee.checkPlay(result.first, result.second, _nbPlayer);
+  int res = referee.checkPlay(result.first, result.second, _nbPlayer, false);
   _goban.addDraught(result.first, result.second, _nbPlayer, true);
-  // _goban.printBoard();
   return res;
 }
 

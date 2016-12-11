@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Thu Dec 08 21:03:33 2016 wilmot_g
+** Last update Sun Dec 11 20:57:53 2016 wilmot_g
 */
 
 #include <iostream>
@@ -86,6 +86,7 @@ int           Game::play() {
       }
     }
   }
+  cout << (playValue == WIN_INVERSE) << endl;
   if (playValue == WIN || playValue == WIN_INVERSE) {
     while (displayer.isRunning() && displayer.isAnimating())
       if ((ret = displayer.display()) != 0 || displayer.getReceiver().checkEnd())

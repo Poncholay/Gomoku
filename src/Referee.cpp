@@ -348,8 +348,15 @@ bool  Referee::checkRules(int x, int y, int player, int check) {
   return false;
 }
 
-Result  Referee::checkPlay(int x, int y, int player) {
-  return (goban(y, x) ? REPLAY : checkWin(x, y, player));
+Result  Referee::checkPlay(int x, int y, int player, bool mock) {
+  bool broke1 = isBroke1;
+  bool broke2 = isBroke2;
+  Result ret = goban(y, x) ? REPLAY : checkWin(x, y, player);
+  if (mock) {
+    isBroke1 = broke1;
+    isBroke2 = broke2;
+  }
+  return ret;
 }
 
 Result  Referee::checkWin(int x, int y, int player) {
@@ -374,3 +381,8 @@ Result  Referee::checkWin(int x, int y, int player) {
 string Referee::getPairs(int p) const {
   return p == 1 ? to_string(nbPairplayer1) : to_string(nbPairplayer2);
 }
+
+bool Referee::getIsBroke1() const {return isBroke1;}
+bool Referee::getIsBroke2() const {return isBroke2;}
+void Referee::setIsBroke1(bool i) {isBroke1 = i;}
+void Referee::setIsBroke2(bool i) {isBroke2 = i;}

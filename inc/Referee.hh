@@ -31,23 +31,30 @@ private:
   bool  isBroke1;
   bool  isBroke2;
   Goban &goban;
-public:
-  Referee(Goban &, bool);
-  ~Referee();
 
-  Result checkPlay(int, int, int);
   Result  checkWin(int, int, int);
-  bool  checkRules(int, int, int, int);
-  bool  checkWinBy5(int, int, int);
+  bool checkRules(int, int, int, int);
+  bool checkWinBy5(int, int, int);
   int  checkWinByPair(int, int, int);
-  void  setPair(int, int);
-  void updatePair(int, int, int);
-  void removePair(int, int, int, int, int, bool);
-  void undoNbPair(int);
+  void setPair(int, int);
   bool checkHorizon(int, int, int, int);
   bool checkVertical(int, int, int, int);
   bool checkDiagoDown(int, int, int, int);
   bool checkDiagoUp(int, int, int, int);
+
+public:
+  Referee(Goban &, bool);
+  ~Referee();
+
+  Result checkPlay(int, int, int, bool = true);
+  void removePair(int, int, int, int, int, bool);
+  void undoNbPair(int);
+  void updatePair(int, int, int);
+
+  bool getIsBroke1() const;
+  bool getIsBroke2() const;
+  void setIsBroke1(bool);
+  void setIsBroke2(bool);
   string getPairs(int) const;
   Goban &getGoban();
 

@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Thu Dec 08 21:10:21 2016 wilmot_g
+** Last update Sun Dec 11 21:13:23 2016 wilmot_g
 */
 
 #include <functional>
@@ -13,6 +13,11 @@
 #include "AlphaBetaMinimax.hh"
 #include "Referee.hh"
 #include "unistd.h"
+
+int bug1;
+int bug2;
+int bug3;
+int bug4;
 
 AlphaBetaMinimax::AlphaBetaMinimax(int nbTurn, bool opti, bool rows, bool diago, bool alpha) {
   _opti = opti;
@@ -33,6 +38,9 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
   Goban &g = r.getGoban();
   vector<char> heuristics = g.getHeuristics();
 
+  g.printBoard();
+  g.printHeuristic(g.getHeuristics());
+
   _player = player;
   _opponent = player == 1 ? 2 : 1;
   _win = Coord(-1, -1);
@@ -42,14 +50,19 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
         int res = r.checkPlay(x, y, player);
         if (res == WIN)
           return Coord(x, y);
-        if (res == WIN_INVERSE)
-          res == REPLAY;
-        if (res != REPLAY && res != -1) {
+        if (res == CONTINUE) {
           vector<pair<char, char> > pairs;
           g.addDraught(x, y, player);
           updatePair(r, pairs, x, y, _player);
           int changes = r.getGoban().updateWeights(x, y, heuristics);
-          v = max(v, evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics));
+
+          bug3 = y;
+          bug4 = x;
+          int tmp = evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics);
+          cout << "Play : [" << y << "][" << x << "] : " << tmp << endl;
+          v = max(tmp, v);
+
+          // v = max(v, evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics));
           restorePair(r, pairs, _opponent);
           g.removeDraught(x, y);
           g.revertWeights(x, y, changes, heuristics);
@@ -58,6 +71,9 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
           alpha = max(v, alpha);
         }
       }
+
+  cout << "Alpha [" << get<1>(_win) << "][" << get<0>(_win) << "] : " << alpha << endl;
+
   return _win;
 }
 
@@ -107,6 +123,10 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
         if (res == WIN_INVERSE)
           return scoreWin(r, turn == 1 ? 2 : 1, depth);
         if (res != REPLAY && res != -1) {
+
+          bug1 = y;
+          bug2 = x;
+
           vector<pair<char, char> > pairs;
           g.addDraught(x, y, turn);
           updatePair(r, pairs, x, y, maxing ? _player : _opponent);
@@ -151,11 +171,13 @@ int     AlphaBetaMinimax::diagsTopToBottom(Goban &g, int player) const {
         if (res)
           return MAX;
       } else if (g(y, x) == opponent || x + 1 >= maxX || y + 1 >= maxY || g(y + 1, x + 1) != player) {
+        openBefore = false;
         tmp = 0;
-        openBefore = g(y, x) != opponent;
         broken = 1;
       } else if (tmp)
         broken++;
+        if (!tmp && g(y, x) == 0)
+          openBefore = true;
       x++;
       y++;
     }
@@ -174,11 +196,13 @@ int     AlphaBetaMinimax::diagsTopToBottom(Goban &g, int player) const {
         if (res)
           return MAX;
       } else if (g(y, x) == opponent || x + 1 >= maxX || y + 1 >= maxY || g(y + 1, x + 1) != player) {
+        openBefore = false;
         tmp = 0;
-        openBefore = g(y, x) != opponent;
         broken = 1;
       } else if (tmp)
         broken++;
+        if (!tmp && g(y, x) == 0)
+          openBefore = true;
       x++;
       y++;
     }
@@ -209,11 +233,13 @@ int   AlphaBetaMinimax::diagsBottomToTop(Goban &g, int player) const {
         if (res)
           return MAX;
       } else if (g(y, x) == opponent || y - 1 < 0 || x + 1 >= maxX || g(y - 1, x + 1) != player) {
+        openBefore = false;
         broken = 1;
         tmp = 0;
-        openBefore = g(y, x) != opponent;
       } else if (tmp)
         broken++;
+        if (!tmp && g(y, x) == 0)
+          openBefore = true;
       x++;
       y--;
     }
@@ -231,11 +257,13 @@ int   AlphaBetaMinimax::diagsBottomToTop(Goban &g, int player) const {
         if (res)
           return MAX;
       } else if (g(y, x) == opponent || y - 1 < 0 || x + 1 >= maxX || g(y - 1, x + 1) != player) {
+        openBefore = false;
         broken = 1;
         tmp = 0;
-        openBefore = g(y, x) != opponent;
       } else if (tmp)
         broken++;
+        if (!tmp && g(y, x) == 0)
+          openBefore = true;
       x++;
       y--;
     }
@@ -272,11 +300,13 @@ int     AlphaBetaMinimax::countSeries(Goban &g, int player) const {
         if (res)
           return MAX;
       } else if (g(y, x) == opponent || x + 1 >= maxX || g(y, x + 1) != player) {
+        openBefore = false;
         broken = 1;
         tmp = 0;
-        openBefore = g(y, x) != opponent;
       } else if (tmp)
         broken++;
+        if (!tmp && g(y, x) == 0)
+          openBefore = true;
     }
   }
   for (int x = 0; x < maxX; x++) {
@@ -290,11 +320,13 @@ int     AlphaBetaMinimax::countSeries(Goban &g, int player) const {
           if (res)
             return MAX;
       } else if (g(y, x) == opponent || y + 1 >= maxY || g(y + 1, x) != player) {
+        openBefore = false;
         broken = 1;
         tmp = 0;
-        openBefore = g(y, x) != opponent;
       } else if (tmp)
-        broken = 2;
+        broken++;
+        if (!tmp && g(y, x) == 0)
+          openBefore = true;
     }
   }
   return score;
@@ -344,6 +376,10 @@ int     AlphaBetaMinimax::score(Referee &r, int player) const {
       return scoreWin(r, opponent, 0);
     scoreOpponent += tmp;
   }
+
+  cout << "[" << bug3 << "][" << bug4 << "]\t" << "[" << bug1 << "][" << bug2 << "] : " << scorePlayer - scoreOpponent  << " - " << scorePlayer << " - " << scoreOpponent << endl;
+  r.getGoban().printBoard(bug2, bug1);
+  cout << endl;
 
   return scorePlayer - scoreOpponent;
 }
