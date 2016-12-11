@@ -74,22 +74,22 @@ bool Referee::checkHorizon(int x, int y, int player, int max) {
   int begin = 5 - (10 - max);
   for (int i = x + begin; i < x + 5; ++i ){
       if ((y - 2  >= 0 && y + 1 < goban.getYBoard()) &&
-          ((i - 2 >= 0 && i + 1 < goban.getXBoard() && goban(y - 2, i - 2) == p2 && goban(y - 1, i - 1) == player && checkWinByPair(i + 1, y + 1, p2) >= 5) ||
-          (i - 2 >= 0 && i + 1 < goban.getXBoard() && goban(y + 1, i + 1) == p2 && goban(y - 1, i - 1) == player && checkWinByPair(i - 2, y - 2, p2) >= 5) ||
-          (goban(y - 2, i) == p2 && goban(y - 1, i) == player && checkWinByPair(i, y + 1, p2) >= 5) ||
-          (goban(y + 1, i) == p2 && goban(y - 1, i) == player && checkWinByPair(i, y - 2, p2) >= 5) ||
-          (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y - 2, i + 2) == p2 && goban(y - 1, i + 1) == player && checkWinByPair(i - 1, y + 1, p2) >= 5) ||
-          (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y + 1, i - 1) == p2 && goban(y - 1, i + 1) == player && checkWinByPair(i + 2, y - 2, p2) >= 5))) {
+          ((i - 2 >= 0 && i + 1 < goban.getXBoard() && goban(y - 2, i - 2) == p2 && goban(y - 1, i - 1) == player)  ||
+          (i - 2 >= 0 && i + 1 < goban.getXBoard() && goban(y + 1, i + 1) == p2 && goban(y - 1, i - 1) == player ) ||
+          (goban(y - 2, i) == p2 && goban(y - 1, i) == player)  ||
+          (goban(y + 1, i) == p2 && goban(y - 1, i) == player)  ||
+          (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y - 2, i + 2) == p2 && goban(y - 1, i + 1) == player)  ||
+          (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y + 1, i - 1) == p2 && goban(y - 1, i + 1) == player) )) {
             player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
             return false;
           }
       if ((y - 1  >= 0 && y + 2 < goban.getYBoard()) &&
-          ((i - 2 >= 0 && i + 1 < goban.getXBoard() && goban(y + 2, i - 2) == p2 && goban(y + 1, i - 1) == player && checkWinByPair(i + 1, y - 1, p2) >= 5) ||
-          (i - 2 >= 0 && i + 1 < goban.getXBoard() && goban(y - 1, i + 1) == p2 && goban(y + 1, i - 1) == player && checkWinByPair(i - 2, y + 2, p2) >= 5) ||
-          (goban(y + 2, i) == p2 && goban(y + 1, i) == player && checkWinByPair(i, y - 1, p2) >= 5) ||
-          (goban(y - 1, i) == p2 && goban(y + 1, i) == player && checkWinByPair(i, y + 2, p2) >= 5) ||
-          (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y + 2, i + 2) == p2 && goban(y + 1, i + 1) == player && checkWinByPair(i - 1, y - 1, p2) >= 5) ||
-          (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y - 1, i - 1) == p2 && goban(y + 1, i + 1) == player && checkWinByPair(i + 2, y + 2, p2) >= 5))) {
+          ((i - 2 >= 0 && i + 1 < goban.getXBoard() && goban(y + 2, i - 2) == p2 && goban(y + 1, i - 1) == player ) ||
+          (i - 2 >= 0 && i + 1 < goban.getXBoard() && goban(y - 1, i + 1) == p2 && goban(y + 1, i - 1) == player ) ||
+          (goban(y + 2, i) == p2 && goban(y + 1, i) == player ) ||
+          (goban(y - 1, i) == p2 && goban(y + 1, i) == player ) ||
+          (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y + 2, i + 2) == p2 && goban(y + 1, i + 1) == player ) ||
+          (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y - 1, i - 1) == p2 && goban(y + 1, i + 1) == player ))) {
             player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
             return false;
           }
@@ -104,22 +104,22 @@ bool Referee::checkVertical(int x, int y, int player, int max) {
   int begin = 5 - (10 - max);
   for (int i = y + begin; i < y + 5; ++i ){
       if ((x - 2  >= 0 && x + 1 < goban.getXBoard()) &&
-          ((i - 2 >= 0 && i + 1 < goban.getYBoard() && goban(i - 2, x - 2) == p2 && goban(i - 1, x - 1) == player && checkWinByPair(x + 1, i + 1, p2) >= 5) ||
-          (i - 2 >= 0 && i + 1 < goban.getYBoard() && goban(i + 1, x + 1) == p2 && goban(i - 1, x - 1) == player && checkWinByPair(x - 2, i - 2, p2) >= 5) ||
-          (goban(i, x - 2) == p2 && goban(i, x - 1) == player && checkWinByPair(x + 1, i, p2) >= 5) ||
-          (goban(i, x + 1) == p2 && goban(i, x - 1) == player && checkWinByPair(x - 2, i, p2) >= 5) ||
-          (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i + 2, x - 2) == p2 && goban(i + 1, x - 1) == player && checkWinByPair(x + 1, i - 1, p2) >= 5) ||
-          (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i - 1, x + 1) == p2 && goban(i + 1, x - 1) == player && checkWinByPair(x - 2, i + 2, p2) >= 5))) {
+          ((i - 2 >= 0 && i + 1 < goban.getYBoard() && goban(i - 2, x - 2) == p2 && goban(i - 1, x - 1) == player) ||
+          (i - 2 >= 0 && i + 1 < goban.getYBoard() && goban(i + 1, x + 1) == p2 && goban(i - 1, x - 1) == player) ||
+          (goban(i, x - 2) == p2 && goban(i, x - 1) == player) ||
+          (goban(i, x + 1) == p2 && goban(i, x - 1) == player) ||
+          (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i + 2, x - 2) == p2 && goban(i + 1, x - 1) == player) ||
+          (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i - 1, x + 1) == p2 && goban(i + 1, x - 1) == player))) {
             player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
             return false;
           }
       if ((x - 1  >= 0 && x + 2 < goban.getXBoard()) &&
-          ((i - 2 >= 0 && i + 1 < goban.getYBoard() && goban(i - 2, x + 2) == p2 && goban(i - 1, x + 1) == player && checkWinByPair(x - 1, i + 1, p2) >= 5) ||
-          (i - 2 >= 0 && i + 1 < goban.getYBoard() && goban(i + 1, x - 1) == p2 && goban(i - 1, x + 1) == player && checkWinByPair(x + 2, i - 2, p2) >= 5) ||
-          (goban(i, x + 2) == p2 && goban(i, x + 1) == player && checkWinByPair(x - 1, i, p2) >= 5) ||
-          (goban(i, x - 1) == p2 && goban(i, x + 1) == player && checkWinByPair(x + 2, i, p2) >= 5) ||
-          (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i + 2, x + 2) == p2 && goban(i + 1, x + 1) == player && checkWinByPair(x - 1, i - 1, p2) >= 5) ||
-          (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i - 1, x - 1) == p2 && goban(i + 1, x + 1) == player && checkWinByPair(x + 2, i + 2, p2) >= 5))) {
+          ((i - 2 >= 0 && i + 1 < goban.getYBoard() && goban(i - 2, x + 2) == p2 && goban(i - 1, x + 1) == player) ||
+          (i - 2 >= 0 && i + 1 < goban.getYBoard() && goban(i + 1, x - 1) == p2 && goban(i - 1, x + 1) == player) ||
+          (goban(i, x + 2) == p2 && goban(i, x + 1) == player) ||
+          (goban(i, x - 1) == p2 && goban(i, x + 1) == player) ||
+          (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i + 2, x + 2) == p2 && goban(i + 1, x + 1) == player) ||
+          (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i - 1, x - 1) == p2 && goban(i + 1, x + 1) == player))) {
             player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
             return false;
           }
@@ -135,22 +135,22 @@ bool Referee::checkDiagoDown(int x, int y, int player, int max) {
   x += begin;
   for (int i = y + begin; i < y + 5; ++i ){
       if ((x - 2  >= 0 && x + 1 < goban.getXBoard() && i + 2 < goban.getYBoard() && i - 1 >= 0) &&
-          ((goban(i + 2, x - 2) == p2 && goban(i + 1, x - 1) == player && checkWinByPair(x + 1, i - 1, p2) >= 5) ||
-          (goban(i - 1, x + 1) == p2 && goban(i + 1, x - 1) == player && checkWinByPair(x - 2, i + 2, p2) >= 5) ||
-          (goban(i, x - 2) == p2 && goban(i, x - 1) == player && checkWinByPair(x + 1, i, p2) >= 5) ||
-          (goban(i, x + 1) == p2 && goban(i, x - 1) == player && checkWinByPair(x - 2, i, p2) >= 5) ||
-          (goban(i + 2, x) == p2 && goban(i + 1, x) == player && checkWinByPair(x, i - 1, p2) >= 5) ||
-          (goban(i - 1, x) == p2 && goban(i + 1, x) == player && checkWinByPair(x, i + 2, p2) >= 5))) {
+          ((goban(i + 2, x - 2) == p2 && goban(i + 1, x - 1) == player) ||
+          (goban(i - 1, x + 1) == p2 && goban(i + 1, x - 1) == player) ||
+          (goban(i, x - 2) == p2 && goban(i, x - 1) == player) ||
+          (goban(i, x + 1) == p2 && goban(i, x - 1) == player) ||
+          (goban(i + 2, x) == p2 && goban(i + 1, x) == player) ||
+          (goban(i - 1, x) == p2 && goban(i + 1, x) == player))) {
             player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
             return false;
           }
             if ((i - 2  >= 0 && i + 1 < goban.getYBoard() && x + 2 < goban.getXBoard() && x - 1 >= 0) &&
-                ((goban(i - 2, x + 2) == p2 && goban(i - 1, x + 1) == player && checkWinByPair(x - 1, i + 1, p2) >= 5) ||
-                (goban(i + 1, x - 1) == p2 && goban(i - 1, x + 1) == player && checkWinByPair(x + 2, i - 2, p2) >= 5) ||
-                (goban(i - 2, x) == p2 && goban(i - 1, x) == player && checkWinByPair(x, i + 1, p2) >= 5) ||
-                (goban(i + 1, x) == p2 && goban(i - 1, x) == player && checkWinByPair(x, i - 2, p2) >= 5) ||
-                (goban(i, x + 2) == p2 && goban(i, x + 1) == player && checkWinByPair(x - 1, i, p2) >= 5) ||
-                (goban(i, x - 1) == p2 && goban(i, x + 1) == player && checkWinByPair(x + 2, i, p2) >= 5))) {
+                ((goban(i - 2, x + 2) == p2 && goban(i - 1, x + 1) == player) ||
+                (goban(i + 1, x - 1) == p2 && goban(i - 1, x + 1) == player) ||
+                (goban(i - 2, x) == p2 && goban(i - 1, x) == player) ||
+                (goban(i + 1, x) == p2 && goban(i - 1, x) == player) ||
+                (goban(i, x + 2) == p2 && goban(i, x + 1) == player) ||
+                (goban(i, x - 1) == p2 && goban(i, x + 1) == player))) {
             player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
             return false;
           }
@@ -167,22 +167,22 @@ bool Referee::checkDiagoUp(int x, int y, int player, int max) {
   x += begin;
   for (int i = y - begin; i > y - 5; --i ){
       if ((x - 2  >= 0 && x + 1 < goban.getXBoard() && i + 1 < goban.getYBoard() && i - 2 >= 0) &&
-          ((goban(i - 2, x - 2) == p2 && goban(i - 1, x - 1) == player && checkWinByPair(x + 1, i + 1, p2) >= 5) ||
-          (goban(i + 1, x + 1) == p2 && goban(i - 1, x - 1) == player && checkWinByPair(x - 2, i - 2, p2) >= 5) ||
-          (goban(i, x - 2) == p2 && goban(i, x - 1) == player && checkWinByPair(x + 1, i, p2) >= 5) ||
-          (goban(i, x + 1) == p2 && goban(i, x - 1) == player && checkWinByPair(x - 2, i, p2) >= 5) ||
-          (goban(i - 2, x) == p2 && goban(i - 1, x) == player && checkWinByPair(x, i + 1, p2) >= 5) ||
-          (goban(i + 1, x) == p2 && goban(i - 1, x) == player && checkWinByPair(x, i - 2, p2) >= 5))) {
+          ((goban(i - 2, x - 2) == p2 && goban(i - 1, x - 1) == player) ||
+          (goban(i + 1, x + 1) == p2 && goban(i - 1, x - 1) == player) ||
+          (goban(i, x - 2) == p2 && goban(i, x - 1) == player) ||
+          (goban(i, x + 1) == p2 && goban(i, x - 1) == player) ||
+          (goban(i - 2, x) == p2 && goban(i - 1, x) == player) ||
+          (goban(i + 1, x) == p2 && goban(i - 1, x) == player))) {
             player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
             return false;
           }
       if ((i - 1  >= 0 && i + 2 < goban.getYBoard() && x + 2 < goban.getXBoard() && x - 1 >= 0) &&
-                ((goban(i + 2, x + 2) == p2 && goban(i + 1, x + 1) == player && checkWinByPair(x - 1, i - 1, p2) >= 5) ||
-                (goban(i - 1, x - 1) == p2 && goban(i + 1, x + 1) == player && checkWinByPair(x + 2, i + 2, p2) >= 5) ||
-                (goban(i + 2, x) == p2 && goban(i + 1, x) == player && checkWinByPair(x, i - 1, p2) >= 5) ||
-                (goban(i - 1, x) == p2 && goban(i + 1, x) == player && checkWinByPair(x, i + 2, p2) >= 5) ||
-                (goban(i, x + 2) == p2 && goban(i, x + 1) == player && checkWinByPair(x - 1, i, p2) >= 5) ||
-                (goban(i, x - 1) == p2 && goban(i, x + 1) == player && checkWinByPair(x + 2, i, p2) >= 5))) {
+                ((goban(i + 2, x + 2) == p2 && goban(i + 1, x + 1) == player) ||
+                (goban(i - 1, x - 1) == p2 && goban(i + 1, x + 1) == player) ||
+                (goban(i + 2, x) == p2 && goban(i + 1, x) == player) ||
+                (goban(i - 1, x) == p2 && goban(i + 1, x) == player) ||
+                (goban(i, x + 2) == p2 && goban(i, x + 1) == player) ||
+                (goban(i, x - 1) == p2 && goban(i, x + 1) == player))) {
             player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
             return false;
           }
