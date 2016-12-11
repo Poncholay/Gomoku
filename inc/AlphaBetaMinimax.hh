@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 14:14:53 2016 wilmot_g
-** Last update Thu Dec 08 21:04:54 2016 wilmot_g
+** Last update Sun Dec 11 18:55:40 2016 Adrien Milcent
 */
 
 #ifndef ALPHABETAMINIMAX_HH_
@@ -47,6 +47,11 @@ private:
   void  updatePair(Referee &, vector<pair<char, char> > &, int, int, int) const;
   void  restorePair(Referee &, vector<pair<char, char> >, int) const;
   void  saveChanges(Referee &, vector<pair<char, char> > &, int, int, int, int, int) const;
+
+  void  setHeuriscticTo5(Goban &, int, vector<char> &, vector<pair<char, char> > &, vector<bool> &) const;
+  void  unsetHeuriscticTo5(Goban &, vector<char> &, vector<pair<char, char> > &, vector<bool> &) const;
+  bool  checkDiagTo5(Goban &, int, int, int ) const;
+  bool  checkLineTo5(Goban &, int, int, int) const;
 
 public:
   AlphaBetaMinimax(int, bool, bool, bool, bool);

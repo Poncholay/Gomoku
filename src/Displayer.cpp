@@ -22,6 +22,7 @@ Displayer::Displayer(int x, int y) : _receiver() {
   _error = false;
   _lastFPS = -1;
   _turn = -1;
+  _nbTurn = 1;
   EventHandler::get(&_receiver);
   irr::SIrrlichtCreationParameters params = irr::SIrrlichtCreationParameters();
   params.AntiAlias = 32;
@@ -65,9 +66,9 @@ void                  Displayer::drawScore() {
 
 void                  Displayer::drawTurn() {
   if (_font && _turn != -1) {
-    string str = "Player " + to_string(_turn + 1) + "'s' Turn " + (!_turn ? "(White)" : "(Black)");
+    string str = "Player " + to_string(_turn + 1) + "'s' Turn (" + to_string(_nbTurn) + ")" + (!_turn ? "(White)" : "(Black)") + "\n";
     irr::core::stringw s(str.c_str());
-    _font->draw(s, irr::core::rect<irr::s32>(0, 1080 - 150, 500, 1080), irr::video::SColor(255, 255, 255, 255), true, true);
+    _font->draw(s, irr::core::rect<irr::s32>(0, 1080 - 150, 600, 1080), irr::video::SColor(255, 255, 255, 255), true, true);
   }
 }
 
@@ -239,6 +240,7 @@ int				            Displayer::display(int win) {
 }
 
 void                  Displayer::setTurn(int t) {_turn = t;}
+void                  Displayer::setNbTurn(int t) {_nbTurn = t;}
 void                  Displayer::setScore(const string &score) {_score = score;}
 void                  Displayer::setTime(float newTime) {_time = newTime;}
 bool                  Displayer::isRunning() const {return _device->run();}

@@ -36,6 +36,7 @@ public:
   ~Displayer();
 
 	void 				setTurn(int);
+	void 				setNbTurn(int);
 	void 				setScore(const string &score);
 	void 				drawScore();
 	void 				drawTurn();
@@ -105,6 +106,7 @@ private:
 	float													_timeBase;
 
 	int 													_turn;
+	int 													_nbTurn;
 	irr::gui::IGUIFont						*_font;
 	string 												_score;
 };

@@ -5,13 +5,15 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Sun Dec  4 12:04:31 2016 Adrien Milcent
+// Last update Sun Dec 11 16:57:57 2016 Adrien Milcent
 //
 
 #include "Referee.hh"
 
 Referee::Referee(Goban &poncholay, bool advanced) : nbPairplayer1(0), nbPairplayer2(0), goban(poncholay), isBroke1(false), isBroke2(false) {
   _advanced = advanced;
+  nbPairBroken1 = -1;
+  nbPairBroken2 = -1;
 }
 
 Referee::~Referee() {}
@@ -80,7 +82,8 @@ bool Referee::checkHorizon(int x, int y, int player, int max) {
           (goban(y + 1, i) == p2 && goban(y - 1, i) == player)  ||
           (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y - 2, i + 2) == p2 && goban(y - 1, i + 1) == player)  ||
           (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y + 1, i - 1) == p2 && goban(y - 1, i + 1) == player) )) {
-            player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
+            player == 1 ? isBroke1 = true : isBroke2 = true;
+            player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
             return false;
           }
       if ((y - 1  >= 0 && y + 2 < goban.getYBoard()) &&
@@ -90,7 +93,8 @@ bool Referee::checkHorizon(int x, int y, int player, int max) {
           (goban(y - 1, i) == p2 && goban(y + 1, i) == player ) ||
           (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y + 2, i + 2) == p2 && goban(y + 1, i + 1) == player ) ||
           (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y - 1, i - 1) == p2 && goban(y + 1, i + 1) == player ))) {
-            player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
+            player == 1 ? isBroke1 = true : isBroke2 = true;
+            player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
             return false;
           }
         }
@@ -110,7 +114,8 @@ bool Referee::checkVertical(int x, int y, int player, int max) {
           (goban(i, x + 1) == p2 && goban(i, x - 1) == player) ||
           (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i + 2, x - 2) == p2 && goban(i + 1, x - 1) == player) ||
           (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i - 1, x + 1) == p2 && goban(i + 1, x - 1) == player))) {
-            player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
+            player == 1 ? isBroke1 = true : isBroke2 = true;
+            player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
             return false;
           }
       if ((x - 1  >= 0 && x + 2 < goban.getXBoard()) &&
@@ -120,7 +125,8 @@ bool Referee::checkVertical(int x, int y, int player, int max) {
           (goban(i, x - 1) == p2 && goban(i, x + 1) == player) ||
           (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i + 2, x + 2) == p2 && goban(i + 1, x + 1) == player) ||
           (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i - 1, x - 1) == p2 && goban(i + 1, x + 1) == player))) {
-            player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
+            player == 1 ? isBroke1 = true : isBroke2 = true;
+            player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
             return false;
           }
         }
@@ -141,7 +147,8 @@ bool Referee::checkDiagoDown(int x, int y, int player, int max) {
           (goban(i, x + 1) == p2 && goban(i, x - 1) == player) ||
           (goban(i + 2, x) == p2 && goban(i + 1, x) == player) ||
           (goban(i - 1, x) == p2 && goban(i + 1, x) == player))) {
-            player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
+            player == 1 ? isBroke1 = true : isBroke2 = true;
+            player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
             return false;
           }
             if ((i - 2  >= 0 && i + 1 < goban.getYBoard() && x + 2 < goban.getXBoard() && x - 1 >= 0) &&
@@ -151,7 +158,8 @@ bool Referee::checkDiagoDown(int x, int y, int player, int max) {
                 (goban(i + 1, x) == p2 && goban(i - 1, x) == player) ||
                 (goban(i, x + 2) == p2 && goban(i, x + 1) == player) ||
                 (goban(i, x - 1) == p2 && goban(i, x + 1) == player))) {
-            player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
+            player == 1 ? isBroke1 = true : isBroke2 = true;
+            player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
             return false;
           }
       ++x;
@@ -173,7 +181,8 @@ bool Referee::checkDiagoUp(int x, int y, int player, int max) {
           (goban(i, x + 1) == p2 && goban(i, x - 1) == player) ||
           (goban(i - 2, x) == p2 && goban(i - 1, x) == player) ||
           (goban(i + 1, x) == p2 && goban(i - 1, x) == player))) {
-            player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
+            player == 1 ? isBroke1 = true : isBroke2 = true;
+            player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
             return false;
           }
       if ((i - 1  >= 0 && i + 2 < goban.getYBoard() && x + 2 < goban.getXBoard() && x - 1 >= 0) &&
@@ -183,7 +192,8 @@ bool Referee::checkDiagoUp(int x, int y, int player, int max) {
                 (goban(i - 1, x) == p2 && goban(i + 1, x) == player) ||
                 (goban(i, x + 2) == p2 && goban(i, x + 1) == player) ||
                 (goban(i, x - 1) == p2 && goban(i, x + 1) == player))) {
-            player == 1 ? isBroke1 = !isBroke1 : isBroke2 = !isBroke2;
+            player == 1 ? isBroke1 = true : isBroke2 = true;
+            player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
             return false;
           }
       ++x;
@@ -256,43 +266,49 @@ bool  Referee::checkRules(int x, int y, int player, int check) {
   for (int i = beginx; i <= x; i++) {
     if (i + 4 < goban.getXBoard() && !goban(y, i) && goban(y, i + 1) == player && goban(y, i + 2) == player &&
       goban(y, i + 3) == player && !goban(y, i + 4)) {
-          if (!check && (checkRules(i + 1, y, player, 1) || checkRules(i + 2, y, player, 1) || checkRules(i + 3, y, player, 1))) {
-            return true;}
-          if (check && check != 1){return true;}
+          if (!check && (checkRules(i + 1, y, player, 1) || checkRules(i + 2, y, player, 1) || checkRules(i + 3, y, player, 1)))
+            return true;
+          if (check && check != 1)
+            return true;
       }
     if (i - 1 >= 0 && i + 4 < goban.getXBoard() && !goban(y, i - 1) && goban(y, i) == player && goban(y, i + 1) == player &&
       !goban(y, i + 2) && goban(y, i + 3) == player && !goban(y, i + 4)) {
-        if (!check && (checkRules(i, y, player, 1) || checkRules(i + 1, y, player, 1) || checkRules(i + 3, y, player, 1))) {
-          return true;}
-        if (check && check != 1){return true;}
+        if (!check && (checkRules(i, y, player, 1) || checkRules(i + 1, y, player, 1) || checkRules(i + 3, y, player, 1)))
+          return true;
+        if (check && check != 1)
+          return true;
       }
     if (i - 1 >= 0 && i + 4 < goban.getXBoard() && !goban(y, i - 1) && goban(y, i) == player && goban(y, i + 1) == 0 &&
       goban(y, i + 2) == player && goban(y, i + 3) == player && !goban(y, i + 4))
       {
-        if (!check && (checkRules(i, y, player, 1) || checkRules(i + 2, y, player, 1) || checkRules(i + 3, y, player, 1))) {
-          return true;}
-        if (check && check != 1){return true;}
+        if (!check && (checkRules(i, y, player, 1) || checkRules(i + 2, y, player, 1) || checkRules(i + 3, y, player, 1)))
+          return true;
+        if (check && check != 1)
+          return true;
       }
   }
 
   for (int i = beginy; i <= y; i++) {
     if (i + 4 < goban.getYBoard() && !goban(i, x) && goban(i + 1, x) == player && goban(i + 2, x) == player &&
       goban(i + 3, x) == player && !goban(i + 4, x)){
-        if (!check && (checkRules(x, i + 1, player, 2) || checkRules(x, i + 2, player, 2) || checkRules(x, i + 3, player, 2))) {
-          return true;}
-        if (check && check != 2){return true;}
+        if (!check && (checkRules(x, i + 1, player, 2) || checkRules(x, i + 2, player, 2) || checkRules(x, i + 3, player, 2)))
+          return true;
+        if (check && check != 2)
+          return true;
       }
     if (i - 1 >= 0 && i + 4 < goban.getYBoard() && !goban(i - 1, x) && goban(i, x) == player && goban(i + 1, x) == player &&
       goban(i + 2, x) == 0 && goban(i + 3, x) == player && !goban(i + 4, x)) {
-        if (!check && (checkRules(x, i, player, 2) || checkRules(x, i + 1, player, 2) || checkRules(x, i + 3, player, 2))) {
-          return true;}
-        if (check && check != 2){return true;}
+        if (!check && (checkRules(x, i, player, 2) || checkRules(x, i + 1, player, 2) || checkRules(x, i + 3, player, 2)))
+          return true;
+        if (check && check != 2)
+          return true;
       }
     if (i - 1 >= 0 && i + 4 < goban.getYBoard() && !goban(i - 1, x) && goban(i, x) == player && goban(i + 1, x) == 0 &&
       goban(i + 2, x) == player && goban(i + 3, x) == player && !goban(i + 4, x)) {
-        if (!check && (checkRules(x, i, player, 2) || checkRules(x, i + 2, player, 2) || checkRules(x, i + 3, player, 2))) {
-          return true;}
-        if (check && check != 2){return true;}
+        if (!check && (checkRules(x, i, player, 2) || checkRules(x, i + 2, player, 2) || checkRules(x, i + 3, player, 2)))
+          return true;
+        if (check && check != 2)
+          return true;
       }
   }
 
@@ -301,22 +317,25 @@ bool  Referee::checkRules(int x, int y, int player, int check) {
   for (int i = y - tmp, a = x - tmp; i <= y && a <= x; i++, a++) {
     if (i + 4 < goban.getYBoard() && a + 4 < goban.getXBoard() && !goban(i, a) && goban(i + 1, a + 1) == player && goban(i + 2, a + 2) == player &&
       goban(i + 3, a + 3) == player && !goban(i + 4, a + 4)) {
-        if (!check && (checkRules(a + 1, i + 1, player, 3) || checkRules(a + 2, i + 2, player, 3) || checkRules(a + 3, i + 3, player, 3))) {
-          return true;}
-        if (check && check != 3){return true;}
+        if (!check && (checkRules(a + 1, i + 1, player, 3) || checkRules(a + 2, i + 2, player, 3) || checkRules(a + 3, i + 3, player, 3)))
+          return true;
+        if (check && check != 3)
+          return true;
       }
     if (i - 1 >= 0 && a - 1 >= 0 && i + 4 < goban.getYBoard() && a + 4 < goban.getXBoard() &&
      !goban(i - 1, a - 1) && goban(i, a) == player && goban(i + 1, a + 1) == player &&
       goban(i + 2, a + 2) == 0 && goban(i + 3, a + 3) == player && !goban(i + 4, a + 4)) {
-        if (!check && (checkRules(a, i, player, 3) || checkRules(a + 1, i + 1, player, 3) || checkRules(a + 3, i + 3, player, 3))) {
-          return true;}
-        if (check && check != 3){return true;}
+        if (!check && (checkRules(a, i, player, 3) || checkRules(a + 1, i + 1, player, 3) || checkRules(a + 3, i + 3, player, 3)))
+          return true;
+        if (check && check != 3)
+          return true;
       }
     if (i - 1 >= 0 && i + 4 < goban.getYBoard() && a - 1 >= 0 && a + 4 < goban.getXBoard() && !goban(i - 1, a - 1) && goban(i, a) == player && goban(i + 1, a + 1) == 0 &&
       goban(i + 2, a + 2) == player && goban(i + 3, a + 3) == player && !goban(i + 4, a + 4)) {
-        if (!check && (checkRules(a, i, player, 3) || checkRules(a + 2, i + 2, player, 3) || checkRules(a + 3, i + 3, player, 3))) {
-          return true;}
-        if (check && check != 3){return true;}
+        if (!check && (checkRules(a, i, player, 3) || checkRules(a + 2, i + 2, player, 3) || checkRules(a + 3, i + 3, player, 3)))
+          return true;
+        if (check && check != 3)
+          return true;
       }
     }
 
@@ -326,22 +345,25 @@ bool  Referee::checkRules(int x, int y, int player, int check) {
     for (int i = y + tmp, a = x - tmp; i >= 0 && a < goban.getXBoard(); i--, a++) {
       if (i - 4 >= 0 && a + 4 < goban.getXBoard() && !goban(i, a) && goban(i - 1, a + 1) == player && goban(i - 2, a + 2) == player &&
         goban(i - 3, a + 3) == player && !goban(i - 4, a + 4)) {
-          if (!check && (checkRules(a + 1, i - 1, player, 4) || checkRules(a + 2, i - 2, player, 4) || checkRules(a + 3, i - 3, player, 4))) {
-            return true;}
-          if (check && check != 4){return true;}
+          if (!check && (checkRules(a + 1, i - 1, player, 4) || checkRules(a + 2, i - 2, player, 4) || checkRules(a + 3, i - 3, player, 4)))
+            return true;
+          if (check && check != 4)
+            return true;
         }
       if (i + 1 < goban.getYBoard() && a - 1 >= 0 && i - 4 >= 0 && a + 4 < goban.getXBoard() &&
         !goban(i + 1, a - 1) && goban(i, a) == player && goban(i - 1, a + 1) == player &&
         goban(i - 2, a + 2) == 0 && goban(i - 3, a + 3) == player && !goban(i - 4, a + 4)) {
-          if (!check && (checkRules(a, i, player, 4) || checkRules(a + 1, i - 1, player, 4) || checkRules(a + 3, i - 3, player, 4))) {
-            return true;}
-          if (check && check != 4){return true;}
+          if (!check && (checkRules(a, i, player, 4) || checkRules(a + 1, i - 1, player, 4) || checkRules(a + 3, i - 3, player, 4)))
+            return true;
+          if (check && check != 4)
+            return true;
         }
       if (i + 1 < goban.getYBoard() && i - 4 >= 0 && a - 1 >= 0 && a + 4 < goban.getXBoard() && !goban(i + 1, a - 1) && goban(i, a) == player && goban(i - 1, a + 1) == 0 &&
         goban(i - 2, a + 2) == player && goban(i - 3, a + 3) == player && !goban(i - 4, a + 4)) {
-          if (!check && (checkRules(a, i, player, 4) || checkRules(a + 2, i - 2, player, 4) || checkRules(a + 3, i - 3, player, 4))) {
-            return true;}
-          if (check && check != 4){return true;}
+          if (!check && (checkRules(a, i, player, 4) || checkRules(a + 2, i - 2, player, 4) || checkRules(a + 3, i - 3, player, 4)))
+            return true;
+          if (check && check != 4)
+            return true;
         }
       }
 
@@ -351,38 +373,48 @@ bool  Referee::checkRules(int x, int y, int player, int check) {
 Result  Referee::checkPlay(int x, int y, int player, bool mock) {
   bool broke1 = isBroke1;
   bool broke2 = isBroke2;
+  int  pair1 = nbPairBroken1;
+  int  pair2 = nbPairBroken2;
   Result ret = goban(y, x) ? REPLAY : checkWin(x, y, player);
   if (mock) {
     isBroke1 = broke1;
     isBroke2 = broke2;
+    nbPairBroken1 = pair1;
+    nbPairBroken2 = pair2;
   }
   return ret;
 }
 
 Result  Referee::checkWin(int x, int y, int player) {
-  if (checkWinByPair(x, y, player) >= 5) {
+  int pair = checkWinByPair(x, y, player);
+  if (pair >= 5 || checkWinBy5(x, y, player)) {
       goban.removeDraught(x, y);
       return WIN;
-    }
-  if (checkWinBy5(x, y, player)) {
-      goban.removeDraught(x, y);
-      return WIN;
-    }
+  }
   if (_advanced && checkRules(x, y, player, 0)) {
     goban.removeDraught(x, y);
     return REPLAY;
   }
+  if (player == 1 && isBroke2) {
+    if (nbPairBroken1 == pair) {
+      goban.removeDraught(x, y);
+      return WIN_INVERSE;
+    }
+    isBroke2 = false;
+    nbPairBroken1 = -1;
+  }
+  if (player == 2 && isBroke1) {
+    if (nbPairBroken2 == pair) {
+      goban.removeDraught(x, y);
+      return WIN_INVERSE;
+    }
+    isBroke1 = false;
+    nbPairBroken2 = -1;
+  }
   goban.removeDraught(x, y);
-  if (player == 1 && isBroke2 || player == 2 && isBroke1)
-    return WIN_INVERSE;
   return CONTINUE;
 }
 
 string Referee::getPairs(int p) const {
   return p == 1 ? to_string(nbPairplayer1) : to_string(nbPairplayer2);
 }
-
-bool Referee::getIsBroke1() const {return isBroke1;}
-bool Referee::getIsBroke2() const {return isBroke2;}
-void Referee::setIsBroke1(bool i) {isBroke1 = i;}
-void Referee::setIsBroke2(bool i) {isBroke2 = i;}

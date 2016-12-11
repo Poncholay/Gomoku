@@ -28,6 +28,8 @@ class Referee {
 private:
   int   nbPairplayer1;
   int   nbPairplayer2;
+  int   nbPairBroken1;
+  int   nbPairBroken2;
   bool  isBroke1;
   bool  isBroke2;
   Goban &goban;
@@ -51,10 +53,6 @@ public:
   void undoNbPair(int);
   void updatePair(int, int, int);
 
-  bool getIsBroke1() const;
-  bool getIsBroke2() const;
-  void setIsBroke1(bool);
-  void setIsBroke2(bool);
   string getPairs(int) const;
   Goban &getGoban();
 

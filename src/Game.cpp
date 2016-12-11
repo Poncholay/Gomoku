@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Sun Dec 11 20:57:53 2016 wilmot_g
+** Last update Sun Dec 11 22:45:48 2016 wilmot_g
 */
 
 #include <iostream>
@@ -52,6 +52,7 @@ int           Game::play() {
   Referee     referee(goban, _rules);
   int         ret = 0;
   int         turn = 1;
+  int         nbTurn = 0;
   vector<IPlayer *>   players;
   atomic<bool>        done(true);
   atomic<int>         playValue(CONTINUE);
@@ -74,6 +75,7 @@ int           Game::play() {
       if (!t && playValue == CONTINUE) {
         done = false;
         displayer.setTurn((turn = turn ? 0 : 1));
+        displayer.setNbTurn(++nbTurn);
         t = new thread(doPlay, players[turn], ref(referee), ref(done), ref(playValue));
       } else {
         if (t) {
