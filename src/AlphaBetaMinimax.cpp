@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Sun Dec 11 22:56:42 2016 wilmot_g
+** Last update Sun Dec 11 23:21:01 2016 wilmot_g
 */
 
 #include <functional>
@@ -167,8 +167,7 @@ bool  AlphaBetaMinimax::checkDiagTo5(Goban &goban, int x, int y, int player) con
 void  AlphaBetaMinimax::setHeuriscticTo5(Goban &goban, int player, vector<char> &heuristics, vector<pair<char, char> > &saveTo5, vector<bool> &saveRetTo5) const {
   for (int y1 = 0; y1 < goban.getYBoard(); y1++)
     for (int x1 = 0; x1 < goban.getXBoard(); x1++)
-      if (static_cast<int>(heuristics[y1 * goban.getXBoard() + x1]) == 0 &&
-          !checkLineTo5(goban, x1, y1, player) && !checkDiagTo5(goban, x1, y1, player)) {
+      if (!checkLineTo5(goban, x1, y1, player) && !checkDiagTo5(goban, x1, y1, player)) {
         saveRetTo5.push_back(goban.setHeuristicXY(x1, y1, 1, true, heuristics));
         saveTo5.push_back(make_pair(x1, y1));
       }
@@ -457,5 +456,5 @@ int     AlphaBetaMinimax::score(Referee &r, int player) const {
 }
 
 int     AlphaBetaMinimax::scoreWin(Referee &r, int player, int depth) const {
-  return player == _player ? MAX - (_nbTurn - depth) : -MAX + (_nbTurn - depth);
+  return player == _player ? MAX - (_nbTurn - depth) * 5 : -MAX + (_nbTurn - depth) * 5;
 }

@@ -56,17 +56,17 @@ void Referee::undoNbPair(int player) {
   player == 1 ? nbPairplayer1-- : nbPairplayer2--;
 }
 
-void Referee::updatePair(int x, int y, int p) {
+void Referee::updatePair(int x, int y, int p, bool move) {
   int p2 = p == 1 ? 2 : 1;
 
-  x - 3 >= 0 && goban(y, x - 3) == p && goban(y, x - 2) == p2 && goban(y, x - 1) == p2 ? removePair(x - 2, y, x - 1, y, p, true) : (void)0;
-  x + 3 < goban.getXBoard() && goban(y, x + 3) == p && goban(y, x + 2) == p2 && goban(y, x + 1) == p2 ? removePair(x + 2, y, x + 1, y, p, true) : (void)0;
-  y - 3 >= 0 && goban(y - 3, x) == p && goban(y - 2, x) == p2 && goban(y - 1, x) == p2 ? removePair(x, y - 2, x, y - 1, p, true) : (void)0;
-  y + 3 < goban.getYBoard() && goban(y + 3, x) == p && goban(y + 2, x) == p2 && goban(y + 1, x) == p2 ? removePair(x, y + 2, x, y + 1, p, true) : (void)0;
-  x - 3 >= 0 && y - 3 >= 0 && goban(y - 3, x - 3) == p && goban(y - 2, x - 2) == p2 && goban(y - 1, x - 1) == p2 ? removePair(x - 2, y - 2, x - 1, y - 1, p, true) : (void)0;
-  x + 3 < goban.getXBoard() && y - 3 >= 0 && goban(y - 3, x + 3) == p && goban(y - 2, x + 2) == p2 && goban(y - 1, x + 1) == p2 ? removePair(x + 2, y - 2, x + 1, y - 1, p, true) : (void)0;
-  x - 3 >= 0 && y + 3 < goban.getYBoard() && goban(y + 3, x - 3) == p && goban(y + 2, x - 2) == p2 && goban(y + 1, x - 1) == p2 ? removePair(x - 2, y + 2, x - 1, y + 1, p, true) : (void)0;
-  x + 3 < goban.getXBoard() && y + 3 < goban.getYBoard() && goban(y + 3, x + 3) == p && goban(y + 2, x + 2) == p2 && goban(y + 1, x + 1) == p2 ? removePair(x + 2, y + 2, x + 1, y + 1, p, true) : (void)0;
+  x - 3 >= 0 && goban(y, x - 3) == p && goban(y, x - 2) == p2 && goban(y, x - 1) == p2 ? removePair(x - 2, y, x - 1, y, p, move) : (void)0;
+  x + 3 < goban.getXBoard() && goban(y, x + 3) == p && goban(y, x + 2) == p2 && goban(y, x + 1) == p2 ? removePair(x + 2, y, x + 1, y, p, move) : (void)0;
+  y - 3 >= 0 && goban(y - 3, x) == p && goban(y - 2, x) == p2 && goban(y - 1, x) == p2 ? removePair(x, y - 2, x, y - 1, p, move) : (void)0;
+  y + 3 < goban.getYBoard() && goban(y + 3, x) == p && goban(y + 2, x) == p2 && goban(y + 1, x) == p2 ? removePair(x, y + 2, x, y + 1, p, move) : (void)0;
+  x - 3 >= 0 && y - 3 >= 0 && goban(y - 3, x - 3) == p && goban(y - 2, x - 2) == p2 && goban(y - 1, x - 1) == p2 ? removePair(x - 2, y - 2, x - 1, y - 1, p, move) : (void)0;
+  x + 3 < goban.getXBoard() && y - 3 >= 0 && goban(y - 3, x + 3) == p && goban(y - 2, x + 2) == p2 && goban(y - 1, x + 1) == p2 ? removePair(x + 2, y - 2, x + 1, y - 1, p, move) : (void)0;
+  x - 3 >= 0 && y + 3 < goban.getYBoard() && goban(y + 3, x - 3) == p && goban(y + 2, x - 2) == p2 && goban(y + 1, x - 1) == p2 ? removePair(x - 2, y + 2, x - 1, y + 1, p, move) : (void)0;
+  x + 3 < goban.getXBoard() && y + 3 < goban.getYBoard() && goban(y + 3, x + 3) == p && goban(y + 2, x + 2) == p2 && goban(y + 1, x + 1) == p2 ? removePair(x + 2, y + 2, x + 1, y + 1, p, move) : (void)0;
 }
 
 bool Referee::checkHorizon(int x, int y, int player, int max) {
@@ -84,6 +84,7 @@ bool Referee::checkHorizon(int x, int y, int player, int max) {
           (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y + 1, i - 1) == p2 && goban(y - 1, i + 1) == player) )) {
             player == 1 ? isBroke1 = true : isBroke2 = true;
             player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
+            breakingPlay = play;
             return false;
           }
       if ((y - 1  >= 0 && y + 2 < goban.getYBoard()) &&
@@ -95,6 +96,7 @@ bool Referee::checkHorizon(int x, int y, int player, int max) {
           (i - 1 >= 0 && i + 2 < goban.getXBoard() && goban(y - 1, i - 1) == p2 && goban(y + 1, i + 1) == player ))) {
             player == 1 ? isBroke1 = true : isBroke2 = true;
             player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
+            breakingPlay = play;
             return false;
           }
         }
@@ -116,6 +118,7 @@ bool Referee::checkVertical(int x, int y, int player, int max) {
           (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i - 1, x + 1) == p2 && goban(i + 1, x - 1) == player))) {
             player == 1 ? isBroke1 = true : isBroke2 = true;
             player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
+            breakingPlay = play;
             return false;
           }
       if ((x - 1  >= 0 && x + 2 < goban.getXBoard()) &&
@@ -127,6 +130,7 @@ bool Referee::checkVertical(int x, int y, int player, int max) {
           (i - 1 >= 0 && i + 2 < goban.getYBoard() && goban(i - 1, x - 1) == p2 && goban(i + 1, x + 1) == player))) {
             player == 1 ? isBroke1 = true : isBroke2 = true;
             player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
+            breakingPlay = play;
             return false;
           }
         }
@@ -149,6 +153,7 @@ bool Referee::checkDiagoDown(int x, int y, int player, int max) {
           (goban(i - 1, x) == p2 && goban(i + 1, x) == player))) {
             player == 1 ? isBroke1 = true : isBroke2 = true;
             player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
+            breakingPlay = play;
             return false;
           }
             if ((i - 2  >= 0 && i + 1 < goban.getYBoard() && x + 2 < goban.getXBoard() && x - 1 >= 0) &&
@@ -160,6 +165,7 @@ bool Referee::checkDiagoDown(int x, int y, int player, int max) {
                 (goban(i, x - 1) == p2 && goban(i, x + 1) == player))) {
             player == 1 ? isBroke1 = true : isBroke2 = true;
             player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
+            breakingPlay = play;
             return false;
           }
       ++x;
@@ -183,6 +189,7 @@ bool Referee::checkDiagoUp(int x, int y, int player, int max) {
           (goban(i + 1, x) == p2 && goban(i - 1, x) == player))) {
             player == 1 ? isBroke1 = true : isBroke2 = true;
             player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
+            breakingPlay = play;
             return false;
           }
       if ((i - 1  >= 0 && i + 2 < goban.getYBoard() && x + 2 < goban.getXBoard() && x - 1 >= 0) &&
@@ -194,6 +201,7 @@ bool Referee::checkDiagoUp(int x, int y, int player, int max) {
                 (goban(i, x - 1) == p2 && goban(i, x + 1) == player))) {
             player == 1 ? isBroke1 = true : isBroke2 = true;
             player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
+            breakingPlay = play;
             return false;
           }
       ++x;
@@ -201,8 +209,8 @@ bool Referee::checkDiagoUp(int x, int y, int player, int max) {
   return true;
 }
 
-bool Referee::checkWinBy5(int x, int y, int player) {
-  goban.addDraught(x, y, player);
+bool Referee::checkWinBy5(int x, int y, int player, bool mock) {
+  if (!mock) goban.addDraught(x, y, player);
 
   int xsave = x - 5 <= 0 ? 0 : x - 5;
   int count = 0;
@@ -375,14 +383,57 @@ Result  Referee::checkPlay(int x, int y, int player, bool mock) {
   bool broke2 = isBroke2;
   int  pair1 = nbPairBroken1;
   int  pair2 = nbPairBroken2;
+  pair<int, int> p = breakingPlay;
+  play = pair<int, int>(x, y);
   Result ret = goban(y, x) ? REPLAY : checkWin(x, y, player);
   if (mock) {
+    breakingPlay = p;
     isBroke1 = broke1;
     isBroke2 = broke2;
     nbPairBroken1 = pair1;
     nbPairBroken2 = pair2;
   }
   return ret;
+}
+
+bool    Referee::checkBrokenFive(int x, int y, int player, int pair) {
+  if (player == 1 && isBroke2) {
+    if (nbPairBroken1 == pair)
+      return true;
+    vector<char> back = goban.getBoard();
+    vector<char> backH = goban.getHeuristics();
+    int nb = nbPairplayer1;
+    _advanced = false;
+    updatePair(x, y, 1, false);
+    bool ret = checkWinBy5(get<0>(breakingPlay), get<1>(breakingPlay), 2, true);
+    _advanced = true;
+    nbPairplayer1 = nb;
+    goban.setBoard(back);
+    goban.setHeuristic(backH);
+    if (ret)
+      return true;
+    isBroke2 = false;
+    nbPairBroken1 = -1;
+  }
+  if (player == 2 && isBroke1) {
+    if (nbPairBroken2 == pair)
+      return true;
+    vector<char> back = goban.getBoard();
+    vector<char> backH = goban.getHeuristics();
+    int nb = nbPairplayer2;
+    _advanced = false;
+    updatePair(x, y, 2, false);
+    bool ret = checkWinBy5(get<0>(breakingPlay), get<1>(breakingPlay), 1, true);
+    _advanced = true;
+    nbPairplayer2 = nb;
+    goban.setBoard(back);
+    goban.setHeuristic(backH);
+    if (ret)
+      return true;
+    isBroke1 = true;
+    nbPairBroken2 = -1;
+  }
+  return false;
 }
 
 Result  Referee::checkWin(int x, int y, int player) {
@@ -395,21 +446,9 @@ Result  Referee::checkWin(int x, int y, int player) {
     goban.removeDraught(x, y);
     return REPLAY;
   }
-  if (player == 1 && isBroke2) {
-    if (nbPairBroken1 == pair) {
-      goban.removeDraught(x, y);
-      return WIN_INVERSE;
-    }
-    isBroke2 = false;
-    nbPairBroken1 = -1;
-  }
-  if (player == 2 && isBroke1) {
-    if (nbPairBroken2 == pair) {
-      goban.removeDraught(x, y);
-      return WIN_INVERSE;
-    }
-    isBroke1 = false;
-    nbPairBroken2 = -1;
+  if (_advanced && checkBrokenFive(x, y, player, pair)) {
+    goban.removeDraught(x, y);
+    return WIN_INVERSE;
   }
   goban.removeDraught(x, y);
   return CONTINUE;

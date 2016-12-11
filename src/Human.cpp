@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Oct 31 19:23:37 2016 wilmot_g
-** Last update Sun Dec 11 21:13:13 2016 wilmot_g
+** Last update Sun Dec 11 23:55:00 2016 wilmot_g
 */
 
 #include "Human.hh"

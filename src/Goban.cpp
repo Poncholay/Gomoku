@@ -125,6 +125,9 @@ void Goban::setReferee(Referee *r)  {_r = r;}
 int Goban::getXBoard() const        {return _xBoard;}
 int Goban::getYBoard() const        {return _yBoard;}
 
+void          Goban::setBoard(vector<char> &b){_board = b;}
+void          Goban::setHeuristic(vector<char> &b){_heuristics = b;}
+
 vector<char>  &Goban::getBoard()              {return _board;}
 vector<char>  &Goban::getHeuristics()         {return _heuristics;}
 Displayer     &Goban::getDisplayer()          {return _displayer;}

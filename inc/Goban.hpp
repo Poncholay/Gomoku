@@ -46,6 +46,9 @@ public:
   int getYBoard() const;
   bool full() const;
 
+  void setBoard(vector<char> &);
+  void setHeuristic(vector<char> &);
+
   vector<char>  &getBoard();
   vector<char>  &getHeuristics();
 

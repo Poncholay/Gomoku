@@ -26,17 +26,21 @@ WIN_INVERSE  };
 
 class Referee {
 private:
+  bool _advanced;
   int   nbPairplayer1;
   int   nbPairplayer2;
   int   nbPairBroken1;
   int   nbPairBroken2;
   bool  isBroke1;
   bool  isBroke2;
+  pair<int, int> play;
+  pair<int, int> breakingPlay;
   Goban &goban;
 
   Result  checkWin(int, int, int);
   bool checkRules(int, int, int, int);
-  bool checkWinBy5(int, int, int);
+  bool checkWinBy5(int, int, int, bool = false);
+  bool checkBrokenFive(int, int, int, int);
   int  checkWinByPair(int, int, int);
   void setPair(int, int);
   bool checkHorizon(int, int, int, int);
@@ -51,12 +55,11 @@ public:
   Result checkPlay(int, int, int, bool = true);
   void removePair(int, int, int, int, int, bool);
   void undoNbPair(int);
-  void updatePair(int, int, int);
+  void updatePair(int, int, int, bool = true);
 
   string getPairs(int) const;
   Goban &getGoban();
 
-  bool _advanced;
 };
 
 #endif
