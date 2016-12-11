@@ -5,7 +5,7 @@
 // Login   <adrien.milcent@epitech.eu>
 //
 // Started on  Wed Oct 12 15:27:04 2016 Adrien Milcent
-// Last update Wed Nov 30 10:55:39 2016 Adrien Milcent
+// Last update Sun Dec 11 18:30:30 2016 Adrien Milcent
 //
 
 #include <bitset>
@@ -74,7 +74,7 @@ void Goban::printHeuristic(vector<char> &heuristics) const {
   cout << "Heuristics :" << endl;
   for (int y = 0; y < _yBoard; y++) {
     for (int x = 0; x < _xBoard; x++)
-      cout << static_cast<int>(heuristics[y + _xBoard + x]) << " ";
+      cout << static_cast<int>(heuristics[y * _xBoard + x]) << " ";
     cout << endl;
   }
   cout << endl;

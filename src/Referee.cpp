@@ -5,7 +5,7 @@
 // Login   <alban.combaud@epitech.eu@epitech.eu>
 //
 // Started on  Wed Oct 12 13:12:15 2016 Combaud Alban
-// Last update Sun Dec  4 12:04:31 2016 Adrien Milcent
+// Last update Sun Dec 11 16:57:57 2016 Adrien Milcent
 //
 
 #include "Referee.hh"
@@ -366,8 +366,6 @@ Result  Referee::checkWin(int x, int y, int player) {
     return REPLAY;
   }
   goban.removeDraught(x, y);
-  if (player == 1 && isBroke2 || player == 2 && isBroke1)
-    return WIN_INVERSE;
   return CONTINUE;
 }
 

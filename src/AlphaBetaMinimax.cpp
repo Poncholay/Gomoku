@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Thu Dec 08 21:10:21 2016 wilmot_g
+** Last update Sun Dec 11 19:39:50 2016 Adrien Milcent
 */
 
 #include <functional>
@@ -36,6 +36,7 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
   _player = player;
   _opponent = player == 1 ? 2 : 1;
   _win = Coord(-1, -1);
+
   for (int y = 0; y < g.getYBoard(); y++)
     for (int x = 0; x < g.getXBoard(); x++)
       if (!_opti || (_opti && !heuristics[y * g.getXBoard() + x])) {
@@ -46,10 +47,14 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
           res == REPLAY;
         if (res != REPLAY && res != -1) {
           vector<pair<char, char> > pairs;
+          vector<pair<char, char> > save_to5;
+          vector<bool> saveRetTo5;
           g.addDraught(x, y, player);
           updatePair(r, pairs, x, y, _player);
           int changes = r.getGoban().updateWeights(x, y, heuristics);
+          setHeuriscticTo5(g, _player, heuristics, save_to5, saveRetTo5);
           v = max(v, evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics));
+          unsetHeuriscticTo5(g, heuristics, save_to5, saveRetTo5);
           restorePair(r, pairs, _opponent);
           g.removeDraught(x, y);
           g.revertWeights(x, y, changes, heuristics);
@@ -89,6 +94,97 @@ void    AlphaBetaMinimax::updatePair(Referee &r, vector<pair<char, char> > &chan
   x + 3 < goban.getXBoard() && y + 3 < goban.getYBoard() && goban(y + 3, x + 3) == p && goban(y + 2, x + 2) == p2 && goban(y + 1, x + 1) == p2 ? saveChanges(r, changes, x + 2, y + 2, x + 1, y + 1, p) : (void)0;
 }
 
+bool  AlphaBetaMinimax::checkLineTo5(Goban &goban, int x, int y, int player) const {
+  int count = 0, j = x;
+
+  while (j <= goban.getXBoard() && (goban(y, j) == 0 || goban(y, j) == player) && count < 5) {
+    ++j;
+    if (++count == 5)
+      return true;
+  }
+  count = 0;
+  j = x;
+  while (j >= 0 && (goban(y, j) == 0 || goban(y, j) == player) && count < 5) {
+    --j;
+    if (++count == 5)
+      return true;
+  }
+  count = 0;
+  j = y;
+  while (j <= goban.getYBoard() && (goban(j, x) == 0 || goban(j, x) == player) && count < 5) {
+    ++j;
+    if (++count == 5)
+      return true;
+  }
+  count = 0;
+  j = y;
+  while (j > 0 && (goban(j, x) == 0 || goban(j, x) == player) && count < 5) {
+    --j;
+    if (++count == 5)
+      return true;
+  }
+  return false;
+}
+
+bool  AlphaBetaMinimax::checkDiagTo5(Goban &goban, int x, int y, int player) const {
+  int count = 0, j = x, i = y;
+
+  while (j <= goban.getXBoard() && i <= goban.getYBoard() && (goban(i, j) == 0 || goban(i, j) == player) && count < 5) {
+    ++j;
+    ++i;
+    if (++count == 5)
+      return true;
+  }
+  count = 0;
+  j = x;
+  i = y;
+  while (j <= goban.getXBoard() && i >= 0 && (goban(i, j) == 0 || goban(i, j) == player) && count < 5) {
+    ++j;
+    --i;
+    if (++count == 5)
+      return true;
+  }
+  count = 0;
+  j = x;
+  i = y;
+  while (j >= 0 && i <= goban.getYBoard() && (goban(i, j) == 0 || goban(i, j) == player) && count < 5) {
+    --j;
+    ++i;
+    if (++count == 5)
+      return true;
+  }
+  count = 0;
+  j = x;
+  i = y;
+  while (j >= 0 && i >= 0 && (goban(i, j) == 0 || goban(i, j) == player) && count < 5) {
+    --j;
+    --i;
+    if (++count == 5)
+      return true;
+  }
+  return false;
+}
+
+void  AlphaBetaMinimax::setHeuriscticTo5(Goban &goban, int player, vector<char> &heuristics, vector<pair<char, char> > &saveTo5, vector<bool> &saveRetTo5) const {
+  for (int y1 = 0; y1 < goban.getYBoard(); y1++) {
+    for (int x1 = 0; x1 < goban.getXBoard(); x1++) {
+      if (static_cast<int>(heuristics[y1 * goban.getXBoard() + x1]) == 0 &&
+          !checkLineTo5(goban, x1, y1, player) && !checkDiagTo5(goban, x1, y1, player)) {
+        saveRetTo5.push_back(goban.setHeuristicXY(x1, y1, 1, true, heuristics));
+        saveTo5.push_back(make_pair(x1, y1));
+      }
+    }
+  }
+}
+
+void  AlphaBetaMinimax::unsetHeuriscticTo5(Goban &goban, vector<char> &heuristics, vector<pair<char, char> > &save_to5, vector<bool> &saveRetTo5) const {
+  unsigned int i = 0;
+  while (i < save_to5.size()) {
+    goban.setHeuristicXY(save_to5.at(i).first, save_to5.at(i).second, 1, saveRetTo5.at(i), heuristics);
+    ++i;
+  }
+}
+
 int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha, int beta, vector<char> heuristics) const {
   int   v;
   int   turn;
@@ -108,9 +204,12 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
           return scoreWin(r, turn == 1 ? 2 : 1, depth);
         if (res != REPLAY && res != -1) {
           vector<pair<char, char> > pairs;
+          vector<pair<char, char> > save_to5;
+          vector<bool> saveRetTo5;
           g.addDraught(x, y, turn);
           updatePair(r, pairs, x, y, maxing ? _player : _opponent);
           int changes = g.updateWeights(x, y, heuristics);
+          setHeuriscticTo5(g, _player, heuristics, save_to5, saveRetTo5);
           if (maxing) {
             v = max(v, evaluate(r, depth - 1, !maxing, alpha, beta, heuristics));
             alpha = max(alpha, v);
@@ -118,6 +217,7 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
             v = min(v, evaluate(r, depth - 1, !maxing, alpha, beta, heuristics));
             beta = min(beta, v);
           }
+          unsetHeuriscticTo5(g, heuristics, save_to5, saveRetTo5);
           restorePair(r, pairs, maxing ? _opponent : _player);
           g.removeDraught(x, y);
           g.revertWeights(x, y, changes, heuristics);
