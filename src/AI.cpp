@@ -10,7 +10,7 @@
 
 #include "AI.hh"
 
-AI::AI(Goban &goban, int nbPlayer, int nbTurn, bool opti, bool rows, bool diago, bool bench, bool alpha) : _algo(AlphaBetaMinimax(nbTurn, opti, rows, diago, alpha)), _goban(goban) {
+AI::AI(Goban &goban, int nbPlayer, int nbTurn, bool opti, bool rows, bool diago, bool bench, bool alpha, bool optiFive) : _algo(AlphaBetaMinimax(nbTurn, opti, rows, diago, alpha, optiFive)), _goban(goban) {
   _nbPlayer = nbPlayer;
   _benchmark = bench;
   _thinking = false;

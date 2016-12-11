@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 14:14:53 2016 wilmot_g
-** Last update Sun Dec 11 18:55:40 2016 Adrien Milcent
+** Last update Sun Dec 11 23:01:32 2016 wilmot_g
 */
 
 #ifndef ALPHABETAMINIMAX_HH_
@@ -30,6 +30,7 @@ private:
   int _opponent;
   bool _alphaBeta;
   bool _opti;
+  bool _optiFive;
   bool _rows;
   bool _diago;
   Coord _win;
@@ -54,7 +55,7 @@ private:
   bool  checkLineTo5(Goban &, int, int, int) const;
 
 public:
-  AlphaBetaMinimax(int, bool, bool, bool, bool);
+  AlphaBetaMinimax(int, bool, bool, bool, bool, bool);
   ~AlphaBetaMinimax();
 
   Coord loop(int, Referee &);

@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Wed Oct 26 16:07:43 2016 wilmot_g
-** Last update Thu Dec 08 21:03:03 2016 wilmot_g
+** Last update Sun Dec 11 23:01:09 2016 wilmot_g
 */
 
 #ifndef GAME_HH_
@@ -26,6 +26,7 @@ public:
   void        setAiDepth(int);
   void        setBenchmark(bool);
   void        setOptimisation(bool);
+  void        setOptiFive(bool);
   void        setAlphaBeta(bool);
   void        setAdvancedRules(bool);
   void        setCalculateDiagonals(bool);
@@ -39,6 +40,7 @@ private:
   bool        _rules;
   bool        _bench;
   bool        _optimise;
+  bool        _optiFive;
   bool        _alphaBeta;
   bool        _rows;
   bool        _diago;

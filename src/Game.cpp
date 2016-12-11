@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Sun Dec 11 22:45:48 2016 wilmot_g
+** Last update Sun Dec 11 23:01:12 2016 wilmot_g
 */
 
 #include <iostream>
@@ -28,6 +28,7 @@ void          Game::setPlayers(int p)             {_players = p;}
 void          Game::setAdvancedRules(bool r)      {_rules = r;}
 void          Game::setBenchmark(bool b)          {_bench = b;}
 void          Game::setOptimisation(bool o)       {_optimise = o;}
+void          Game::setOptiFive(bool o)           {_optiFive = o;}
 void          Game::setAlphaBeta(bool a)          {_alphaBeta = a;}
 void          Game::setCalculateRows(bool r)      {_rows = r;}
 void          Game::setCalculateDiagonals(bool d) {_diago = d;}

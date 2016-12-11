@@ -33,7 +33,7 @@ private:
   chrono::high_resolution_clock::time_point _start;
 
 public:
-  AI(Goban &, int, int, bool = true, bool = true, bool = true, bool = true, bool = true);
+  AI(Goban &, int, int, bool = true, bool = true, bool = true, bool = true, bool = true, bool = false);
   ~AI();
 
   void setBenchmark(bool);

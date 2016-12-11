@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Sun Dec 11 22:51:57 2016 wilmot_g
+** Last update Sun Dec 11 22:56:42 2016 wilmot_g
 */
 
 #include <functional>
@@ -14,8 +14,9 @@
 #include "Referee.hh"
 #include "unistd.h"
 
-AlphaBetaMinimax::AlphaBetaMinimax(int nbTurn, bool opti, bool rows, bool diago, bool alpha) {
+AlphaBetaMinimax::AlphaBetaMinimax(int nbTurn, bool opti, bool rows, bool diago, bool alpha, bool optiFive) {
   _opti = opti;
+  _optiFive = optiFive;
   _rows = rows;
   _diago = diago;
   _alphaBeta = alpha;
@@ -50,9 +51,9 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
           g.addDraught(x, y, player);
           updatePair(r, pairs, x, y, _player);
           int changes = r.getGoban().updateWeights(x, y, heuristics);
-          setHeuriscticTo5(g, _player, heuristics, save_to5, saveRetTo5);
+          if (_optiFive) setHeuriscticTo5(g, _player, heuristics, save_to5, saveRetTo5);
           v = max(v, evaluate(r, _nbTurn - 1, false, alpha, MAX, heuristics));
-          unsetHeuriscticTo5(g, heuristics, save_to5, saveRetTo5);
+          if (_optiFive) unsetHeuriscticTo5(g, heuristics, save_to5, saveRetTo5);
           restorePair(r, pairs, _opponent);
           g.removeDraught(x, y);
           g.revertWeights(x, y, changes, heuristics);
@@ -205,7 +206,7 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
           g.addDraught(x, y, turn);
           updatePair(r, pairs, x, y, maxing ? _player : _opponent);
           int changes = g.updateWeights(x, y, heuristics);
-          setHeuriscticTo5(g, _player, heuristics, save_to5, saveRetTo5);
+          if (_optiFive) setHeuriscticTo5(g, _player, heuristics, save_to5, saveRetTo5);
           if (maxing) {
             v = max(v, evaluate(r, depth - 1, !maxing, alpha, beta, heuristics));
             alpha = max(alpha, v);
@@ -213,7 +214,7 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
             v = min(v, evaluate(r, depth - 1, !maxing, alpha, beta, heuristics));
             beta = min(beta, v);
           }
-          unsetHeuriscticTo5(g, heuristics, save_to5, saveRetTo5);
+          if (_optiFive) unsetHeuriscticTo5(g, heuristics, save_to5, saveRetTo5);
           restorePair(r, pairs, maxing ? _opponent : _player);
           g.removeDraught(x, y);
           g.revertWeights(x, y, changes, heuristics);

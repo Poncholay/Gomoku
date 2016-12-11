@@ -5,7 +5,7 @@
 ** Login   <saurs_f@epitech.net>
 **
 ** Started on  Mon Nov 07 22:35:02 2016 saurs_f
-** Last update Thu Dec 08 21:01:32 2016 wilmot_g
+** Last update Sun Dec 11 23:00:10 2016 wilmot_g
 */
 
 #include "Menu.hh"
@@ -125,7 +125,8 @@ Menu::Menu() {
 	_validate = false;
 	_testOfTextBox.push_back("ADVANCED RULES");
 	_testOfTextBox.push_back("BENCHMARK");
-	_testOfTextBox.push_back("OPTIMISE (SPOTS CHECKED)");
+	_testOfTextBox.push_back("OPTIMISE (ACTIVE SPOTS CHECKED)");
+	_testOfTextBox.push_back("OPTIMISE (ALIGNABLE SPOTS CHECKED)");
 	_testOfTextBox.push_back("OPTIMISE (ALPHA BETA PRUNING)");
 	_testOfTextBox.push_back("EMPHASIZE ROWS");
 	_testOfTextBox.push_back("EMPHASIZE DIAGONALS");
