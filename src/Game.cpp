@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Mon Dec 12 01:24:26 2016 wilmot_g
+** Last update Mon Dec 12 11:20:56 2016 wilmot_g
 */
 
 #include <iostream>
@@ -49,7 +49,7 @@ string        Game::score(const Referee &r, const vector<IPlayer *> &p, int turn
 
 int           Game::play() {
   Displayer   displayer;
-  Goban       goban(displayer);
+  Goban       goban(_players, displayer);
   Referee     referee(goban, _rules);
   int         ret = 0;
   int         turn = 1;
