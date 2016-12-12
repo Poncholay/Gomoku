@@ -180,13 +180,13 @@ bool Referee::checkDiagoUp(int x, int y, int player, int max) {
   int begin = 5 - (10 - max);
   x += begin;
   for (int i = y - begin; i > y - 5; --i ){
-      if ((x - 2  >= 0 && x + 1 < goban.getXBoard() && i + 1 < goban.getYBoard() && i - 2 >= 0) &&
+      if ((x - 2  >= 0 && x + 2 < goban.getXBoard() && i + 2 < goban.getYBoard() && i - 2 >= 0) &&
           ((goban(i - 2, x - 2) == p2 && goban(i - 1, x - 1) == player && !goban(i + 1, x + 1)) ||
           (goban(i + 1, x + 1) == p2 && goban(i - 1, x - 1) == player && !goban(i - 2, x - 2)) ||
-          (goban(i, x - 2) == p2 && goban(i, x - 1) == player && !goban(i, x + 1)) ||
-          (goban(i, x + 1) == p2 && goban(i, x - 1) == player && !goban(i, x - 2)) ||
-          (goban(i - 2, x) == p2 && goban(i - 1, x) == player && !goban(i + 1, x)) ||
-          (goban(i + 1, x) == p2 && goban(i - 1, x) == player && !goban(i - 2, x)))) {
+          (goban(i, x + 2) == p2 && goban(i, x + 1) == player && !goban(i, x - 1)) ||
+          (goban(i, x - 1) == p2 && goban(i, x + 1) == player && !goban(i, x + 2)) ||
+          (goban(i + 2, x) == p2 && goban(i + 1, x) == player && !goban(i - 1, x)) ||
+        (goban(i - 1, x) == p2 && goban(i + 1, x) == player && !goban(i + 2, x)))) {
             player == 1 ? isBroke1 = true : isBroke2 = true;
             player == 1 ? nbPairBroken2 = nbPairplayer2 : nbPairBroken1 = nbPairplayer1;
             breakingPlay = play;
