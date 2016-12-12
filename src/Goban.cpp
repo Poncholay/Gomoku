@@ -11,14 +11,16 @@
 #include <bitset>
 #include "Goban.hpp"
 
-Goban::Goban(Displayer &d, int xBoard, int yBoard) : _displayer(d) {
+Goban::Goban(int player, Displayer &d, int xBoard, int yBoard) : _displayer(d) {
   _xBoard = xBoard;
   _yBoard = yBoard;
   _board = vector<char> (yBoard * xBoard, 0);
   _heuristics = vector<char> (yBoard * xBoard, 1);
-  int a = random() % yBoard;
-  int b = random() % xBoard;
-  _heuristics[a * _xBoard + b] = 0;
+  if (player == 3) {
+    int a = random() % yBoard;
+    int b = random() % xBoard;
+    _heuristics[a * _xBoard + b] = 0;
+  }
 }
 
 Goban::~Goban() {}

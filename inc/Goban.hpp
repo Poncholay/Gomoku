@@ -34,7 +34,7 @@ private:
   int _yBoard;
 
 public:
-  Goban(Displayer &, int xBoard = GOBAN_X, int yBoard = GOBAN_Y);
+  Goban(int, Displayer &, int xBoard = GOBAN_X, int yBoard = GOBAN_Y);
   Goban(Goban &);
   ~Goban();
 
