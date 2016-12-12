@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Mon Dec 12 11:35:56 2016 wilmot_g
+** Last update Mon Dec 12 13:33:25 2016 wilmot_g
 */
 
 #include <functional>
@@ -37,6 +37,8 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
   _player = player;
   _opponent = player == 1 ? 2 : 1;
   _win = Coord(-1, -1);
+
+  g.printBoard();
 
   for (int y = 0; y < g.getYBoard(); y++)
     for (int x = 0; x < g.getXBoard(); x++)
@@ -349,9 +351,16 @@ int   AlphaBetaMinimax::diagsBottomToTop(Goban &g, int player) const {
 
 int     AlphaBetaMinimax::countDiags(Goban &g, int player) const {
   int   score = 0;
+  int   tmp;
 
-  score += diagsBottomToTop(g, player);
-  score += diagsTopToBottom(g, player);
+  tmp = diagsBottomToTop(g, player);
+  if (tmp == MAX)
+    return MAX;
+  score += tmp;
+  tmp = diagsTopToBottom(g, player);
+  if (tmp == MAX)
+    return MAX;
+  score += tmp;
   return score;
 }
 
@@ -435,24 +444,25 @@ int     AlphaBetaMinimax::score(Referee &r, int player) const {
     if (tmp == MAX)
       return scoreWin(r, player, 0);
     scorePlayer += tmp;
-
-    tmp = countSeries(r.getGoban(), opponent);
-    if (tmp == MAX)
-      return scoreWin(r, opponent, 0);
-    scoreOpponent += tmp;
   }
   if (_diago) {
     tmp = countDiags(r.getGoban(), player);
     if (tmp == MAX)
       return scoreWin(r, player, 0);
     scorePlayer += tmp;
-
+  }
+  if (_rows) {
+    tmp = countSeries(r.getGoban(), opponent);
+    if (tmp == MAX)
+      return scoreWin(r, opponent, 0);
+    scoreOpponent += tmp;
+  }
+  if (_diago) {
     tmp = countDiags(r.getGoban(), opponent);
     if (tmp == MAX)
       return scoreWin(r, opponent, 0);
     scoreOpponent += tmp;
   }
-
   return scorePlayer - scoreOpponent;
 }
 
