@@ -16,8 +16,8 @@ Goban::Goban(Displayer &d, int xBoard, int yBoard) : _displayer(d) {
   _yBoard = yBoard;
   _board = vector<char> (yBoard * xBoard, 0);
   _heuristics = vector<char> (yBoard * xBoard, 1);
-  int a = 10;
-  int b = 10;
+  int a = random() % yBoard;
+  int b = random() % xBoard;
   _heuristics[a * _xBoard + b] = 0;
 }
 

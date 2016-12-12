@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Last update Tue Nov 08 19:27:58 2016 wilmot_g
-** Last update Sun Dec 11 23:01:12 2016 wilmot_g
+** Last update Mon Dec 12 01:24:26 2016 wilmot_g
 */
 
 #include <iostream>
@@ -100,7 +100,12 @@ int           Game::play() {
       if ((ret = displayer.display(playValue == WIN ? turn + 1 : turn ? 1 : 2)) != 0 || displayer.getReceiver().checkEnd())
         break;
   }
-  if (t) {t->join(); delete t;}
+  if (t) {
+    if (displayer.isRunning())
+      ret = displayer.display(42);
+    t->join();
+    delete t;
+  }
   Sounds::get().stopMusic();
   Sounds::get().stopSounds();
   return ret;

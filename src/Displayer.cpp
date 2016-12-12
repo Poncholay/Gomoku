@@ -74,7 +74,7 @@ void                  Displayer::drawTurn() {
 
 void                  Displayer::drawWin(int p) {
   if (_font) {
-    string str = "Player " + to_string(p) + " wins";
+    string str = p == 42 ? "Waiting for AI..." : ("Player " + to_string(p) + " wins");
     irr::core::stringw s(str.c_str());
     _font->draw(s, irr::core::rect<irr::s32>(1920 / 2 - 100, 1080 / 2 - 25, 1920 / 2 + 100, 1080 / 2 + 25), irr::video::SColor(255, 255, 255, 255), true, true);
   }
