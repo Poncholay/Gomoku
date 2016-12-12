@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 14:14:53 2016 wilmot_g
-** Last update Sun Dec 11 23:01:32 2016 wilmot_g
+** Last update Mon Dec 12 12:58:17 2016 wilmot_g
 */
 
 #ifndef ALPHABETAMINIMAX_HH_
@@ -38,7 +38,7 @@ private:
 
   int   score(Referee &, int) const;
   int   scoreWin(Referee &, int, int) const;
-  int   addScore(int &, int, bool, bool, int = 1) const;
+  int   addScore(int &, int, bool, bool, int) const;
   int   evaluate(Referee &, int, bool, int, int, vector<char>) const;
   int   countSeries(Goban &, int) const;
   int   countDiags(Goban &, int) const;

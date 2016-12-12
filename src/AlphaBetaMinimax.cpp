@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Mon Dec 12 11:42:12 2016 Adrien Milcent
+** Last update Mon Dec 12 14:18:36 2016 Adrien Milcent
 */
 
 #include <functional>
@@ -349,9 +349,16 @@ int   AlphaBetaMinimax::diagsBottomToTop(Goban &g, int player) const {
 
 int     AlphaBetaMinimax::countDiags(Goban &g, int player) const {
   int   score = 0;
+  int   tmp;
 
-  score += diagsBottomToTop(g, player);
-  score += diagsTopToBottom(g, player);
+  tmp = diagsBottomToTop(g, player);
+  if (tmp == MAX)
+    return MAX;
+  score += tmp;
+  tmp = diagsTopToBottom(g, player);
+  if (tmp == MAX)
+    return MAX;
+  score += tmp;
   return score;
 }
 
@@ -411,8 +418,6 @@ int     AlphaBetaMinimax::countSeries(Goban &g, int player) const {
 int     AlphaBetaMinimax::addScore(int &score, int val, bool openBefore, bool openAfter, int broken) const {
   if (broken == 1 && (val >= 5 || (val == 4 && openAfter && openBefore)))
     return true;
-  else if (val >= 5 || (val == 4 && openAfter && openBefore))
-    score += 50000;
   else if ((val == 3 && openAfter && openBefore))
     score += 10000 * _multiplier[0];
   else if (val == 4 && (openAfter || openBefore))
@@ -437,24 +442,25 @@ int     AlphaBetaMinimax::score(Referee &r, int player) const {
     if (tmp == MAX)
       return scoreWin(r, player, 0);
     scorePlayer += tmp;
-
-    tmp = countSeries(r.getGoban(), opponent);
-    if (tmp == MAX)
-      return scoreWin(r, opponent, 0);
-    scoreOpponent += tmp;
   }
   if (_diago) {
     tmp = countDiags(r.getGoban(), player);
     if (tmp == MAX)
       return scoreWin(r, player, 0);
     scorePlayer += tmp;
-
+  }
+  if (_rows) {
+    tmp = countSeries(r.getGoban(), opponent);
+    if (tmp == MAX)
+      return scoreWin(r, opponent, 0);
+    scoreOpponent += tmp;
+  }
+  if (_diago) {
     tmp = countDiags(r.getGoban(), opponent);
     if (tmp == MAX)
       return scoreWin(r, opponent, 0);
     scoreOpponent += tmp;
   }
-
   return scorePlayer - scoreOpponent;
 }
 
