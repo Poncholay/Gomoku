@@ -33,6 +33,8 @@ private:
   int   nbPairBroken2;
   bool  isBroke1;
   bool  isBroke2;
+  bool  isMockBroke1;
+  bool  isMockBroke2;
   pair<int, int> play;
   pair<int, int> breakingPlay;
   Goban &goban;
@@ -57,6 +59,7 @@ public:
   void undoNbPair(int);
   void updatePair(int, int, int, bool = true);
 
+  bool   getIsBroke(int) const;
   string getPairs(int) const;
   Goban &getGoban();
 

@@ -385,8 +385,12 @@ Result  Referee::checkPlay(int x, int y, int player, bool mock) {
   int  pair2 = nbPairBroken2;
   pair<int, int> p = breakingPlay;
   play = pair<int, int>(x, y);
+  isMockBroke1 = false;
+  isMockBroke2 = false;
   Result ret = goban(y, x) ? REPLAY : checkWin(x, y, player);
   if (mock) {
+    isMockBroke1 = isBroke1;
+    isMockBroke2 = isBroke2;
     breakingPlay = p;
     isBroke1 = broke1;
     isBroke2 = broke2;
@@ -457,3 +461,5 @@ Result  Referee::checkWin(int x, int y, int player) {
 string Referee::getPairs(int p) const {
   return p == 1 ? to_string(nbPairplayer1) : to_string(nbPairplayer2);
 }
+
+bool Referee::getIsBroke(int p) const {return p == 1 ? isMockBroke1 : isMockBroke2;}
