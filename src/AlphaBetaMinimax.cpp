@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Mon Dec 12 11:27:02 2016 Adrien Milcent
+** Last update Mon Dec 12 11:42:12 2016 Adrien Milcent
 */
 
 #include <functional>
@@ -42,7 +42,7 @@ Coord   AlphaBetaMinimax::loop(int player, Referee &r) {
     for (int x = 0; x < g.getXBoard(); x++)
       if (!_opti || (_opti && !heuristics[y * g.getXBoard() + x])) {
         int res = r.checkPlay(x, y, player);
-        if (res == WIN)
+        if (res == WIN || r.getIsBroke(player))
           return Coord(x, y);
         if (res == CONTINUE) {
           vector<pair<char, char> > pairs;
@@ -194,7 +194,7 @@ int     AlphaBetaMinimax::evaluate(Referee &r, int depth, bool maxing, int alpha
     for (int x = 0; x < g.getXBoard(); x++)
       if (!_opti || (_opti && !heuristics[y * g.getXBoard() + x])) {
         int res = r.checkPlay(x, y, turn);
-        if (res == WIN)
+        if (res == WIN || r.getIsBroke(turn))
           return scoreWin(r, turn, depth);
         if (res == WIN_INVERSE)
           return scoreWin(r, turn == 1 ? 2 : 1, depth);
@@ -454,6 +454,7 @@ int     AlphaBetaMinimax::score(Referee &r, int player) const {
       return scoreWin(r, opponent, 0);
     scoreOpponent += tmp;
   }
+
   return scorePlayer - scoreOpponent;
 }
 

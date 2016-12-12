@@ -89,7 +89,6 @@ int           Game::play() {
       }
     }
   }
-  cout << (playValue == WIN_INVERSE) << endl;
   if (playValue == WIN || playValue == WIN_INVERSE) {
     while (displayer.isRunning() && displayer.isAnimating())
       if ((ret = displayer.display()) != 0 || displayer.getReceiver().checkEnd())
