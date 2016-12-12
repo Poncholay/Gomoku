@@ -5,7 +5,7 @@
 ** Login   <wilmot_g@epitech.net>
 **
 ** Started on  Mon Nov 28 13:51:42 2016 wilmot_g
-** Last update Sun Dec 11 23:21:01 2016 wilmot_g
+** Last update Mon Dec 12 11:27:02 2016 Adrien Milcent
 */
 
 #include <functional>
@@ -411,6 +411,8 @@ int     AlphaBetaMinimax::countSeries(Goban &g, int player) const {
 int     AlphaBetaMinimax::addScore(int &score, int val, bool openBefore, bool openAfter, int broken) const {
   if (broken == 1 && (val >= 5 || (val == 4 && openAfter && openBefore)))
     return true;
+  else if (val >= 5 || (val == 4 && openAfter && openBefore))
+    score += 50000;
   else if ((val == 3 && openAfter && openBefore))
     score += 10000 * _multiplier[0];
   else if (val == 4 && (openAfter || openBefore))
